@@ -330,3 +330,6 @@
 .me-mail svg{width:18px;height:18px;fill:none;stroke:var(--champagne);stroke-width:1.6}
 @media (max-width:900px){ .me{grid-template-columns:1fr} .me-photo{max-width:440px} }
 @media (prefers-reduced-motion:reduce){ .me-rec::before{animation:none} }
+.me-text h3{margin-bottom:6px}
+.me-role{margin:0 0 20px!important;font-size:15px!important;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--champagne)!important}
+.me-hi{margin:0 0 12px!important;font-size:clamp(19px,1.6vw,23px)!important;font-weight:600;color:var(--bone)!important;letter-spacing:-.01em}

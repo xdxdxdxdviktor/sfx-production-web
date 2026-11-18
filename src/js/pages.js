@@ -249,8 +249,9 @@ ${refs}
         <figcaption><b>${COMPANY.person}</b><span>${t('about.role')}</span></figcaption>
       </figure>
       <div class="me-text">
-        <p class="kicker">${t('about.kicker')}</p>
-        <h3>${t('about.hi')}</h3>
+        <h3>${COMPANY.person}</h3>
+        <p class="me-role">${t('about.role')}</p>
+        <p class="me-hi">${t('about.hi')}</p>
         <p>${t('about.b1')}</p><p>${t('about.b2')}</p>
         <blockquote class="me-quote">${t('about.q')}</blockquote>
         <div class="facts">${[1,2,3].map(i=>`<div class="glass"><b>${t('about.f'+i+'t')}</b><span>${t('about.f'+i+'d')}</span></div>`).join('')}</div>
