@@ -54,7 +54,7 @@ export function cmsConfig({repo, branch, site}){
     media_folder:'src/assets/uploads',
     public_folder:'/assets/uploads',
     media_libraries:{all:{
-      max_file_size: 52428800,   // 50 MB; GitHub odmítá soubory nad 100 MB, delší videa patří na YouTube
+      max_file_size: 26214400,   // 25 MB na fotku (před převodem na WebP); videa se vkládají odkazem z YouTube
       transformations:{raster_image:{format:'webp', quality:85, width:2400, height:2400}}}},
     collections:[
       { name:'blog', label:'Blog', label_singular:'Článek', description:'Články a návody. Uložený článek se na webu objeví zhruba za 2 minuty.',
@@ -67,8 +67,7 @@ export function cmsConfig({repo, branch, site}){
           {name:'cat', label:'Hlavní služba', widget:'select', options:svcOptions},
           {name:'svcs', label:'Související služby', widget:'select', multiple:true, required:false, options:svcOptions},
           {name:'cover', label:'Úvodní fotka', widget:'image', required:false, hint:'Na šířku, ideálně 1600 px a víc.'},
-          {name:'youtube', label:'Video z YouTube (odkaz)', widget:'string', required:false},
-          {name:'video', label:'Nebo nahrát video (MP4, max. 50 MB)', widget:'file', required:false},
+          {name:'youtube', label:'Video z YouTube (odkaz)', widget:'string', required:false, hint:'Vložte odkaz z YouTube, např. https://youtu.be/… Video se přehraje přímo v článku.'},
           gallery('Galerie'),
           {name:'img', label:'Ilustrace', widget:'hidden', default:'edit'},
           {name:'slug', label:'Adresa článku', widget:'object', collapsed:true, required:false, hint:'Část adresy za /blog/. Když necháte prázdné, vytvoří se z nadpisu.', fields:[
@@ -87,8 +86,7 @@ export function cmsConfig({repo, branch, site}){
           {name:'id', widget:'hidden'}, {name:'tile', widget:'hidden'}, {name:'icon', widget:'hidden'}, {name:'theme', widget:'hidden'}, {name:'img', widget:'hidden'},
           {name:'order', label:'Pořadí na webu', widget:'number', value_type:'int', min:1, max:20},
           {name:'hero_image', label:'Hlavní fotka služby', widget:'image', required:false, hint:'Nahradí ilustraci v záhlaví stránky a v seznamu služeb. Na šířku, poměr 16:10.'},
-          {name:'hero_video', label:'Krátké video do záhlaví (MP4 bez zvuku, smyčka, max. 50 MB)', widget:'file', required:false},
-          {name:'youtube', label:'Ukázkové video z YouTube (odkaz)', widget:'string', required:false},
+          {name:'youtube', label:'Ukázkové video z YouTube (odkaz)', widget:'string', required:false, hint:'Zobrazí se v sekci Ukázky práce.'},
           gallery('Ukázky práce (galerie)'),
           {name:'slug', label:'Adresa stránky', widget:'object', collapsed:true, hint:'Změna adresy rozbije odkazy, které už znají lidé i Google. Měňte jen výjimečně.', fields:[
             {name:'cs', label:'Česky (za /sluzby/)', widget:'string'}, {name:'en', label:'Anglicky (za /en/services/)', widget:'string'}]},
@@ -101,8 +99,8 @@ export function cmsConfig({repo, branch, site}){
           {name:'photo', label:'Fotka (čtverec 1:1)', widget:'image', required:false},
           lang('cs', 'Česky', aboutLangFields), lang('en', 'Anglicky', aboutLangFields, true)]},
         { name:'home', label:'Úvodní stránka', file:'content/home.json', format:'json', fields:[
-          {name:'showreel_video', label:'Showreel (MP4, max. 50 MB)', widget:'file', required:false},
-          {name:'showreel_poster', label:'Náhledový obrázek showreelu', widget:'image', required:false},
+          {name:'showreel_youtube', label:'Showreel z YouTube (odkaz)', widget:'string', required:false, hint:'Po kliknutí na Přehrát se video otevře z YouTube. Prázdné = ukázkový sestřih.'},
+          {name:'showreel_poster', label:'Náhledový obrázek showreelu', widget:'image', required:false, hint:'Když je prázdné a je vyplněné YouTube, použije se náhled z YouTube.'},
           {name:'showreel_note', label:'Zobrazit poznámku pod showreelem', widget:'boolean', default:false},
           lang('cs', 'Česky', homeLangFields), lang('en', 'Anglicky', homeLangFields, true)]},
         { name:'settings', label:'Kontakty a údaje o firmě', file:'content/settings.json', format:'json', fields:[

@@ -66,12 +66,14 @@ if(isHome){
   $$('#svcList a')[0]?.classList.add('on');
 
   /* showreel */
-  const modal = $('#reelModal'), rv = $('#reelVid');
-  $('#reelOpen').addEventListener('click', ()=>{ modal.showModal ? modal.showModal() : modal.setAttribute('open',''); play(rv); });
-  const close = ()=>{ rv.pause(); modal.close ? modal.close() : modal.removeAttribute('open'); };
+  const modal = $('#reelModal'), rv = $('#reelVid'), yt = modal.dataset.reelYt, ybox = $('#reelYt');
+  const stop = () => { if(rv) rv.pause(); if(ybox) ybox.innerHTML = ''; };
+  $('#reelOpen').addEventListener('click', ()=>{ modal.showModal ? modal.showModal() : modal.setAttribute('open','');
+    if(yt) ybox.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(yt)}?autoplay=1&rel=0" title="Showreel" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`; else play(rv); });
+  const close = ()=>{ stop(); modal.close ? modal.close() : modal.removeAttribute('open'); };
   $('#reelClose').addEventListener('click', close);
   modal.addEventListener('click', e=>{ if(e.target===modal) close(); });
-  modal.addEventListener('close', ()=>rv.pause());
+  modal.addEventListener('close', stop);
 
   /* mobile floating CTA */
   const mcta = document.createElement('a'); mcta.className='mcta'; mcta.href='#poptavka'; mcta.textContent=t('hero.cta1'); document.body.appendChild(mcta);

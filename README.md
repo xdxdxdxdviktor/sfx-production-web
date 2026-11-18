@@ -6,14 +6,14 @@ Statický web v češtině a angličtině s administrací na adrese **/admin/**.
 
 Co se v ní dá dělat:
 
-- **Blog:** psát a mazat články, nahrávat úvodní fotku, galerii a video (MP4 do 50 MB nebo odkaz na YouTube). Text se formátuje jednoduše: `## Mezititulek`, `- odrážka`, `**tučně**`.
-- **Služby:** upravovat texty, techniku, časté dotazy a štítky a nahrát hlavní fotku, video do záhlaví, ukázkové video a galerii „Ukázky práce“.
+- **Blog:** psát a mazat články, nahrávat úvodní fotku a galerii a vložit video odkazem z YouTube. Text se formátuje jednoduše: `## Mezititulek`, `- odrážka`, `**tučně**`.
+- **Služby:** upravovat texty, techniku, časté dotazy a štítky a nahrát hlavní fotku a galerii „Ukázky práce“ s videem z YouTube.
 - **Stránky a nastavení:**
   - sekce „O mně“ (text a fotka),
-  - úvodní stránka (nadpis a showreel),
+  - úvodní stránka (nadpis a showreel z YouTube),
   - kontakty a údaje o firmě: IČO, adresa, telefon, profily na sítích a ověřovací kódy pro Google a Seznam.
 
-Nahrané fotky se samy převedou na WebP s maximální šířkou 2400 px. Článek, který má vyplněnou jen češtinu, se zobrazí jen na české verzi webu.
+Fotky se nahrávají do administrace a samy se převedou na WebP s maximální šířkou 2400 px. Videa se nenahrávají, vkládají se odkazem z YouTube. Článek, který má vyplněnou jen češtinu, se zobrazí jen na české verzi webu.
 
 ### Přihlášení
 
@@ -28,7 +28,7 @@ Bez GitHubu jde administrace používat i lokálně. V Chrome zvolte **Pracovat 
 | Co | Kde |
 | --- | --- |
 | Obsah (texty, články, nastavení) | `content/*.json`, upravuje je administrace |
-| Nahrané fotky a videa | `src/assets/uploads/` |
+| Nahrané fotky | `src/assets/uploads/` |
 | Nastavení administrace | `src/admin/cms-config.mjs` |
 | Doména, repozitář pro administraci, formulář | `src/js/config.js` |
 | Šablony stránek | `src/js/pages.js`, `src/js/ui.js` |

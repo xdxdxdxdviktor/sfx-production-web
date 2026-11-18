@@ -7,7 +7,7 @@ import { LEGAL } from './legal.js';
 import { ABOUT, HOME } from './site-content.js';
 import { ICON } from './icons.js';
 import { PATHS, svcPath, postPath } from './routes.js';
-import { ctx, esc, imgTag, srcTag, media, svcImgSrc, svcVidSrc, videoBlock, gallery, svcPreview, postCard, blogGrid, blogChips, flow, tiles, budgetBtns, summary, fmtDate, readMin } from './ui.js';
+import { ctx, esc, imgTag, srcTag, media, svcImgSrc, svcVidSrc, videoBlock, ytId, gallery, svcPreview, postCard, blogGrid, blogChips, flow, tiles, budgetBtns, summary, fmtDate, readMin } from './ui.js';
 
 export const VERSION = { css:'', js:'' };
 const abs = p => SITE + p;
@@ -165,7 +165,9 @@ export function homePage(lang){
     {'@type':'ItemList', name:t('m.sluzby'), itemListElement: SERVICES.map((s,i)=>({'@type':'ListItem', position:i+1, url:abs(svcPath(s,lang)), name:s[lang].t}))}];
   const posts = postsIn(lang).slice(0,4);
   const H = HOME[lang] || HOME.cs, A = ABOUT[lang] || ABOUT.cs;
-  const reelVideo = media(c, HOME.showreel_video || '/assets/video/showreel.mp4'), reelPoster = media(c, HOME.showreel_poster || '/assets/img/festival.webp');
+  const reelYt = ytId(HOME.showreel_youtube);
+  const reelVideo = c.asset('video/showreel.mp4');
+  const reelPoster = HOME.showreel_poster ? media(c, HOME.showreel_poster) : reelYt ? `https://i.ytimg.com/vi/${reelYt}/maxresdefault.jpg` : c.asset('img/festival.webp');
   const refs = SHOW_REFS() ? `
   <section class="sec" id="reference" data-sec>
     <div class="sec-head"><h2>${t('ref.h')}</h2><p>${t('ref.p')}${RUNTIME.showSamples?`<small class="sample-note">${t('sample.note')}</small>`:''}</p></div>
@@ -203,10 +205,10 @@ export function homePage(lang){
   <section class="sec reel-sec" id="showreel" data-sec>
     <div class="sec-head"><h2>${esc(H.reel_h)}</h2><p>${esc(H.reel_p)}</p></div>
     <button class="reel-card" id="reelOpen" type="button" aria-label="${t('reel.play')}">
-      <video class="reel-bg" id="reelBg" muted loop playsinline preload="none" poster="${reelPoster}" data-src="${reelVideo}"></video>
+      ${reelYt ? `<img class="reel-bg" src="${reelPoster}" alt="" loading="lazy" decoding="async">` : `<video class="reel-bg" id="reelBg" muted loop playsinline preload="none" poster="${reelPoster}" data-src="${reelVideo}"></video>`}
       <span class="reel-play">${ICON.play}</span><span class="reel-label">${t('reel.play')}</span>
     </button>
-    ${HOME.showreel_note && H.reel_note ? `<p class="note reel-note">${esc(H.reel_note)}</p>` : ''}
+    ${!reelYt && HOME.showreel_note && H.reel_note ? `<p class="note reel-note">${esc(H.reel_note)}</p>` : ''}
   </section>
 
   <section class="sec" id="sluzby" data-sec>
@@ -262,9 +264,9 @@ ${refs}
 ${partners}
   ${enquiry(c)}
 </main>
-<dialog class="reel-modal" id="reelModal" aria-label="Showreel">
+<dialog class="reel-modal" id="reelModal" aria-label="Showreel"${reelYt?` data-reel-yt="${reelYt}"`:''}>
   <button class="reel-x" id="reelClose" type="button" aria-label="${t('reel.close')}">${ICON.x}</button>
-  <video id="reelVid" controls playsinline preload="none" data-src="${reelVideo}" poster="${reelPoster}"></video>
+  ${reelYt ? `<div class="reel-yt" id="reelYt"></div>` : `<video id="reelVid" controls playsinline preload="none" data-src="${reelVideo}" poster="${reelPoster}"></video>`}
 </dialog>
 `;
   const tail = `<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
