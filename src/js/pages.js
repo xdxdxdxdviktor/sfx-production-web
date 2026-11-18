@@ -238,7 +238,7 @@ export function homePage(lang){
   </section>
 ${refs}
   <section class="sec" id="o-mne" data-sec>
-    <div class="sec-head"><h2>${t('about.h')}</h2><p>${t('about.p')}</p></div>
+    <div class="sec-head"><h2>${t('about.h')}</h2></div>
     <div class="me">
       <figure class="me-photo">
         <div class="me-frame">${ASSETS.portrait
