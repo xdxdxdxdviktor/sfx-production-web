@@ -87,6 +87,41 @@ export function cmsConfig({repo, branch, site}){
           lang('en', 'Anglicky (nepovinné, jinak se použije čeština)', opt([
             {name:'t', label:'Title', widget:'string'}, {name:'lead', label:'Lead', widget:'text'}, {name:'body', label:'Text', widget:'markdown'}]), true, false)]},
 
+      { name:'portfolio', label:'Ukázky práce', label_singular:'Ukázka', description:'Projekty v sekci Ukázky práce. Krátký náhled (smyčka bez zvuku, do 5 MB) a plakátek; celé video vložte odkazem z YouTube.',
+        folder:'content/portfolio', format:'json', extension:'json', create:true, delete:true,
+        identifier_field:'id', slug:'{{slug}}', summary:'{{cs.t}}', sortable_fields:['order'],
+        fields:[
+          {name:'id', label:'Identifikátor', widget:'string', hint:'Krátce bez diakritiky, např. byt-usti-2026.', pattern:['^[a-z0-9-]+$', 'Jen malá písmena, číslice a pomlčky']},
+          {name:'published', label:'Zobrazit na webu', widget:'boolean', default:true},
+          {name:'featured', label:'Ukázat na úvodní stránce', widget:'boolean', default:false},
+          {name:'order', label:'Pořadí', widget:'number', value_type:'int', min:1, max:200},
+          {name:'cat', label:'Kategorie', widget:'select', options:[{label:'Reality a dron', value:'reality'}, {label:'Reklama a firmy', value:'firmy'}, {label:'Eventy', value:'event'}, {label:'Sociální sítě', value:'social'}, {label:'Film', value:'film'}, {label:'3D a vizualizace', value:'3d'}]},
+          {name:'svcs', label:'Služby', widget:'select', multiple:true, options:svcOptions},
+          {name:'region', label:'Oblast', widget:'select', required:false, options:[{label:'Ústecký kraj', value:'ustecky-kraj'}, {label:'Liberecký kraj', value:'liberecky-kraj'}, {label:'Praha', value:'praha'}]},
+          {name:'vertical', label:'Video na výšku (9:16)', widget:'boolean', default:false},
+          {name:'place', label:'Místo', widget:'string', required:false},
+          {name:'client', label:'Klient (jen se svolením)', widget:'string', required:false},
+          {name:'poster', label:'Plakátek (obrázek)', widget:'image'},
+          {name:'preview', label:'Náhledová smyčka (MP4 bez zvuku, do 5 MB)', widget:'file', required:false, media_library:{config:{max_file_size:5242880}}},
+          {name:'youtube', label:'Celé video na YouTube (odkaz)', widget:'string', required:false},
+          lang('cs', 'Česky', [{name:'t', label:'Název', widget:'string'}, {name:'d', label:'Popis', widget:'text'}]),
+          lang('en', 'Anglicky', opt([{name:'t', label:'Title', widget:'string'}, {name:'d', label:'Description', widget:'text'}]), true, false)]},
+
+      { name:'references', label:'Reference', label_singular:'Reference', description:'Citáty klientů. Na webu se ukážou jen zapnuté reference se jménem nebo firmou. Zveřejňujte jen se svolením klienta.',
+        folder:'content/references', format:'json', extension:'json', create:true, delete:true,
+        identifier_field:'id', slug:'{{slug}}', summary:'{{name}} {{company}}', sortable_fields:['order'],
+        fields:[
+          {name:'id', label:'Identifikátor', widget:'string', pattern:['^[a-z0-9-]+$', 'Jen malá písmena, číslice a pomlčky']},
+          {name:'published', label:'Zobrazit na webu', widget:'boolean', default:false},
+          {name:'order', label:'Pořadí', widget:'number', value_type:'int', min:1, max:100},
+          {name:'name', label:'Jméno', widget:'string', required:false},
+          {name:'company', label:'Firma', widget:'string', required:false},
+          {name:'photo', label:'Fotka nebo logo', widget:'image', required:false},
+          {name:'link', label:'Web klienta', widget:'string', required:false},
+          {name:'project', label:'Související ukázka', widget:'relation', collection:'portfolio', value_field:'id', search_fields:['id','cs.t'], display_fields:['cs.t'], required:false},
+          lang('cs', 'Česky', [{name:'role', label:'Role (např. Realitní makléř)', widget:'string'}, {name:'quote', label:'Citát', widget:'text'}]),
+          lang('en', 'Anglicky', opt([{name:'role', label:'Role', widget:'string'}, {name:'quote', label:'Quote', widget:'text'}]), true, false)]},
+
       { name:'services', label:'Služby', label_singular:'Služba', description:'Texty, fotky, videa a galerie jednotlivých služeb.',
         folder:'content/services', format:'json', extension:'json', create:false, delete:false,
         identifier_field:'id', slug:'{{slug}}', summary:'{{cs.t}}', sortable_fields:['order'],
@@ -141,6 +176,9 @@ export function cmsConfig({repo, branch, site}){
             {name:'region', label:'Kraj', widget:'select', options:['Ústecký kraj','Liberecký kraj','Praha','Středočeský kraj']},
             {name:'note', label:'Poznámka (např. „jen po domluvě“)', widget:'string'}])},
           {...strList('areas', 'Oblasti působnosti (pro Google)', 'Oblast'), hint:'Např. Ústecký kraj, Liberecký kraj, Praha.'},
+          {name:'analytics', label:'Měření návštěvnosti (bez cookies)', widget:'object', collapsed:true, fields:opt([
+            {name:'provider', label:'Služba', widget:'select', options:[{label:'Plausible', value:'plausible'}, {label:'Umami', value:'umami'}, {label:'GoatCounter', value:'goatcounter'}, {label:'Cloudflare Web Analytics', value:'cloudflare'}]},
+            {name:'id', label:'ID / doména / token (podle služby)', widget:'string', hint:'Plausible: doména webu. Umami: Website ID. GoatCounter: kód (xxx z xxx.goatcounter.com). Cloudflare: token.'}])},
           {name:'verify', label:'Ověření vyhledávačů (kód z meta tagu)', widget:'object', collapsed:true, fields:opt([
             {name:'google', label:'Google Search Console', widget:'string'},
             {name:'bing', label:'Bing Webmaster', widget:'string'},

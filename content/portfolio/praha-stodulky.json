@@ -1,0 +1,26 @@
+{
+  "id": "praha-stodulky",
+  "order": 16,
+  "featured": false,
+  "published": true,
+  "cat": "reality",
+  "svcs": [
+    "video",
+    "dron"
+  ],
+  "vertical": false,
+  "place": "Praha 5 – Stodůlky",
+  "client": "",
+  "poster": "/assets/portfolio/praha-stodulky.jpg",
+  "preview": "/assets/portfolio/praha-stodulky.mp4",
+  "youtube": "",
+  "cs": {
+    "t": "Byt v Praze 5 – Stodůlkách",
+    "d": "Prodejní video bytu, letecké záběry sídliště a parku a mapa s metrem v docházkové vzdálenosti."
+  },
+  "en": {
+    "t": "Flat in Prague 5 – Stodůlky",
+    "d": "A sales video with aerials of the estate and park and a map showing the metro within walking distance."
+  },
+  "region": "praha"
+}

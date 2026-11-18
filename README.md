@@ -8,12 +8,14 @@ Co se v ní dá dělat:
 
 - **Blog:** psát a mazat články, nahrávat úvodní fotku a galerii a vložit video odkazem z YouTube. Text se formátuje jednoduše: `## Mezititulek`, `- odrážka`, `**tučně**`.
 - **Služby:** upravovat texty, techniku, časté dotazy a štítky a nahrát hlavní fotku a galerii „Ukázky práce“ s videem z YouTube.
+- **Ukázky práce:** projekty s krátkou náhledovou smyčkou, plakátkem a odkazem na celé video na YouTube. Lze je filtrovat podle kategorie a přehrávají se v prohlížeči na celou obrazovku. Náhledy z dlouhých videí vyrobí `tools/make-previews.py` (potřebuje ffmpeg).
+- **Reference:** citáty klientů. Na webu se ukážou až po zapnutí a doplnění jména nebo firmy. Zveřejňujte jen se svolením klienta.
 - **Kde působíme:** stránky pro Ústecký kraj, Liberecký kraj a Prahu (texty, města, časté dotazy, fotka). Slouží pro místní vyhledávání.
 - **Stránky a nastavení:**
   - O nás: tým, u každého člověka fotka, role, texty, e-mail a telefon,
   - úvodní stránka (nadpis a showreel z YouTube),
   - kontakty, fakturační údaje (IČO, DIČ, sídlo, plátce DPH) a provozovna. Adresa provozovny je důležitá pro Google mapy a místní výsledky.
-  - oblasti působnosti a ověřovací kódy pro Google a Seznam.
+  - oblasti působnosti, ověřovací kódy pro Google a Seznam a měření návštěvnosti bez cookies (Plausible, Umami, GoatCounter nebo Cloudflare).
 
 Fotky se nahrávají do administrace a samy se převedou na WebP s maximální šířkou 2400 px. Videa se nenahrávají, vkládají se odkazem z YouTube. Článek, který má vyplněnou jen češtinu, se zobrazí jen na české verzi webu.
 
@@ -63,3 +65,7 @@ Poptávky se odesílají přes FormSubmit na e-mail z nastavení. **Při první 
 ## Fotka v sekci „O mně“
 
 Fotka nahraná v administraci má přednost. Bez ní se použije `brand/jiri-hromadka.jpg`: čtvercová fotka se vezme celá, jiný formát se ořízne na 1:1 kolem obličeje.
+
+## Ochrana před spamem
+
+Formulář má skryté pole proti robotům a odmítne odeslání do 4 sekund od začátku vyplňování. Dál blokuje popis s víc než třemi odkazy a opakované odeslání do minuty a FormSubmit filtruje typická spamová slova. Když spam i tak začne chodit, jde doplnit Cloudflare Turnstile.

@@ -1,0 +1,27 @@
+{
+  "id": "kavarna-snidane",
+  "order": 7,
+  "featured": true,
+  "published": true,
+  "cat": "social",
+  "svcs": [
+    "video",
+    "foto",
+    "strih"
+  ],
+  "vertical": true,
+  "place": "",
+  "client": "",
+  "poster": "/assets/portfolio/kavarna-snidane.jpg",
+  "preview": "/assets/portfolio/kavarna-snidane.mp4",
+  "youtube": "",
+  "cs": {
+    "t": "Reel pro kavárnu: snídaně",
+    "d": "Krátké video na výšku s detaily jídla. Měkké světlo, pomalé záběry a rychlý rytmus pro sociální sítě."
+  },
+  "en": {
+    "t": "Café reel: breakfast",
+    "d": "A short vertical video with food close-ups. Soft light, slow shots and a quick rhythm for social media."
+  },
+  "region": ""
+}

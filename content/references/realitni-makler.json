@@ -1,0 +1,18 @@
+{
+  "id": "realitni-makler",
+  "order": 1,
+  "published": false,
+  "name": "",
+  "company": "",
+  "photo": "",
+  "link": "",
+  "project": "severni-terasa",
+  "cs": {
+    "role": "Realitní makléř",
+    "quote": "Videa s dronem nám pomáhají prodávat rychleji. Zájemci přijíždějí na prohlídku s tím, že už nemovitost znají."
+  },
+  "en": {
+    "role": "Real estate agent",
+    "quote": "Drone videos help us sell faster. Buyers come to viewings already knowing the property."
+  }
+}

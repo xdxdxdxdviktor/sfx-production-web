@@ -1,0 +1,26 @@
+{
+  "id": "ustek-dum",
+  "order": 9,
+  "featured": false,
+  "published": true,
+  "cat": "reality",
+  "svcs": [
+    "video",
+    "dron"
+  ],
+  "vertical": false,
+  "place": "Úštěk",
+  "client": "",
+  "poster": "/assets/portfolio/ustek-dum.jpg",
+  "preview": "/assets/portfolio/ustek-dum.mp4",
+  "youtube": "",
+  "cs": {
+    "t": "Rodinný dům v Úštěku",
+    "d": "Letecké záběry historického centra, zahrada 981 m² a mapa okolí s rybníkem a náměstím."
+  },
+  "en": {
+    "t": "Family house in Úštěk",
+    "d": "Aerials of the historic centre, a 981 m² garden and a map of the area with the pond and square."
+  },
+  "region": "ustecky-kraj"
+}

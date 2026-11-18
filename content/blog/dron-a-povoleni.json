@@ -1,0 +1,29 @@
+{
+  "id": "dron-a-povoleni",
+  "published": true,
+  "date": "2026-10-28",
+  "cat": "dron",
+  "svcs": [
+    "dron",
+    "video",
+    "foto"
+  ],
+  "cover": "/assets/portfolio/trebusin-chata.jpg",
+  "youtube": "",
+  "gallery": [],
+  "img": "edit",
+  "slug": {
+    "cs": "dron-pravidla-a-povoleni",
+    "en": "drone-rules-and-permits"
+  },
+  "cs": {
+    "t": "Dron a povolení: kde se smí létat v Ústeckém kraji a v Praze",
+    "lead": "Letecké záběry chce dnes skoro každý. Kde ale dron létat smí, kdy je potřeba povolení a co to znamená pro termín natáčení?",
+    "body": "Létání s drony upravují evropská pravidla EASA a v Česku na ně dohlíží Úřad pro civilní letectví. Pro vás jako zákazníka je důležité hlavně to, že se lety musí plánovat předem.\n\n## Řízený prostor u letišť\n\nV okolí letišť je řízený vzdušný prostor. V Praze to platí pro velkou část města, a proto let obvykle vyžaduje koordinaci nebo povolení. Počítejte s tím při plánování termínu.\n\n## Chráněná území\n\nNad národními parky, například Českým Švýcarskem, se létat zpravidla nesmí. V chráněných krajinných oblastech, jako je České středohoří, platí další omezení. Vždy předem ověříme, co je možné.\n\n## Lidé a akce\n\nNad shromážděním lidí se nelétá. U festivalů a závodů proto plánujeme trasy mimo diváky a domlouváme se s pořadatelem.\n\n## Jak to řešíme my\n\n- Lokalitu zkontrolujeme v mapě vzdušného prostoru\n- Zajistíme potřebná povolení a koordinaci\n- Za špatného počasí nelétáme a termín přesuneme bez poplatku\n\nPotřebujete letecké záběry? Napište nám lokalitu a termín, ověříme to za vás."
+  },
+  "en": {
+    "t": "Drones and permits: where you can fly in the Ústí Region and Prague",
+    "lead": "Almost everyone wants aerial shots now. But where can a drone fly, when is a permit needed and what does it mean for the shoot date?",
+    "body": "Drone flights are governed by EU EASA rules and overseen in Czechia by the Civil Aviation Authority. For you as a client the key point is that flights must be planned in advance.\n\n## Controlled airspace near airports\n\nAirports are surrounded by controlled airspace. In Prague this covers much of the city, so a flight usually needs coordination or a permit. Allow for it when planning the date.\n\n## Protected areas\n\nFlying over national parks such as Bohemian Switzerland is generally not allowed. Protected landscape areas like the Central Bohemian Uplands have further limits. We always check what is possible first.\n\n## People and events\n\nWe do not fly over crowds. At festivals and races we plan routes away from spectators and agree them with the organiser.\n\n## How we handle it\n\n- We check the location on the airspace map\n- We arrange the necessary permits and coordination\n- We do not fly in bad weather and rebook at no extra cost\n\nNeed aerial shots? Send us the location and date and we will check it for you."
+  }
+}

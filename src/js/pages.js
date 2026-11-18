@@ -1,13 +1,13 @@
 /* Full-page templates. Build-time only (Node). */
-import { SITE, COMPANY, INDEXABLE, VERIFY, RUNTIME, PARTNER_URLS, REGION_CODES } from './config.js';
+import { SITE, COMPANY, INDEXABLE, VERIFY, RUNTIME, PARTNER_URLS, REGION_CODES, ANALYTICS } from './config.js';
 import { I18N, WHY, REFS, PARTNERS } from './i18n.js';
 import { SERVICES, SVC_BY } from './services.js';
 import { postsIn } from './posts.js';
 import { LEGAL } from './legal.js';
-import { TEAM, HOME, REGIONS } from './site-content.js';
+import { TEAM, HOME, REGIONS, WORK, REFERENCES } from './site-content.js';
 import { ICON } from './icons.js';
 import { PATHS, svcPath, postPath, regionPath } from './routes.js';
-import { ctx, esc, imgTag, srcTag, media, svcImgSrc, svcVidSrc, videoBlock, ytId, gallery, svcPreview, postCard, blogGrid, blogChips, flow, tiles, budgetBtns, summary, fmtDate, readMin } from './ui.js';
+import { ctx, esc, imgTag, srcTag, media, svcImgSrc, svcVidSrc, videoBlock, ytId, gallery, svcPreview, workGrid, workChips, workCard, postCard, blogGrid, blogChips, flow, tiles, budgetBtns, summary, fmtDate, readMin } from './ui.js';
 
 export const VERSION = { css:'', js:'' };
 const abs = p => SITE + p;
@@ -15,7 +15,7 @@ const ogImg = (k, lang='cs') => abs('/assets/og/' + (lang==='en'?'en-':'') + k +
 const cityLabel = lang => '';
 const geoMeta = p => { const g = p.geo || (COMPANY.branch.city ? {code: REGION_CODES[COMPANY.branch.region] || 'CZ', place: COMPANY.branch.city} : {code: REGION_CODES[COMPANY.branch.region] || REGION_CODES[COMPANY.areas[0]] || ''});
   return g.code ? `<meta name="geo.region" content="${g.code}">${g.place?`<meta name="geo.placename" content="${esc(g.place)}">`:''}` : ''; };
-const SHOW_REFS = () => RUNTIME.showSamples || REFS.cs.some(r=>r.real);
+const SHOW_REFS = () => REFERENCES.length > 0;
 const SHOW_PARTNERS = () => RUNTIME.showSamples || PARTNER_URLS.some(Boolean);
 const strip = s => String(s).replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
 
@@ -50,6 +50,18 @@ const websiteLD = lang => ({'@type':'WebSite', '@id': SITE+'/#website', url: SIT
 const crumbLD = (items) => ({'@type':'BreadcrumbList', itemListElement: items.map(([n,u],i)=>({'@type':'ListItem', position:i+1, name:n, item:abs(u)}))});
 const pageLD = (p, type='WebPage') => ({'@type':type, '@id': abs(p.path)+'#webpage', url: abs(p.path), name: p.title, description: p.desc, inLanguage: p.lang==='cs'?'cs-CZ':'en', isPartOf:{'@id': SITE+'/#website'}, about:{'@id': SITE+'/#org'}, primaryImageOfPage: p.og ? {'@type':'ImageObject', url: ogImg(p.og, p.lang)} : undefined});
 const ld = graph => `<script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@graph':graph}).replace(/</g,'\\u003c')}</script>`;
+
+/* cookie-less analytics (nothing loads until it is set in the admin) */
+function analyticsTag(){
+  const id = esc(String(ANALYTICS.id||'').trim()); if(!id) return '';
+  switch(ANALYTICS.provider){
+    case 'plausible': return `<script defer data-domain="${id}" src="https://plausible.io/js/script.tagged-events.js"></script><script>window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)}</script>`;
+    case 'umami': return `<script defer src="https://cloud.umami.is/script.js" data-website-id="${id}"></script>`;
+    case 'goatcounter': return `<script data-goatcounter="https://${id}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>`;
+    case 'cloudflare': return `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"${id}"}'></script>`;
+    default: return '';
+  }
+}
 
 /* ================================================================ shell */
 function head(c, p){
@@ -91,6 +103,7 @@ ${VERIFY.google?`<meta name="google-site-verification" content="${VERIFY.google}
 <link rel="stylesheet" href="${c.asset('css/site.css')}?v=${VERSION.css}">
 ${p.preload||''}
 ${ld(p.ld)}
+${analyticsTag()}
 </head>`;
 }
 
@@ -100,6 +113,7 @@ function navBar(c, p){
   const link = (id, label, target, spy) => `<a href="${target}"${spy?` data-t="${spy}"`:''}>${label}</a>`;
   const items = [
     ['m.sluzby', home ? '#sluzby' : c.href(PATHS.services[c.lang]), 'sluzby'],
+    ['m.work', home ? '#ukazky' : c.href(PATHS.work[c.lang]), 'ukazky'],
     ['m.proces', home ? '#proces' : c.href(H)+'#proces', 'proces'],
     ['m.blog', home ? '#blog' : c.href(PATHS.blog[c.lang]), 'blog'],
     ['m.onas', home ? '#o-nas' : c.href(H)+'#o-nas', 'o-nas'],
@@ -142,7 +156,7 @@ function footer(c, p){
     <div class="foot-brand"><a href="${home?'#top':c.href(H)}" aria-label="${COMPANY.name}"><img src="${c.asset('img/logo.webp')}" alt="${COMPANY.name}" width="116" height="60" loading="lazy"></a><p>${c.t('ft.claim')}</p></div>
     <div><h2 class="fh">${c.t('ft.svc')}</h2><ul>${SERVICES.map(s=>`<li><a href="${c.href(svcPath(s,c.lang))}">${s[c.lang].t}</a></li>`).join('')}</ul></div>
     <div><h2 class="fh">${c.t('ft.web')}</h2><ul>
-      <li><a href="${c.href(PATHS.services[c.lang])}">${c.t('m.sluzby')}</a></li>
+      <li><a href="${c.href(PATHS.services[c.lang])}">${c.t('m.sluzby')}</a></li><li><a href="${c.href(PATHS.work[c.lang])}">${c.t('wk.h')}</a></li>
       <li><a href="${sec('proces')}">${c.t('m.proces')}</a></li><li><a href="${c.href(PATHS.blog[c.lang])}">${c.t('m.blog')}</a></li>
       <li><a href="${sec('o-nas')}">${c.t('m.onas')}</a></li><li><a href="${sec('poptavka')}">${c.t('m.poptavka')}</a></li></ul>
       <h2 class="fh fh2">${c.t('m.areas')}</h2><ul>${REGIONS.map(r=>`<li><a href="${c.href(regionPath(r,c.lang))}">${r[c.lang].t}</a></li>`).join('')}</ul></div>
@@ -189,9 +203,9 @@ export function homePage(lang){
   const reelPoster = HOME.showreel_poster ? media(c, HOME.showreel_poster) : reelYt ? `https://i.ytimg.com/vi/${reelYt}/maxresdefault.jpg` : c.asset('img/festival.webp');
   const refs = SHOW_REFS() ? `
   <section class="sec" id="reference" data-sec>
-    <div class="sec-head"><h2>${t('ref.h')}</h2><p>${t('ref.p')}${RUNTIME.showSamples?`<small class="sample-note">${t('sample.note')}</small>`:''}</p></div>
-    <div class="refs">${REFS[lang].filter(r=>r.real||RUNTIME.showSamples).map(r=>{ const sv=SVC_BY[r.s]; return `<figure class="ref glass"><blockquote>${r.q}</blockquote>
-      <figcaption><span class="av">${ICON[sv.icon]}</span><span><b>${r.real?r.n:r.r}</b><small>${r.real?r.r+', ':''}<a href="${c.href(svcPath(sv,lang))}">${sv[lang].t}</a></small></span></figcaption></figure>`; }).join('')}</div>
+    <div class="sec-head"><h2>${t('ref.h')}</h2><p>${t('ref.p')}</p></div>
+    <div class="refs">${REFERENCES.map(r=>{ const d=r[lang], w=WORK.find(x=>x.id===r.project); return `<figure class="ref glass"><blockquote>${esc(d.quote)}</blockquote>
+      <figcaption><span class="av">${r.photo?`<img src="${media(c,r.photo)}" alt="" loading="lazy">`:esc((r.name||r.company).split(/\s+/).map(x=>x[0]).join('').slice(0,2))}</span><span><b>${esc(r.name||r.company)}</b><small>${esc([d.role, r.name?r.company:''].filter(Boolean).join(', '))}${w?` · <a href="${c.href(PATHS.work[lang])}#ukazka-${w.id}">${esc(w[lang].t)}</a>`:''}</small></span></figcaption></figure>`; }).join('')}</div>
   </section>` : '';
   const partners = SHOW_PARTNERS() ? (()=>{ const P = PARTNERS[lang].map((x,i)=>{ const u=PARTNER_URLS[i]; return `<a class="plink" href="${u||'#partneri'}" ${u?'target="_blank" rel="noopener"':''}><span class="mk">P${i+1}</span><span><b>${x.n}</b><small>${x.t}</small></span></a>`; }).join('');
     return `<section class="sec" id="partneri" data-sec><div class="sec-head"><h2>${t('pt.h')}</h2><p>${t('pt.p')}</p></div><div class="marquee"><div class="track">${P}${P.replace(/<a /g,'<a tabindex="-1" aria-hidden="true" ')}</div></div></section>`; })() : '';
@@ -229,6 +243,12 @@ export function homePage(lang){
     </button>
     ${!reelYt && HOME.showreel_note && H.reel_note ? `<p class="note reel-note">${esc(H.reel_note)}</p>` : ''}
   </section>
+${WORK.length ? `
+  <section class="sec" id="ukazky" data-sec>
+    <div class="sec-head"><h2>${t('wk.h')}</h2><p>${t('wk.p')}</p></div>
+    ${workGrid(c, (WORK.filter(w=>w.featured).length ? WORK.filter(w=>w.featured) : WORK).slice(0,8))}
+    <p class="sec-more"><a class="btn glass" href="${c.href(PATHS.work[lang])}">${t('wk.all')} (${WORK.length}) ${ICON.arrow}</a></p>
+  </section>` : ''}
 
   <section class="sec" id="sluzby" data-sec>
     <div class="sec-head"><h2>${t('svc.h')}</h2><p>${t('svc.p')}</p></div>
@@ -415,7 +435,7 @@ export function servicePage(s, lang){
   ${s.id==='360'?`<section class="pg-sec mp"><h2>${t('mp.h')}</h2><p class="mp-p">${t('mp.p')}</p>
     <div class="mp-frame" id="mpFrame">${imgTag(c,'interior','')}<button class="btn primary" type="button" id="mpLoad">${t('mp.load')}</button><small>${t('mp.note')}</small></div></section>`:''}
 
-  ${s.gallery.length || s.youtube ? `<section class="pg-sec" id="ukazky"><h2>${t('pg.work')}</h2>${videoBlock(c, {youtube:s.youtube})}${gallery(c, s.gallery, d.t)}</section>` : ''}
+  ${(()=>{ const w = WORK.filter(x=>x.svcs.includes(s.id)).slice(0,6); return w.length || s.gallery.length || s.youtube ? `<section class="pg-sec" id="ukazky"><h2>${t('pg.work')}</h2>${w.length?workGrid(c, w, 'flat'):''}${videoBlock(c, {youtube:s.youtube})}${gallery(c, s.gallery, d.t)}${w.length?`<p class="sec-more"><a class="btn glass" href="${c.href(PATHS.work[lang])}">${t('wk.all')} ${ICON.arrow}</a></p>`:''}</section>` : ''; })()}
   <section class="pg-sec"><h2>${t('pg.how')}</h2>${flow(c)}</section>
   <section class="pg-sec" id="faq"><h2>${t('pg.faq')}</h2>${faqHTML(d.faq)}</section>
   ${related.length?`<section class="pg-sec"><h2>${t('pg.related')}</h2><div class="blog-grid flat more">${related.map(x=>postCard2(c,x)).join('')}</div></section>`:''}
@@ -499,6 +519,25 @@ export function postPage(x, lang){
 
 
 
+
+/* ================================================================ PORTFOLIO */
+export function workPage(lang){
+  const path = PATHS.work[lang], c = ctx(lang, path), t = c.t;
+  const p = {kind:'work', lang, path, alt:PATHS.work, og:'work', title:t('wk.title'), desc:t('wk.desc')};
+  const crumbsArr = [[PATHS.home[lang], t('pg.home')], [null, t('wk.h')]];
+  p.ld = [orgLD(lang), websiteLD(lang), {...pageLD(p,'CollectionPage'), mainEntity:{'@type':'ItemList', itemListElement:WORK.map((w,i)=>({'@type':'ListItem', position:i+1,
+      item:{'@type':'CreativeWork', name:w[lang].t, description:w[lang].d, image:abs(w.poster), url:abs(path)+'#ukazka-'+w.id, creator:{'@id':SITE+'/#org'}, ...(w.place?{locationCreated:{'@type':'Place', name:w.place}}:{})}}))}},
+    crumbLD(crumbsArr.map(([u,n])=>[n, u||path]))];
+  const main = `<main id="main" class="page">
+  ${crumbs(c, crumbsArr)}
+  <header class="pg-hero hub-hero"><div><p class="kicker">${COMPANY.name}</p><h1>${t('wk.h')}</h1></div><div><p class="lead">${t('wk.p')}</p></div></header>
+  ${workChips(c, WORK)}
+  <ul class="wk-grid wall" id="wkWall">${WORK.map(w=>workCard(c, w)).join('')}</ul>
+  <section class="cta-box glass"><div><h2>${t('pg.ctaH')}</h2><p>${t('pg.ctaP')}</p></div><a class="btn primary" href="${c.href(PATHS.home[lang])}#poptavka">${t('nav.cta')}</a></section>
+</main>`;
+  return doc(c, p, main);
+}
+
 /* ================================================================ TEAM + AREAS */
 const initials = n => String(n||'').split(/\s+/).map(w=>w[0]||'').join('').slice(0,2).toUpperCase();
 function person(c, m, i){
@@ -574,6 +613,7 @@ export function regionPage(r, lang){
   </header>
   <section class="pg-intro"><div class="pg-intro-t">${d.intro.map(x=>`<p>${x}</p>`).join('')}</div>
     <aside class="pg-card glass"><h2>${t('area.cities')}</h2><ul class="city-chips">${r.cities.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><p class="mp-p">${t('area.travel')}</p></aside></section>
+  ${(()=>{ const w = WORK.filter(x=>x.region===r.id).slice(0,6); return w.length ? `<section class="pg-sec"><h2>${t('wk.here')}</h2>${workGrid(c, w, 'flat')}</section>` : ''; })()}
   <section class="pg-sec" id="sluzby-v-regionu"><h2>${t('area.svc')}</h2>
     <ul class="hub-grid">${SERVICES.map(s=>{ const sd=s[lang]; return `<li><a class="hub-card glass" href="${c.href(svcPath(s,lang))}">
       <div class="hc-img">${srcTag(svcImgSrc(c, s), sd.t)}<span class="ico">${ICON[s.icon]}</span></div>

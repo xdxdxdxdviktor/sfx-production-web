@@ -1,0 +1,26 @@
+{
+  "id": "litomerice-dum",
+  "order": 11,
+  "featured": false,
+  "published": true,
+  "cat": "reality",
+  "svcs": [
+    "video",
+    "dron"
+  ],
+  "vertical": false,
+  "place": "Litoměřice",
+  "client": "",
+  "poster": "/assets/portfolio/litomerice-dum.jpg",
+  "preview": "/assets/portfolio/litomerice-dum.mp4",
+  "youtube": "",
+  "cs": {
+    "t": "Rodinný dům v Litoměřicích",
+    "d": "Velkorysý dům s bazénem. Letecké záběry čtvrti, interiér a důraz na lokalitu."
+  },
+  "en": {
+    "t": "Family house in Litoměřice",
+    "d": "A spacious house with a pool. Aerials of the neighbourhood, the interior and a focus on the location."
+  },
+  "region": "ustecky-kraj"
+}

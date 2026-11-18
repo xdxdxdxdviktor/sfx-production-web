@@ -1,0 +1,27 @@
+{
+  "id": "hlas-obcanu",
+  "order": 17,
+  "featured": false,
+  "published": true,
+  "cat": "firmy",
+  "svcs": [
+    "video",
+    "dron",
+    "strih"
+  ],
+  "vertical": false,
+  "place": "",
+  "client": "",
+  "poster": "/assets/portfolio/hlas-obcanu.jpg",
+  "preview": "/assets/portfolio/hlas-obcanu.mp4",
+  "youtube": "",
+  "cs": {
+    "t": "Volební video kandidáta",
+    "d": "Kampaňové video s kandidátem v terénu, letecké záběry obce a grafika s hlavními tématy."
+  },
+  "en": {
+    "t": "Election campaign video",
+    "d": "A campaign video with the candidate on location, aerials of the town and graphics with the key topics."
+  },
+  "region": ""
+}

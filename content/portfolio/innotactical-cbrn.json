@@ -1,0 +1,27 @@
+{
+  "id": "innotactical-cbrn",
+  "order": 2,
+  "featured": true,
+  "published": true,
+  "cat": "firmy",
+  "svcs": [
+    "video",
+    "dron",
+    "strih"
+  ],
+  "vertical": false,
+  "place": "",
+  "client": "Innotactical",
+  "poster": "/assets/portfolio/innotactical-cbrn.jpg",
+  "preview": "/assets/portfolio/innotactical-cbrn.mp4",
+  "youtube": "",
+  "cs": {
+    "t": "Firemní spot: ochrana před CBRN hrozbami",
+    "d": "Reklamní video pro výrobce detekční techniky. Hraná scéna v ochranných oblecích, letecké záběry a infografika, která vysvětluje, jak technika funguje."
+  },
+  "en": {
+    "t": "Corporate spot: CBRN protection",
+    "d": "Promo for a maker of detection equipment. A staged scene in protective suits, drone aerials and infographics explaining how the kit works."
+  },
+  "region": ""
+}

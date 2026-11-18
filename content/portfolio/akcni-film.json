@@ -1,0 +1,27 @@
+{
+  "id": "akcni-film",
+  "order": 1,
+  "featured": true,
+  "published": true,
+  "cat": "film",
+  "svcs": [
+    "film",
+    "video",
+    "strih"
+  ],
+  "vertical": false,
+  "place": "",
+  "client": "",
+  "poster": "/assets/portfolio/akcni-film.jpg",
+  "preview": "/assets/portfolio/akcni-film.mp4",
+  "youtube": "",
+  "cs": {
+    "t": "Akční film: taktický výcvik",
+    "d": "Kinematografické záběry zásahové jednotky v akci. Dynamická kamera, výbuchy kouře, záběry z vozidla a color grading v tmavém filmovém stylu."
+  },
+  "en": {
+    "t": "Action film: tactical training",
+    "d": "Cinematic footage of a tactical unit in action. Dynamic camera, smoke, in-car shots and a dark, filmic grade."
+  },
+  "region": ""
+}

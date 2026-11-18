@@ -1,0 +1,26 @@
+{
+  "id": "usti-byt",
+  "order": 10,
+  "featured": false,
+  "published": true,
+  "cat": "reality",
+  "svcs": [
+    "video",
+    "dron"
+  ],
+  "vertical": false,
+  "place": "Ústí nad Labem",
+  "client": "",
+  "poster": "/assets/portfolio/usti-byt.jpg",
+  "preview": "/assets/portfolio/usti-byt.mp4",
+  "youtube": "",
+  "cs": {
+    "t": "Byt v Ústí nad Labem",
+    "d": "Prodejní video bytu s leteckými záběry města, Labe a okolí a s přehledem služeb v docházkové vzdálenosti."
+  },
+  "en": {
+    "t": "Flat in Ústí nad Labem",
+    "d": "A sales video with aerials of the city, the Elbe and surroundings, plus the services within walking distance."
+  },
+  "region": "ustecky-kraj"
+}

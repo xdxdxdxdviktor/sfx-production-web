@@ -20,7 +20,7 @@ const { SITE, COMPANY, INDEXABLE, GITHUB, CUSTOM_DOMAIN } = await import('./src/
 const { I18N } = await import('./src/js/i18n.js');
 const { SERVICES } = await import('./src/js/services.js');
 const { POSTS } = await import('./src/js/posts.js');
-const { HOME, REGIONS } = await import('./src/js/site-content.js');
+const { HOME, REGIONS, WORK } = await import('./src/js/site-content.js');
 const { PATHS, LANGS, svcPath, postPath, regionPath } = await import('./src/js/routes.js');
 const P = await import('./src/js/pages.js');
 const { cmsConfig } = await import('./src/admin/cms-config.mjs');
@@ -38,7 +38,7 @@ fs.rmSync(OUT, {recursive:true, force:true});
 fs.mkdirSync(OUT, {recursive:true});
 
 /* 3) assets (built-in + uploaded through the admin console) */
-for(const d of ['fonts','img','video','uploads']) copyDir(path.join(SRC,'assets',d), path.join(OUT,'assets',d));
+for(const d of ['fonts','img','video','uploads','portfolio']) copyDir(path.join(SRC,'assets',d), path.join(OUT,'assets',d));
 
 /* portrait from brand/jiri-hromadka.* (if the admin console has no photo of its own):
    square photos are used whole, others are cropped to 1:1 around the face */
@@ -49,6 +49,21 @@ if(portraitSrc){
   const sz = Math.abs(W-H) <= 4 ? Math.min(W,H) : Math.min(W, H, Math.round((W < H ? W : H) * PORTRAIT.size));
   const left = Math.max(0, Math.min(W-sz, Math.round(W*PORTRAIT.x - sz/2))), top = Math.max(0, Math.min(H-sz, Math.round(H*PORTRAIT.y - sz/2)));
   await img.extract({left, top, width:sz, height:sz}).resize(900, 900).jpeg({quality:84, mozjpeg:true}).toFile(path.join(OUT,'assets/img/jiri-hromadka.jpg'));
+}
+
+/* responsive copies (800 px wide) of photos – used in srcset so phones download less */
+const RS_SKIP = /(logo|icon|favicon|camera-poster|intro-poster|jiri-hromadka|-800\.)/;
+const rsCache = path.join(ROOT, '.og-cache', 'rs'); fs.mkdirSync(rsCache, {recursive:true});
+let rsMade = 0;
+for(const d of ['img','uploads','portfolio']){
+  const dir = path.join(OUT,'assets',d); if(!fs.existsSync(dir)) continue;
+  for(const f of fs.readdirSync(dir)){
+    if(!/\.(webp|jpe?g)$/i.test(f) || RS_SKIP.test(f)) continue;
+    const src = path.join(dir,f), dst = path.join(dir, f.replace(/(\.\w+)$/,'-800$1'));
+    const key = path.join(rsCache, d + '-' + hash(fs.readFileSync(src)) + '-' + f);
+    if(!fs.existsSync(key)){ const img = sharp(src).resize({width:800, withoutEnlargement:true}); await (/webp$/i.test(f) ? img.webp({quality:78}) : img.jpeg({quality:80, mozjpeg:true})).toFile(key); rsMade++; }
+    fs.copyFileSync(key, dst);
+  }
 }
 
 const css = ['base.css','site.css'].map(f=>fs.readFileSync(path.join(SRC,'css',f),'utf8')).join('\n');
@@ -65,6 +80,7 @@ for(const lang of LANGS){
   page(PATHS.blog[lang], P.blogIndex(lang));
   for(const s of SERVICES) page(svcPath(s,lang), P.servicePage(s, lang));
   page(PATHS.areas[lang], P.areasPage(lang));
+  page(PATHS.work[lang], P.workPage(lang));
   for(const r of REGIONS) page(regionPath(r,lang), P.regionPage(r, lang));
   for(const x of POSTS.filter(p=>p.langs.includes(lang))) page(postPath(x,lang), P.postPage(x, lang));
   for(const k of ['legal','privacy','cookies']) page(PATHS[k][lang], P.legalPage(k, lang));
@@ -92,7 +108,7 @@ write('admin/config.yml', '# Generated from src/admin/cms-config.mjs (YAML is a 
 /* 6) sitemap, robots, manifest, llms.txt */
 const urls = [{loc:PATHS.home, prio:'1.0', freq:'weekly'}, {loc:PATHS.services, prio:'0.9', freq:'monthly'}];
 for(const s of SERVICES) urls.push({loc:{cs:svcPath(s,'cs'), en:svcPath(s,'en')}, prio:'0.9', freq:'monthly'});
-urls.push({loc:PATHS.areas, prio:'0.8', freq:'monthly'});
+urls.push({loc:PATHS.areas, prio:'0.8', freq:'monthly'}, {loc:PATHS.work, prio:'0.9', freq:'weekly'});
 for(const r of REGIONS) urls.push({loc:{cs:regionPath(r,'cs'), en:regionPath(r,'en')}, prio:'0.8', freq:'monthly'});
 urls.push({loc:PATHS.blog, prio:'0.7', freq:'weekly', lastmod:POSTS[0]?.date});
 for(const x of POSTS) urls.push({loc:Object.fromEntries(x.langs.map(l=>[l, postPath(x,l)])), prio:'0.6', freq:'yearly', lastmod:x.date});
@@ -136,6 +152,7 @@ for(const lang of LANGS){
   const T = I18N[lang], H = HOME[lang] || HOME.cs, pre = lang==='en' ? 'en-' : '';
   ogJobs.push({file:pre+'home', img:path.join(OUT,'assets/img/camera-poster.webp'), kicker:H.kicker, title:H.h1.replace(/\n/g,' '), sub:H.sub});
   ogJobs.push({file:pre+'blog', img:path.join(OUT,'assets/img/edit.webp'), kicker:COMPANY.name, title:T['blog.h'], sub:T['bi.lead']});
+  if(WORK.length) ogJobs.push({file:pre+'work', img:local(WORK[0].poster) || path.join(OUT,'assets/img/festival.webp'), kicker:COMPANY.name, title:T['wk.h'], sub:WORK.slice(0,4).map(w=>w[lang].t).join(' · ')});
   for(const s of SERVICES) ogJobs.push({file:pre+s.id, img:imgFile(s.hero, s.img), kicker:s[lang].t, title:s[lang].h1, sub:s[lang].s});
   for(const r of REGIONS) ogJobs.push({file:pre+'region-'+r.id, img:imgFile(r.hero, r.img), kicker:T['m.areas'], title:r[lang].h1, sub:r.cities.slice(0,5).join(' · ')});
   for(const x of POSTS.filter(p=>p.langs.includes(lang))) ogJobs.push({file:pre+'post-'+x.id, img:imgFile(x.cover, x.img), kicker:T['m.blog'], title:x[lang].t, sub:x[lang].lead});
@@ -183,4 +200,5 @@ ${CUSTOM_DOMAIN ? `<div class="d">${SITE.replace(/^https?:\/\/(www\.)?/,'')}</di
 }
 
 const count = d => fs.readdirSync(d,{withFileTypes:true}).reduce((n,e)=>n+(e.isDirectory()?count(path.join(d,e.name)):(e.name==='index.html'||e.name==='404.html'?1:0)),0);
+console.log(`responsive images: ${rsMade} new`);
 console.log(`built ${count(OUT)} pages → ${path.relative(ROOT,OUT)}/  (${gen.services} services, ${gen.posts} posts; og ${ogJobs.length-ogMissing}/${ogJobs.length}${ogMade?`, ${ogMade} new`:''}${ogMissing?`, ${ogMissing} missing: no Chrome`:''})`);

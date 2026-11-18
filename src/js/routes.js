@@ -6,6 +6,7 @@ export const PATHS = {
   services: {cs:'/sluzby/',                  en:'/en/services/'},
   blog:     {cs:'/blog/',                    en:'/en/blog/'},
   areas:    {cs:'/kde-pusobime/',            en:'/en/where-we-work/'},
+  work:     {cs:'/ukazky/',                  en:'/en/our-work/'},
   legal:    {cs:'/pravni-informace/',        en:'/en/legal/'},
   privacy:  {cs:'/ochrana-osobnich-udaju/',  en:'/en/privacy/'},
   cookies:  {cs:'/cookies/',                 en:'/en/cookies/'},

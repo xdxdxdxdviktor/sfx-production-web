@@ -1,0 +1,28 @@
+{
+  "id": "treninkovy-areal-3d",
+  "order": 6,
+  "featured": true,
+  "published": true,
+  "cat": "3d",
+  "svcs": [
+    "3d",
+    "vizualizace",
+    "video",
+    "dron"
+  ],
+  "vertical": false,
+  "place": "",
+  "client": "",
+  "poster": "/assets/portfolio/treninkovy-areal-3d.jpg",
+  "preview": "/assets/portfolio/treninkovy-areal-3d.mp4",
+  "youtube": "",
+  "cs": {
+    "t": "Tréninkový areál ve 3D",
+    "d": "Kombinace 3D vizualizace a reálných záběrů. Animovaný model areálu představuje jednotlivé objekty, natočené scény ukazují, jak se v nich trénuje."
+  },
+  "en": {
+    "t": "Training area in 3D",
+    "d": "3D visualisation combined with real footage. An animated model introduces each building, filmed scenes show the training inside."
+  },
+  "region": ""
+}

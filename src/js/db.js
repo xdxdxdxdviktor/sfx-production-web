@@ -7,6 +7,7 @@ async function sendByEmail(rec){
   const body = {
     _subject: `${L?'Poptávka':'Enquiry'} ${rec.ref_code} – ${rec.services_label} – ${rec.name}`,
     _template: 'table', _captcha: 'false', _honey: '',
+    _blacklist: 'viagra, casino, crypto, bitcoin, forex, backlinks, seo services, loan offer, porn',
     [L?'Číslo poptávky':'Enquiry no.']: rec.ref_code,
     [L?'Jméno':'Name']: rec.name,
     [L?'Firma':'Company']: rec.company || '—',

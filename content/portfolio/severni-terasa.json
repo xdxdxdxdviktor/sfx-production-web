@@ -1,0 +1,27 @@
+{
+  "id": "severni-terasa",
+  "order": 4,
+  "featured": true,
+  "published": true,
+  "cat": "reality",
+  "svcs": [
+    "video",
+    "dron",
+    "foto"
+  ],
+  "vertical": false,
+  "place": "Ústí nad Labem",
+  "client": "",
+  "poster": "/assets/portfolio/severni-terasa.jpg",
+  "preview": "/assets/portfolio/severni-terasa.mp4",
+  "youtube": "",
+  "cs": {
+    "t": "Byt na Severní Terase",
+    "d": "Video k prodeji bytu v Ústí nad Labem. Letecké záběry sídliště a okolí, interiér a grafika s občanskou vybaveností v okolí."
+  },
+  "en": {
+    "t": "Flat on Severní Terasa",
+    "d": "A sales video for a flat in Ústí nad Labem. Aerials of the estate and surroundings, the interior and graphics showing local amenities."
+  },
+  "region": "ustecky-kraj"
+}

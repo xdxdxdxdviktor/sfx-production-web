@@ -1,0 +1,27 @@
+{
+  "id": "zavodni-okruh",
+  "order": 5,
+  "featured": true,
+  "published": true,
+  "cat": "event",
+  "svcs": [
+    "video",
+    "dron",
+    "strih"
+  ],
+  "vertical": false,
+  "place": "",
+  "client": "",
+  "poster": "/assets/portfolio/zavodni-okruh.jpg",
+  "preview": "/assets/portfolio/zavodni-okruh.mp4",
+  "youtube": "",
+  "cs": {
+    "t": "Závodní víkend na okruhu",
+    "d": "Aftermovie z motoristické akce. Letecké záběry tratě, pit lane, noční jízdy a rychlý střih do rytmu hudby."
+  },
+  "en": {
+    "t": "Race weekend at the track",
+    "d": "An aftermovie from a motorsport event. Aerials of the circuit, the pit lane, night laps and a fast cut to the music."
+  },
+  "region": ""
+}

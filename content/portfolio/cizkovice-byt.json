@@ -1,0 +1,26 @@
+{
+  "id": "cizkovice-byt",
+  "order": 13,
+  "featured": false,
+  "published": true,
+  "cat": "reality",
+  "svcs": [
+    "video",
+    "dron"
+  ],
+  "vertical": false,
+  "place": "Čížkovice",
+  "client": "",
+  "poster": "/assets/portfolio/cizkovice-byt.jpg",
+  "preview": "/assets/portfolio/cizkovice-byt.mp4",
+  "youtube": "",
+  "cs": {
+    "t": "Byt po rekonstrukci v Čížkovicích",
+    "d": "Interiér po kompletní rekonstrukci a letecké záběry obce pod Českým středohořím."
+  },
+  "en": {
+    "t": "Renovated flat in Čížkovice",
+    "d": "A fully renovated interior and aerials of the village below the Central Bohemian Uplands."
+  },
+  "region": "ustecky-kraj"
+}

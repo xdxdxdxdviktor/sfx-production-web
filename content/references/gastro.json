@@ -1,0 +1,18 @@
+{
+  "id": "gastro",
+  "order": 3,
+  "published": false,
+  "name": "",
+  "company": "",
+  "photo": "",
+  "link": "",
+  "project": "bar-drinky",
+  "cs": {
+    "role": "Majitel podniku",
+    "quote": "Reely na Instagram vypadají jako z velké agentury. Lidé se po nich ptají, kdy mohou přijít."
+  },
+  "en": {
+    "role": "Venue owner",
+    "quote": "The Instagram reels look like they came from a big agency. People ask when they can come."
+  }
+}

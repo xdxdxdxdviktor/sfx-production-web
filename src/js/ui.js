@@ -16,8 +16,11 @@ export function ctx(lang, path){
 }
 
 export const svcT = (id, lang) => SVC_BY[id][lang];
-export const imgTag = (c, key, alt='', cls='', eager=false) =>
-  `<img${cls?` class="${cls}"`:''} src="${c.asset('img/'+key+'.webp')}" alt="${esc(alt)}" width="1200" height="750"${eager?' fetchpriority="high"':' loading="lazy"'} decoding="async">`;
+/* responsive images: the build makes a 800 px wide "-800" copy of every photo in img/, uploads/ and portfolio/ */
+export const hasSmall = src => /assets\/(img|uploads|portfolio)\//.test(src) && /\.(webp|jpe?g)$/i.test(src) && !/(logo|icon|favicon|camera-poster|intro-poster|jiri-hromadka)/.test(src);
+export const rs = (src, sizes='(max-width: 820px) 100vw, 50vw') => hasSmall(src) ? ` srcset="${src.replace(/(\.\w+)$/,'-800$1')} 800w, ${src} 1600w" sizes="${sizes}"` : '';
+export const imgTag = (c, key, alt='', cls='', eager=false) => { const src = c.asset('img/'+key+'.webp');
+  return `<img${cls?` class="${cls}"`:''} src="${src}"${rs(src)} alt="${esc(alt)}" width="1200" height="750"${eager?' fetchpriority="high"':' loading="lazy"'} decoding="async">`; };
 
 export const fmtDate = (iso, lang) => { try{ return new Date(iso+'T12:00:00').toLocaleDateString(lang==='cs'?'cs-CZ':'en-GB', {day:'numeric', month: lang==='cs'?'long':'short', year:'numeric'}); }catch(e){ return iso; } };
 export const readMin = p => Math.max(2, Math.round((p.cs.words || 300) / 180));
@@ -26,8 +29,8 @@ export const readMin = p => Math.max(2, Math.round((p.cs.words || 300) / 180));
 export const media = (c, p) => /^(https?:|data:)/.test(p) ? p : c.href(p);
 export const svcImgSrc = (c, s) => s.hero ? media(c, s.hero) : c.asset('img/' + s.img + '.webp');
 export const svcVidSrc = (c, s) => s.video ? media(c, s.video) : (s.hero ? '' : c.asset('video/' + s.img + '.mp4'));
-export const srcTag = (src, alt='', cls='', eager=false) =>
-  `<img${cls?` class="${cls}"`:''} src="${src}" alt="${esc(alt)}" width="1200" height="750"${eager?' fetchpriority="high"':' loading="lazy"'} decoding="async">`;
+export const srcTag = (src, alt='', cls='', eager=false, sizes) =>
+  `<img${cls?` class="${cls}"`:''} src="${src}"${rs(src, sizes)} alt="${esc(alt)}" width="1200" height="750"${eager?' fetchpriority="high"':' loading="lazy"'} decoding="async">`;
 export const ytId = u => { const m = String(u||'').match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/); return m ? m[1] : (/^[\w-]{11}$/.test(u||'') ? u : ''); };
 /* video block: uploaded mp4 or click-to-load YouTube */
 export function videoBlock(c, {video, youtube, poster}){
@@ -38,7 +41,8 @@ export function videoBlock(c, {video, youtube, poster}){
 }
 export function gallery(c, items, alt=''){
   if(!items || !items.length) return '';
-  return `<div class="pgal">${items.map((g,i)=>`<a class="pgal-i" href="${media(c, g.src)}" target="_blank" rel="noopener"><img src="${media(c, g.src)}" alt="${esc(g.alt || alt + ' ' + (i+1))}" loading="lazy" decoding="async"></a>`).join('')}</div>`;
+  const grp = 'g' + Math.abs([...alt].reduce((h,ch)=>h*31+ch.charCodeAt(0)|0, 7));
+  return `<div class="pgal">${items.map((g,i)=>{ const src = media(c, g.src), a = esc(g.alt || alt + ' ' + (i+1)); return `<a class="pgal-i" href="${src}" data-lb="${grp}" data-type="image" data-src="${src}" data-title="${a}"><img src="${src}"${rs(src,'(max-width: 820px) 50vw, 25vw')} alt="${a}" loading="lazy" decoding="async"></a>`; }).join('')}</div>`;
 }
 
 /* ---------- home: services ---------- */
@@ -70,6 +74,27 @@ export function blogChips(c, posts, filter='all'){
   return cats.map(k=>`<button type="button" class="chip" data-f="${k}" aria-pressed="${k===filter}">${k==='all'?c.t('blog.all'):svcT(k,c.lang).t}</button>`).join('');
 }
 
+/* ---------- portfolio (Ukázky práce) ---------- */
+export const WORK_CATS = ['reality','firmy','event','social','film','3d'];
+export function workCard(c, w, cls=''){
+  const d = w[c.lang] || w.cs, poster = media(c, w.poster), prev = w.preview ? media(c, w.preview) : '';
+  const cat = c.t('wk.cat')[w.cat] || w.cat, svc = SVC_BY[w.svcs[0]];
+  return `<li class="wk${w.vertical?' v':''}${cls?' '+cls:''}" data-cat="${w.cat}" id="ukazka-${w.id}">
+    <button type="button" class="wk-btn" data-lb="work" data-type="${prev?'video':'image'}" data-src="${prev||poster}" data-poster="${poster}" data-title="${esc(d.t)}" data-desc="${esc(d.d)}" data-meta="${esc([cat, w.place, w.client].filter(Boolean).join(' · '))}"${ytId(w.youtube)?` data-yt="${ytId(w.youtube)}"`:''}${svc?` data-svc="${c.href(svcPath(svc,c.lang))}" data-pick="${svc.tile}"`:''} aria-label="${esc(d.t)} – ${c.t('wk.open')}">
+      <span class="wk-media"><img src="${poster}"${rs(poster, w.vertical ? '(max-width: 820px) 50vw, 20vw' : '(max-width: 820px) 100vw, 40vw')} alt="${esc(d.t)}" width="${w.vertical?900:1600}" height="${w.vertical?1600:900}" loading="lazy" decoding="async">${prev?`<video muted loop playsinline preload="none" data-src="${prev}" aria-hidden="true" tabindex="-1"></video>`:''}</span>
+      <span class="wk-hud" aria-hidden="true"><i class="rec">REC</i><i>${w.vertical?'9:16':'4K'}</i></span>
+      <span class="wk-play" aria-hidden="true">${ICON.play}</span>
+      <span class="wk-cap"><small>${esc([cat, w.place].filter(Boolean).join(' · '))}</small><b>${esc(d.t)}</b></span>
+    </button></li>`;
+}
+export function workGrid(c, list, layout='bento'){
+  return `<ul class="wk-grid ${layout}">${list.map((w,i)=>workCard(c, w, layout==='bento' && i===0 ? 'wk-hero' : '')).join('')}</ul>`;
+}
+export function workChips(c, list){
+  const cats = WORK_CATS.filter(k=>list.some(w=>w.cat===k));
+  return `<div class="chips wk-chips" role="group" aria-label="${c.t('wk.filter')}"><button type="button" class="chip" data-wf="all" aria-pressed="true">${c.t('blog.all')} <em>${list.length}</em></button>${cats.map(k=>`<button type="button" class="chip" data-wf="${k}" aria-pressed="false">${c.t('wk.cat')[k]} <em>${list.filter(w=>w.cat===k).length}</em></button>`).join('')}</div>`;
+}
+
 /* ---------- process ---------- */
 export const flow = c => `<ol class="flow">${[1,2,3,4].map(i=>`<li><span class="node">${i}</span><div class="card glass"><h3>${c.t('p'+i+'.t')}</h3><p>${c.t('p'+i+'.d')}</p><div class="out"><b>${c.t('proc.out')}</b>${c.t('p'+i+'.o')}</div></div></li>`).join('')}</ol>`;
 
@@ -88,7 +113,7 @@ export const budgetBtns = (c, b) => c.t('budgets').map((x,i)=>`<button type="but
 /* ---------- enquiry summary: clapperboard ---------- */
 export function summary(c, s){
   const TL = c.t('tiles');
-  const row = (k,v,g)=>`<div class="srow${v?'':' empty'}"><dt>${k}</dt><dd>${v||'—'}</dd>${v&&g?`<button type="button" data-go="${g}">${c.t('f.edit')}</button>`:''}</div>`;
+  const row = (k,v,g)=>`<div class="srow${v?'':' empty'}"><dt>${k}</dt><dd><span>${v||'—'}</span>${v&&g?`<button type="button" data-go="${g}">${c.t('f.edit')}</button>`:''}</dd></div>`;
   return `<div class="clap" aria-hidden="true"><i></i></div>
     <div class="sum-head" role="button" tabindex="0" aria-expanded="${!!s.open}"><h3>${c.t('sum.h')}${s.sel.length?` <em>(${s.sel.length})</em>`:''}</h3><i class="sum-caret"></i></div>
     <div class="slate"><div><span>${c.t('sum.prod')}</span><b>SFX production</b></div><div><span>${c.t('sum.scene')}</span><b>${s.sel.length?String(s.sel.length).padStart(2,'0'):'—'}</b></div><div class="wide"><span>${c.t('sum.dir')}</span><b>${esc(s.who)||'—'}</b></div></div>

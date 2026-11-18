@@ -1,0 +1,26 @@
+{
+  "id": "roudnice-pozemek",
+  "order": 14,
+  "featured": false,
+  "published": true,
+  "cat": "reality",
+  "svcs": [
+    "video",
+    "dron"
+  ],
+  "vertical": false,
+  "place": "Roudnice nad Labem",
+  "client": "",
+  "poster": "/assets/portfolio/roudnice-pozemek.jpg",
+  "preview": "/assets/portfolio/roudnice-pozemek.mp4",
+  "youtube": "",
+  "cs": {
+    "t": "Pozemek v Roudnici nad Labem",
+    "d": "Pozemek s hotovou základovou deskou. Letecké záběry, vizualizace domu a mapa dojezdu do Prahy."
+  },
+  "en": {
+    "t": "Building plot in Roudnice nad Labem",
+    "d": "A plot with a finished foundation slab. Aerials, a house visualisation and a map of the commute to Prague."
+  },
+  "region": "ustecky-kraj"
+}

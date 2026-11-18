@@ -1,5 +1,6 @@
 /* Legal pages (rendered at build time). */
-import { COMPANY, RUNTIME } from './config.js';
+import { COMPANY, RUNTIME, ANALYTICS } from './config.js';
+const AN = {plausible:'Plausible Analytics', umami:'Umami', goatcounter:'GoatCounter', cloudflare:'Cloudflare Web Analytics'};
 
 const todo = l => `<i>${l==='cs'?'doplníme':'to be added'}</i>`;
 const mail = () => `<a href="mailto:${COMPANY.email}">${COMPANY.email}</a>`;
@@ -64,12 +65,12 @@ export const LEGAL = {
    <p>Jen technicky nezbytné informace: rozpracovanou poptávku, abyste o ni nepřišli při obnovení stránky. Tato data zůstávají ve vašem zařízení a odešlou se, jen když poptávku sami odešlete.</p>
    <h2>Jak je smazat</h2>
    <p>Kdykoli v nastavení prohlížeče vymazáním dat webu.</p>
-   <p>Pokud v budoucnu přidáme měření návštěvnosti, požádáme vás předem o souhlas.</p>`},
+   ${ANALYTICS.id && AN[ANALYTICS.provider] ? `<h2>Měření návštěvnosti</h2><p>Návštěvnost měříme nástrojem ${AN[ANALYTICS.provider]}, který nepoužívá cookies ani neukládá nic do vašeho zařízení. Sbíráme jen anonymní souhrnné údaje (počet návštěv, zobrazené stránky, odkud návštěva přišla), ze kterých nejde zjistit, kdo jste.</p>` : '<p>Pokud v budoucnu přidáme měření návštěvnosti, bude bez cookies, nebo vás předem požádáme o souhlas.</p>'}`},
   en:{t:'Cookie policy', d:'This website uses no advertising or analytics cookies.', body:()=>`
    <p>This website uses no advertising or analytics cookies.</p>
    <h2>What we store in your browser</h2>
    <p>Only what’s technically necessary: an unfinished enquiry, so it isn’t lost if you reload. This stays on your device and is sent only when you submit the enquiry yourself.</p>
    <h2>How to delete it</h2>
    <p>Any time, by clearing site data in your browser settings.</p>
-   <p>If we add visitor analytics in the future, we will ask for your consent first.</p>`}}
+   ${ANALYTICS.id && AN[ANALYTICS.provider] ? `<h2>Visitor analytics</h2><p>We measure visits with ${AN[ANALYTICS.provider]}, which uses no cookies and stores nothing on your device. We collect only anonymous aggregate data (number of visits, pages viewed, referrer) that cannot identify you.</p>` : '<p>If we add visitor analytics in the future, it will be cookie-less, or we will ask for your consent first.</p>'}`}}
 };

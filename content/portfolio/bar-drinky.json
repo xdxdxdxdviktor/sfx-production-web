@@ -1,0 +1,26 @@
+{
+  "id": "bar-drinky",
+  "order": 3,
+  "featured": true,
+  "published": true,
+  "cat": "social",
+  "svcs": [
+    "video",
+    "strih"
+  ],
+  "vertical": true,
+  "place": "",
+  "client": "",
+  "poster": "/assets/portfolio/bar-drinky.jpg",
+  "preview": "/assets/portfolio/bar-drinky.mp4",
+  "youtube": "",
+  "cs": {
+    "t": "Reel pro bar: večerní drinky",
+    "d": "Video na výšku pro Instagram a TikTok. Teplé světlo, detaily drinků a atmosféra večera, která láká přijít."
+  },
+  "en": {
+    "t": "Bar reel: evening drinks",
+    "d": "A vertical video for Instagram and TikTok. Warm light, drink close-ups and an evening mood that makes people want to come."
+  },
+  "region": ""
+}

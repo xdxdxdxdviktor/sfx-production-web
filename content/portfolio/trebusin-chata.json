@@ -1,0 +1,26 @@
+{
+  "id": "trebusin-chata",
+  "order": 8,
+  "featured": true,
+  "published": true,
+  "cat": "reality",
+  "svcs": [
+    "video",
+    "dron"
+  ],
+  "vertical": false,
+  "place": "Třebušín",
+  "client": "",
+  "poster": "/assets/portfolio/trebusin-chata.jpg",
+  "preview": "/assets/portfolio/trebusin-chata.mp4",
+  "youtube": "",
+  "cs": {
+    "t": "Chata v Třebušíně",
+    "d": "Video k prodeji chaty v Českém středohoří. Letecké záběry krajiny a rybníka, interiér a průvodce, který provede nemovitostí."
+  },
+  "en": {
+    "t": "Cottage in Třebušín",
+    "d": "A sales video for a cottage in the Central Bohemian Uplands. Aerials of the landscape and pond, the interior and a guide showing the property."
+  },
+  "region": "ustecky-kraj"
+}

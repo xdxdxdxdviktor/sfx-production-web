@@ -1,0 +1,26 @@
+{
+  "id": "litomerice-byt",
+  "order": 12,
+  "featured": false,
+  "published": true,
+  "cat": "reality",
+  "svcs": [
+    "video",
+    "dron"
+  ],
+  "vertical": false,
+  "place": "Litoměřice",
+  "client": "",
+  "poster": "/assets/portfolio/litomerice-byt.jpg",
+  "preview": "/assets/portfolio/litomerice-byt.mp4",
+  "youtube": "",
+  "cs": {
+    "t": "Byt 1+1 v Litoměřicích",
+    "d": "Krátké video s průvodcem, letecké záběry města a mapa s bazénem, parkem a centrem."
+  },
+  "en": {
+    "t": "One-bedroom flat in Litoměřice",
+    "d": "A short guided video, city aerials and a map with the pool, park and centre."
+  },
+  "region": "ustecky-kraj"
+}

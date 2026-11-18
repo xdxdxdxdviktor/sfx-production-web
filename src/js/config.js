@@ -34,6 +34,9 @@ COMPANY.areaServed = COMPANY.areas.length ? COMPANY.areas : ['Česká republika'
 export const REGION_CODES = { 'Ústecký kraj':'CZ-42', 'Liberecký kraj':'CZ-51', 'Praha':'CZ-10', 'Hlavní město Praha':'CZ-10', 'Středočeský kraj':'CZ-20' };
 
 /* Search Console / Bing / Seznam verification codes (edited in the admin console). */
+/* Cookie-less visitor analytics, set in the admin: provider = plausible | umami | goatcounter | cloudflare */
+export const ANALYTICS = Object.assign({ provider: '', id: '' }, SETTINGS.analytics || {});
+
 export const VERIFY = Object.assign({ google: '', bing: '', seznam: '' }, SETTINGS.verify || {});
 
 /* Enquiry form delivery: FormSubmit AJAX endpoint. The very first enquiry sends an activation

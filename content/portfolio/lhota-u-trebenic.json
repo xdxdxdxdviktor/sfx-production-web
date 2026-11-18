@@ -1,0 +1,26 @@
+{
+  "id": "lhota-u-trebenic",
+  "order": 15,
+  "featured": false,
+  "published": true,
+  "cat": "reality",
+  "svcs": [
+    "video",
+    "dron"
+  ],
+  "vertical": false,
+  "place": "Lhota u Třebenic",
+  "client": "",
+  "poster": "/assets/portfolio/lhota-u-trebenic.jpg",
+  "preview": "/assets/portfolio/lhota-u-trebenic.mp4",
+  "youtube": "",
+  "cs": {
+    "t": "Dům ve Lhotě u Třebenic",
+    "d": "Prodej domu s výhledem na Lipskou horu a Oltářík. Letecké záběry krajiny a prohlídka interiéru."
+  },
+  "en": {
+    "t": "House in Lhota u Třebenic",
+    "d": "A house with views of Lipská hora and Oltářík. Landscape aerials and an interior tour."
+  },
+  "region": "ustecky-kraj"
+}

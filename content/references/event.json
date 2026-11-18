@@ -1,0 +1,18 @@
+{
+  "id": "event",
+  "order": 2,
+  "published": false,
+  "name": "",
+  "company": "",
+  "photo": "",
+  "link": "",
+  "project": "zavodni-okruh",
+  "cs": {
+    "role": "Pořadatel akce",
+    "quote": "Aftermovie bylo hotové rychle a sdílelo se ještě dlouho po akci. Domluva byla jednoduchá od začátku do konce."
+  },
+  "en": {
+    "role": "Event organiser",
+    "quote": "The aftermovie was ready fast and kept being shared long after the event. Easy to work with from start to finish."
+  }
+}

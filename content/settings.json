@@ -34,5 +34,9 @@
     "Ústecký kraj",
     "Liberecký kraj",
     "Praha"
-  ]
+  ],
+  "analytics": {
+    "provider": "",
+    "id": ""
+  }
 }
