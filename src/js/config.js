@@ -11,7 +11,7 @@ export const SITE = 'https://www.sfxproduction.com';   // final domain, used for
 export const INDEXABLE = true;
 
 /* GitHub repository the admin console commits to (owner/name) and its branch. */
-export const GITHUB = { repo: 'OWNER/REPO', branch: 'main' };
+export const GITHUB = { repo: 'xdxdxdxdviktor/sfx-production-web', branch: 'main' };
 
 export const COMPANY = Object.assign({
   name: 'SFX production', person: 'Jiří Hromádka', owner: '', ico: '', street: '', city: '', zip: '', region: '', register: '',
