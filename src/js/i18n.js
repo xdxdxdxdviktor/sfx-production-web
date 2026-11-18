@@ -87,7 +87,7 @@ en: {
   'm.sluzby':'Services','m.proces':'How we work','m.blog':'Blog','m.ref':'References','m.onas':'About us','m.areas':'Where we work','m.work':'Our work',
   'wk.h':'Our work','wk.p':'A selection of what we have filmed. Hover over a project for a preview, click to play it.','wk.all':'All projects','wk.open':'play the project','wk.filter':'Filter projects',
   'wk.cat':{reality:'Property and drone',firmy:'Ads and corporate',event:'Events',social:'Social media',film:'Film','3d':'3D and visualisation'},
-  'wk.title':'Our work – property, ads, events and reels','wk.desc':'Video projects we have made: property videos with drone, corporate spots, aftermovies, social media reels, film and 3D visualisation. Ústí Region, Liberec and Prague.',
+  'wk.title':'Our work – property, ads, events and reels','wk.desc':'Our video work: property videos with drone, corporate spots, aftermovies, social media reels, film and 3D. Ústí Region, Liberec and Prague.',
   'wk.full':'Full video on YouTube','wk.like':'I want a similar video','wk.prev':'Previous','wk.next':'Next','wk.close':'Close','wk.here':'Filmed here','wk.svc':'Our work','wk.of':'of','m.partneri':'Partners','m.poptavka':'Get a quote',
   'm.pravni':'Legal information','m.gdpr':'Privacy policy','m.cookies':'Cookies',
   'hero.kicker':'Video production · photography · drone · 3D',
