@@ -1,11 +1,11 @@
 {
-  "photo": "/assets/img/jiri-hromadka.jpg",
   "name": "Jiří Hromádka",
+  "photo": "/assets/img/jiri-hromadka.jpg",
   "cs": {
     "h": "O mně",
     "role": "Art director / project manager",
     "hi": "Ahoj, jsem Jirka.",
-    "b1": "Natáčím, fotím a stříhám. Nejvíc mě baví hledat, jak věci ukázat jinak: světlem, pohybem kamery nebo pohledem z dronu. U každé zakázky jsem osobně od první schůzky až po finální export.",
+    "b1": "Natáčím, fotím a stříhám. Nejvíc mě baví hledat, jak věci ukázat jinak: světlem, pohybem kamery nebo pohledem z dronu. U každé zakázky jsem osobně od první schůzky až po finální výsledek.",
     "b2": "Když je projekt větší, přizvu lidi, se kterými se znám a kterým věřím: druhého kameramana, zvukaře nebo 3D grafika. Vy ale pořád řešíte všechno jen se mnou.",
     "quote": "Dobrý záběr nevznikne náhodou. Vznikne z přípravy, světla a trpělivosti."
   },
