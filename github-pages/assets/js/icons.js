@@ -22,5 +22,7 @@ export const ICON = {
   x:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
   check:'<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 25l7 7 14-15"/></svg>'
 };
+ICON.fotovideo = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 9h3l1.4-2h4.2L12.5 9h1.5v9h-11.5z"/><circle cx="8.2" cy="13.2" r="2.6"/><path d="M14 11.5l7.5-3.5v10l-7.5-3.5"/></svg>';
+ICON.other = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>';
 ICON.vr = ICON['360'];
 ICON.vizualizace = ICON.viz;

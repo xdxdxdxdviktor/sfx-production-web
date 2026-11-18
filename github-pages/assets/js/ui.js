@@ -1,5 +1,5 @@
 /* HTML components shared by the static build and the browser. DOM-free: every function returns a string. */
-import { I18N, FQ } from './i18n.js';
+import { I18N } from './i18n.js';
 import { SERVICES, SVC_BY } from './services.js';
 import { POSTS } from './posts.js';
 import { ICON } from './icons.js';
@@ -55,16 +55,14 @@ export function blogChips(c, posts, filter='all'){
 export const flow = c => `<ol class="flow">${[1,2,3,4].map(i=>`<li><span class="node">${i}</span><div class="card glass"><h3>${c.t('p'+i+'.t')}</h3><p>${c.t('p'+i+'.d')}</p><div class="out"><b>${c.t('proc.out')}</b>${c.t('p'+i+'.o')}</div></div></li>`).join('')}</ol>`;
 
 /* ---------- enquiry form pieces ---------- */
-export const ORDER = ['video','foto','dron','strih','vr','3d','viz','film','unsure'];
-export function tiles(c, sel){
+export const MAIN = ['foto','video','fotovideo'];
+export const MORE = ['dron','strih','vr','3d','viz','film','other'];
+export const ORDER = [...MAIN, ...MORE];
+const TILE_IMG = {foto:'product', video:'festival', fotovideo:'edit'};
+export function tiles(c, sel, group='more'){
   const TL = c.t('tiles'), SUB = c.t('tileSub');
-  return ORDER.map(k=>{ const sv = SERVICES.find(s=>s.tile===k);
-    return `<button type="button" class="tile" data-s="${k}" aria-pressed="${sel.has(k)}">${sv?`<span class="tile-bg" style="background-image:url('${c.asset('img/'+sv.img+'.webp')}')"></span>`:''}${ICON[k]||''}<span><b>${TL[k]}</b>${SUB[k]?`<small>${SUB[k]}</small>`:''}</span></button>`; }).join('');
-}
-export function qblocks(c, sel, q){
-  const Q = FQ[c.lang], TL = c.t('tiles');
-  return ORDER.filter(k=>sel.has(k) && Q[k]).map(k=>`<fieldset class="qb"><legend><span class="qi">${ICON[k]||''}</span>${TL[k]}: ${Q[k][0]}</legend>
-    <div class="qopts">${Q[k][1].map((o,i)=>`<button type="button" data-qk="${k}" data-qi="${i}" aria-pressed="${q[k]===i}">${o}</button>`).join('')}</div></fieldset>`).join('');
+  return (group==='main' ? MAIN : MORE).map(k=>{ const sv = SERVICES.find(s=>s.tile===k); const img = TILE_IMG[k] || (sv && sv.img);
+    return `<button type="button" class="tile${group==='main'?' big':''}" data-s="${k}" aria-pressed="${sel.has(k)}">${img?`<span class="tile-bg" style="background-image:url('${c.asset('img/'+img+'.webp')}')"></span>`:''}${ICON[k]||''}<span><b>${TL[k]}</b>${SUB[k]?`<small>${SUB[k]}</small>`:''}</span></button>`; }).join('');
 }
 export const budgetBtns = (c, b) => c.t('budgets').map((x,i)=>`<button type="button" data-b="${i}" aria-pressed="${b===i}">${x}</button>`).join('');
 
@@ -73,13 +71,12 @@ export function summary(c, s){
   const TL = c.t('tiles');
   const row = (k,v,g)=>`<div class="srow${v?'':' empty'}"><dt>${k}</dt><dd>${v||'—'}</dd>${v&&g?`<button type="button" data-go="${g}">${c.t('f.edit')}</button>`:''}</div>`;
   return `<div class="clap" aria-hidden="true"><i></i></div>
-    <div class="sum-head" role="button" tabindex="0" aria-expanded="${!!s.open}"><h3>${c.t('sum.h')}${s.sel.length?` <em>(${s.sel.length})</em>`:''}</h3><span>${c.t('sum.take')} ${Math.min(s.step,4)}/4</span><i class="sum-caret"></i></div>
-    <div class="slate"><div><span>${c.t('sum.prod')}</span><b>SFX production</b></div><div><span>${c.t('sum.scene')}</span><b>${s.sel.length?String(s.sel.length).padStart(2,'0'):'—'}</b></div><div><span>${c.t('sum.take')}</span><b>${String(Math.min(s.step,4)).padStart(2,'0')}</b></div><div class="wide"><span>${c.t('sum.dir')}</span><b>${esc(s.who)||'—'}</b></div></div>
-    <div class="sum-bar"><i style="width:${(Math.min(s.step,4)-1)/3*100}%"></i></div>
+    <div class="sum-head" role="button" tabindex="0" aria-expanded="${!!s.open}"><h3>${c.t('sum.h')}${s.sel.length?` <em>(${s.sel.length})</em>`:''}</h3><span>${c.t('sum.take')} ${Math.min(s.step,3)}/3</span><i class="sum-caret"></i></div>
+    <div class="slate"><div><span>${c.t('sum.prod')}</span><b>SFX production</b></div><div><span>${c.t('sum.scene')}</span><b>${s.sel.length?String(s.sel.length).padStart(2,'0'):'—'}</b></div><div><span>${c.t('sum.take')}</span><b>${String(Math.min(s.step,3)).padStart(2,'0')}</b></div><div class="wide"><span>${c.t('sum.dir')}</span><b>${esc(s.who)||'—'}</b></div></div>
+    <div class="sum-bar"><i style="width:${(Math.min(s.step,3)-1)/2*100}%"></i></div>
     ${s.sel.length ? `<div class="sum-chips">${s.sel.map(k=>`<span>${ICON[k]||''}${TL[k]}</span>`).join('')}</div>` : `<p class="sum-empty">${c.t('sum.empty')}</p>`}
-    <dl>${s.det?row(c.t('sum.det'), esc(s.det), 2):''}
-      ${row(c.t('sum.when'), esc(s.when), 3)}${row(c.t('sum.where'), esc(s.where), 3)}${row(c.t('sum.budget'), esc(s.budget), 3)}
-      ${row(c.t('sum.contact'), esc(s.contact), 4)}</dl>
+    <dl>${row(c.t('sum.when'), esc(s.when), 2)}${row(c.t('sum.where'), esc(s.where), 2)}${row(c.t('sum.budget'), esc(s.budget), 2)}
+      ${row(c.t('sum.contact'), esc(s.contact), 3)}</dl>
     <ul class="sum-trust"><li>${c.t('sum.t1')}</li><li>${c.t('sum.t2')}</li><li>${c.t('sum.t3')}</li></ul>`;
 }
 

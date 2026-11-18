@@ -1,11 +1,10 @@
 /* SFX production — browser entry. Pages are pre-rendered by the build; this file only adds behaviour. */
 import { RUNTIME, COMPANY, MATTERPORT_ID } from './config.js';
-import { FQ } from './i18n.js';
 import { SERVICES, SVC_BY, SVC_BY_TILE } from './services.js';
 import { POSTS } from './posts.js';
 import { ICON } from './icons.js';
 import { PATHS } from './routes.js';
-import { ctx, esc, svcPreview, blogGrid, blogChips, postCard, tiles, qblocks, budgetBtns, summary, ORDER } from './ui.js';
+import { ctx, esc, svcPreview, blogGrid, blogChips, postCard, tiles, budgetBtns, summary, ORDER, MAIN } from './ui.js';
 import { DB } from './db.js';
 
 const $ = (s,r=document)=>r.querySelector(s), $$ = (s,r=document)=>[...r.querySelectorAll(s)];
@@ -162,27 +161,33 @@ function initIntro(){
 
 /* =============================================================== ENQUIRY FORM */
 function initForm(){
-  const NSTEP = 4; let step = 1;
-  const form = {sel:new Set(), budget:-1, pref:'mail', q:{}};
+  const NSTEP = 3; let step = 1;
+  const form = {sel:new Set(), budget:-1, pref:'mail'};
   const F = id => $('#'+id);
-  const FIELDS = ['fProj','fLoc','fDesc','fDate','fLink','fName','fCompany','fMail','fTel','fTime'];
+  const FIELDS = ['fLoc','fDesc','fDate','fName','fCompany','fMail','fTel','fTime'];
   const TL = t('tiles');
 
+  /* photo / video / photo+video are alternatives; everything else combines freely */
+  function addSel(k){
+    if(k==='foto' && form.sel.has('video') || k==='video' && form.sel.has('foto')) k = 'fotovideo';
+    if(MAIN.includes(k)) MAIN.forEach(m=>form.sel.delete(m));
+    form.sel.add(k);
+  }
   const paintTiles = () => $$('.tile').forEach(x=>x.setAttribute('aria-pressed', form.sel.has(x.dataset.s)));
   function saveDraft(){
-    const d = {sel:[...form.sel], budget:form.budget, pref:form.pref, q:form.q, flex:F('fFlex').checked, step};
+    const d = {sel:[...form.sel], budget:form.budget, pref:form.pref, flex:F('fFlex').checked, step};
     FIELDS.forEach(id=>d[id]=F(id).value);
-    store.set('sfx-draft', JSON.stringify(d)); renderLive();
+    store.set('sfx-draft2', JSON.stringify(d)); renderLive();
   }
   function loadDraft(){
-    let d; try{ d = JSON.parse(store.get('sfx-draft')||'null'); }catch(e){ d=null; }
+    let d; try{ d = JSON.parse(store.get('sfx-draft2')||'null'); }catch(e){ d=null; }
     if(!d) return;
     const any = (d.sel&&d.sel.length) || FIELDS.some(id=>d[id]); if(!any) return;
-    form.sel = new Set(d.sel||[]); form.budget = d.budget??-1; form.pref = d.pref||'mail'; form.q = d.q||{}; F('fFlex').checked = !!d.flex;
+    form.sel = new Set(d.sel||[]); form.budget = d.budget??-1; form.pref = d.pref||'mail'; F('fFlex').checked = !!d.flex;
     FIELDS.forEach(id=>{ if(d[id] && F(id)) F(id).value = d[id]; });
     F('draftNote').hidden = false; paintTiles(); paintBudget(); setPref(form.pref); updateCount();
   }
-  function pick(keys){ String(keys).split(',').filter(Boolean).forEach(k=>form.sel.add(k)); form.sel.delete('unsure'); paintTiles(); go(1); saveDraft(); }
+  function pick(keys){ String(keys).split(',').filter(Boolean).forEach(k=>addSel(k)); paintTiles(); go(1); saveDraft(); }
   window.SFXForm = { pick };
 
   const paintBudget = () => $$('#budget button').forEach(x=>x.setAttribute('aria-pressed', +x.dataset.b===form.budget));
@@ -197,7 +202,7 @@ function initForm(){
     F('wizErr').textContent = '';
     if(s===1 && !form.sel.size){ F('wizErr').textContent = t('f.e1'); return false; }
     if(s===2){ const ok = fieldErr('fDesc', F('fDesc').value.trim().length<10 ? t('f.eDesc') : ''); if(!ok) F('fDesc').focus(); return ok; }
-    if(s===4){
+    if(s===3){
       const a = fieldErr('fName', F('fName').value.trim() ? '' : t('f.eName'));
       const b = form.pref!=='mail' || fieldErr('fMail', /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(F('fMail').value.trim()) ? '' : t('f.eMail'));
       const c = form.pref!=='tel' || fieldErr('fTel', F('fTel').value.replace(/\D/g,'').length<9 ? t('f.eTel') : '');
@@ -206,25 +211,22 @@ function initForm(){
     }
     return true;
   }
-  function detailsObj(){ const Q=FQ[lang], o={}; Object.keys(form.q).forEach(k=>{ if(form.q[k]!==undefined && form.q[k]!==null && Q[k] && form.sel.has(k)) o[TL[k]] = Q[k][1][form.q[k]]; }); return o; }
   const fmtD = v => { if(!v) return ''; try{ return new Date(v).toLocaleDateString(lang==='cs'?'cs-CZ':'en-GB'); }catch(e){ return v; } };
   function renderLive(){
     const sum = F('liveSum'), open = sum.classList.contains('open');
-    const det = Object.values(detailsObj()).join(', ');
     sum.innerHTML = summary(C, {sel:ORDER.filter(k=>form.sel.has(k)), step, open,
       who:[F('fName').value.trim(), F('fCompany').value.trim()].filter(Boolean).join(', '),
       when:(fmtD(F('fDate').value)||'') + (F('fFlex').checked ? ` (${t('f.flex').toLowerCase()})` : ''),
       where:F('fLoc').value.trim(), budget: form.budget>=0 ? t('budgets')[form.budget] : '',
       contact: form.pref==='tel' ? F('fTel').value.trim() : F('fMail').value.trim(),
-      det});
+      });
   }
-  const setNext = () => { F('wNext').textContent = step===1?t('f.next1'):step===2?t('f.next2'):step===3?t('f.next3'):t('f.send'); };
+  const setNext = () => { F('wNext').textContent = step===1?t('f.next1'):step===2?t('f.next2'):t('f.send'); };
   function go(s){
     step = s; $$('.wstep').forEach(x=>x.classList.toggle('on', +x.dataset.step===s));
     $$('.steps-ind li').forEach((x,i)=>{ x.classList.toggle('on', i<s); x.classList.toggle('done', i<s-1); x.classList.toggle('cur', i===s-1); });
     F('wBack').hidden = s===1; setNext();
-    if(s===2) F('qBlocks').innerHTML = qblocks(C, form.sel, form.q);
-    if(s===4) ensureTurnstile();
+    if(s===3) ensureTurnstile();
     F('wizErr').textContent = ''; renderLive();
     const sum = F('liveSum'); sum.classList.remove('clap-hit'); void sum.offsetWidth; sum.classList.add('clap-hit');
   }
@@ -232,12 +234,8 @@ function initForm(){
   document.addEventListener('click', e=>{
     const tl = e.target.closest('.tile');
     if(tl){ const k = tl.dataset.s;
-      if(k==='unsure'){ const on = !form.sel.has('unsure'); form.sel.clear(); if(on) form.sel.add('unsure'); }
-      else { form.sel.delete('unsure'); form.sel.has(k) ? form.sel.delete(k) : form.sel.add(k); }
+      form.sel.has(k) ? form.sel.delete(k) : addSel(k);
       paintTiles(); F('wizErr').textContent=''; saveDraft(); }
-    const qb = e.target.closest('[data-qk]');
-    if(qb){ const k=qb.dataset.qk, i=+qb.dataset.qi; form.q[k] = form.q[k]===i ? null : i;
-      $$(`[data-qk="${k}"]`).forEach(x=>x.setAttribute('aria-pressed', form.q[k]===+x.dataset.qi)); saveDraft(); }
     const hb = e.target.closest('[data-help]');
     if(hb){ const ta=F('fDesc'); ta.value = (ta.value.trim() ? ta.value.replace(/\s*$/,'')+'\n' : '') + t(hb.dataset.help)+': '; ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); updateCount(); saveDraft(); }
     const bb = e.target.closest('#budget button');
@@ -276,21 +274,21 @@ function initForm(){
 
   function submit(){
     if(F('fWeb').value) return; // honeypot
-    const det = detailsObj(), ref = refCode();
+    const ref = refCode();
     const services_label = ORDER.filter(k=>form.sel.has(k)).map(k=>TL[k]).join(', ');
-    const lines = [`${t('f.refL')}: ${ref}`, `${t('sum.svc')}: ${services_label}`, ...Object.entries(det).map(([k,v])=>`${k}: ${v}`),
-      `${t('f.proj')}: ${F('fProj').value}`, `${t('f.loc')}: ${F('fLoc').value}`, `${t('f.date')}: ${F('fDate').value}${F('fFlex').checked?' ('+t('f.flex')+')':''}`,
-      `${t('f.budget')}: ${form.budget>=0?t('budgets')[form.budget]:'-'}`, `${t('f.link')}: ${F('fLink').value}`, '', F('fDesc').value, '',
+    const lines = [`${t('f.refL')}: ${ref}`, `${t('sum.svc')}: ${services_label}`, 
+      `${t('f.loc')}: ${F('fLoc').value}`, `${t('f.date')}: ${F('fDate').value}${F('fFlex').checked?' ('+t('f.flex')+')':''}`,
+      `${t('f.budget')}: ${form.budget>=0?t('budgets')[form.budget]:'-'}`, '', F('fDesc').value, '',
       [F('fName').value, F('fCompany').value].filter(Boolean).join(', '), form.pref==='tel' ? `${t('f.telReq')}: ${F('fTel').value}${F('fTime').value?' ('+F('fTime').value+')':''}` : `${t('f.mail')}: ${F('fMail').value}`].filter(x=>x!=='').join('\n');
-    const mailto = 'mailto:'+COMPANY.email+'?subject='+encodeURIComponent((lang==='cs'?'Poptávka ':'Enquiry ')+ref+(F('fProj').value?': '+F('fProj').value:''))+'&body='+encodeURIComponent(lines);
+    const mailto = 'mailto:'+COMPANY.email+'?subject='+encodeURIComponent((lang==='cs'?'Poptávka ':'Enquiry ')+ref)+'&body='+encodeURIComponent(lines);
     F('mailtoLink').href = mailto;
-    const rec = {ref_code:ref, services:[...form.sel], services_label, details:det, project:F('fProj').value, location:F('fLoc').value, description:F('fDesc').value, date:F('fDate').value||null, flexible:F('fFlex').checked,
-      budget:form.budget>=0?t('budgets')[form.budget]:null, link:F('fLink').value, name:F('fName').value.trim(), company:F('fCompany').value.trim()||null, contact_pref:form.pref,
+    const rec = {ref_code:ref, services:[...form.sel], services_label, location:F('fLoc').value, description:F('fDesc').value, date:F('fDate').value||null, flexible:F('fFlex').checked,
+      budget:form.budget>=0?t('budgets')[form.budget]:null, name:F('fName').value.trim(), company:F('fCompany').value.trim()||null, contact_pref:form.pref,
       email:form.pref==='mail'?F('fMail').value.trim():null, phone:form.pref==='tel'?F('fTel').value.trim():null, call_time:form.pref==='tel'?F('fTime').value:null, lang};
     const btn = F('wNext'); btn.disabled = true; btn.textContent = t('f.sending');
     DB.addInquiry(rec, tsToken).then(res=>{
       btn.disabled = false; setNext();
-      store.del('sfx-draft');
+      store.del('sfx-draft2');
       F('refCode').textContent = (res && res.ref) || ref;
       $$('.wstep,#wizTop,#wizNav,#wizErr,#draftNote').forEach(x=>x.style.display='none');
       F('doneView').classList.add('on'); F('wiz').classList.add('wrapped');
@@ -303,13 +301,13 @@ function initForm(){
     });
   }
   F('wAgain').addEventListener('click', ()=>{
-    form.sel.clear(); form.budget=-1; form.q={}; F('wiz').reset(); setPref('mail'); updateCount();
+    form.sel.clear(); form.budget=-1; F('wiz').reset(); setPref('mail'); updateCount();
     $$('.wstep,#wizTop,#wizNav,#wizErr').forEach(x=>x.style.display='');
     F('doneView').classList.remove('on'); F('wiz').classList.remove('wrapped'); paintTiles(); paintBudget(); go(1);
   });
 
   loadDraft();
-  const pk = sess.get('sfx-pick'); if(pk){ pk.split(',').forEach(k=>form.sel.add(k)); form.sel.delete('unsure'); sess.del('sfx-pick'); paintTiles(); saveDraft(); }
+  const pk = sess.get('sfx-pick'); if(pk){ pk.split(',').forEach(k=>addSel(k)); sess.del('sfx-pick'); paintTiles(); saveDraft(); }
   renderLive(); updateCount();
 }
 

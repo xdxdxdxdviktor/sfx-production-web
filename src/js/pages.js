@@ -273,34 +273,30 @@ function enquiry(c){
         <span class="vf-c tl"></span><span class="vf-c tr"></span><span class="vf-c bl"></span><span class="vf-c br"></span>
         <div class="vf-bar" aria-hidden="true"><span class="rec">REC</span><span class="tc" id="wizTc">00:00:00:00</span><span class="vf-meta">4K · 25p</span></div>
         <div class="wiz-top" id="wizTop">
-          <ol class="steps-ind filmstrip">${[1,2,3,4].map(i=>`<li class="${i===1?'on cur':''}" data-go="${i}"><i></i><span><b>${i}</b> <em>${t('f.l'+i)}</em></span></li>`).join('')}</ol>
+          <ol class="steps-ind filmstrip">${[1,2,3].map(i=>`<li class="${i===1?'on cur':''}" data-go="${i}"><i></i><span><b>${i}</b> <em>${t('f.l'+i)}</em></span></li>`).join('')}</ol>
         </div>
         <p class="draft-note" id="draftNote" hidden>${t('f.draft')}</p>
 
         <div class="wstep on" data-step="1">
           <h3>${t('f.s1')}</h3><p class="hint">${t('f.s1h')}</p>
-          <div class="tiles" id="tiles">${tiles(c, new Set())}</div>
+          <div class="tiles-main" id="tilesMain">${tiles(c, new Set(), 'main')}</div>
+          <p class="tiles-or">${t('f.more')}</p>
+          <div class="tiles" id="tiles">${tiles(c, new Set(), 'more')}</div>
         </div>
         <div class="wstep" data-step="2">
           <h3>${t('f.s2')}</h3><p class="hint">${t('f.s2h')}</p>
-          <div class="qblocks" id="qBlocks"></div>
           <div class="f full"><label for="fDesc">${t('f.desc')}</label>
             <div class="helpers"><span>${t('f.help')}</span><div id="descHelp">${['f.h1','f.h2','f.h3','f.h4'].map(h=>`<button type="button" data-help="${h}">+ ${t(h)}</button>`).join('')}</div></div>
             <textarea id="fDesc" name="popis" placeholder="${esc(t('f.descPh'))}" maxlength="1500" required></textarea>
             <div class="frow"><span class="emsg"></span><span class="count" id="descCount">0 / 1500</span></div></div>
-        </div>
-        <div class="wstep" data-step="3">
-          <h3>${t('f.s3')}</h3><p class="hint">${t('f.s3h')}</p>
           <div class="fgrid">
             <div class="f"><label for="fDate">${t('f.date')}</label><input id="fDate" name="termin" type="date"><label class="check"><input type="checkbox" id="fFlex"><span>${t('f.flex')}</span></label></div>
             <div class="f"><label for="fLoc">${t('f.loc')}</label><input id="fLoc" name="lokalita" placeholder="${esc(t('f.locPh'))}" autocomplete="address-level2"></div>
             <div class="f full"><span class="lbl" id="budgetL">${t('f.budget')}</span><div class="budget" id="budget" role="group" aria-labelledby="budgetL">${budgetBtns(c,-1)}</div></div>
-            <div class="f"><label for="fProj">${t('f.proj')}</label><input id="fProj" name="projekt" placeholder="${esc(t('f.projPh'))}"></div>
-            <div class="f"><label for="fLink">${t('f.link')}</label><input id="fLink" name="odkaz" type="url" placeholder="${esc(t('f.linkPh'))}"></div>
           </div>
         </div>
-        <div class="wstep" data-step="4">
-          <h3>${t('f.s4')}</h3><p class="hint">${t('f.s4h')}</p>
+        <div class="wstep" data-step="3">
+          <h3>${t('f.s3')}</h3><p class="hint">${t('f.s3h')}</p>
           <div class="fgrid">
             <div class="f"><label for="fName">${t('f.name')}</label><input id="fName" name="jmeno" autocomplete="name" required><span class="emsg"></span></div>
             <div class="f"><label for="fCompany">${t('f.company')}</label><input id="fCompany" name="firma" autocomplete="organization"></div>

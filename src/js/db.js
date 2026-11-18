@@ -22,7 +22,7 @@ async function sendByEmail(rec, text){
   if(!RUNTIME.formEndpoint) throw new Error('no endpoint');
   const L = rec.lang==='cs';
   const body = {
-    _subject: `${L?'Poptávka':'Enquiry'} ${rec.ref_code}${rec.project?': '+rec.project:''} – ${rec.name}`,
+    _subject: `${L?'Poptávka':'Enquiry'} ${rec.ref_code} – ${rec.services_label} – ${rec.name}`,
     _template: 'table', _captcha: 'false', _honey: '',
     [L?'Číslo poptávky':'Enquiry no.']: rec.ref_code,
     [L?'Jméno':'Name']: rec.name,
@@ -30,12 +30,9 @@ async function sendByEmail(rec, text){
     email: rec.email || '',
     [L?'Telefon':'Phone']: rec.phone ? rec.phone + (rec.call_time ? ` (${rec.call_time})` : '') : '—',
     [L?'Služby':'Services']: rec.services_label,
-    [L?'Upřesnění':'Details']: Object.entries(rec.details||{}).map(([k,v])=>`${k}: ${v}`).join('; ') || '—',
     [L?'Termín':'Date']: (rec.date || '—') + (rec.flexible ? (L?' (flexibilní)':' (flexible)') : ''),
     [L?'Lokalita':'Location']: rec.location || '—',
     [L?'Rozpočet':'Budget']: rec.budget || '—',
-    [L?'Projekt':'Project']: rec.project || '—',
-    [L?'Odkaz':'Link']: rec.link || '—',
     [L?'Popis':'Description']: rec.description,
     [L?'Jazyk webu':'Site language']: rec.lang
   };
