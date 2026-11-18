@@ -246,7 +246,6 @@ ${refs}
           : `<span class="me-ph" aria-hidden="true">JH</span>`}
           <span class="vf-c tl"></span><span class="vf-c tr"></span><span class="vf-c bl"></span><span class="vf-c br"></span>
           <span class="me-rec" aria-hidden="true">REC</span></div>
-        <figcaption><b>${COMPANY.person}</b><span>${t('about.role')}</span></figcaption>
       </figure>
       <div class="me-text">
         <h3>${COMPANY.person}</h3>
