@@ -228,9 +228,9 @@
 .clap i{bottom:0}
 .sum.clap-hit .clap::before{animation:clap .45s cubic-bezier(.3,1.6,.5,1)}
 @keyframes clap{0%{transform:rotate(0)}35%{transform:rotate(-14deg)}100%{transform:rotate(0)}}
-.slate{display:grid;grid-template-columns:1.3fr .6fr .6fr;border:1px solid rgba(241,236,228,.18);border-radius:10px;margin:14px 0 14px;overflow:hidden}
+.slate{display:grid;grid-template-columns:1.4fr .6fr;border:1px solid rgba(241,236,228,.18);border-radius:10px;margin:14px 0 14px;overflow:hidden}
 .slate>div{display:flex;flex-direction:column;gap:3px;padding:8px 10px;border-right:1px solid rgba(241,236,228,.18)}
-.slate>div:nth-child(3){border-right:0}
+.slate>div:nth-child(2){border-right:0}
 .slate>div.wide{grid-column:1/-1;border-right:0;border-top:1px solid rgba(241,236,228,.18)}
 .slate span{font:600 10px/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
 .slate b{font:700 15px/1.2 ui-monospace,Menlo,monospace;color:var(--bone);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

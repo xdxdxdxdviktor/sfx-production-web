@@ -71,8 +71,8 @@ export function summary(c, s){
   const TL = c.t('tiles');
   const row = (k,v,g)=>`<div class="srow${v?'':' empty'}"><dt>${k}</dt><dd>${v||'—'}</dd>${v&&g?`<button type="button" data-go="${g}">${c.t('f.edit')}</button>`:''}</div>`;
   return `<div class="clap" aria-hidden="true"><i></i></div>
-    <div class="sum-head" role="button" tabindex="0" aria-expanded="${!!s.open}"><h3>${c.t('sum.h')}${s.sel.length?` <em>(${s.sel.length})</em>`:''}</h3><span>${c.t('sum.take')} ${Math.min(s.step,3)}/3</span><i class="sum-caret"></i></div>
-    <div class="slate"><div><span>${c.t('sum.prod')}</span><b>SFX production</b></div><div><span>${c.t('sum.scene')}</span><b>${s.sel.length?String(s.sel.length).padStart(2,'0'):'—'}</b></div><div><span>${c.t('sum.take')}</span><b>${String(Math.min(s.step,3)).padStart(2,'0')}</b></div><div class="wide"><span>${c.t('sum.dir')}</span><b>${esc(s.who)||'—'}</b></div></div>
+    <div class="sum-head" role="button" tabindex="0" aria-expanded="${!!s.open}"><h3>${c.t('sum.h')}${s.sel.length?` <em>(${s.sel.length})</em>`:''}</h3><i class="sum-caret"></i></div>
+    <div class="slate"><div><span>${c.t('sum.prod')}</span><b>SFX production</b></div><div><span>${c.t('sum.scene')}</span><b>${s.sel.length?String(s.sel.length).padStart(2,'0'):'—'}</b></div><div class="wide"><span>${c.t('sum.dir')}</span><b>${esc(s.who)||'—'}</b></div></div>
     <div class="sum-bar"><i style="width:${(Math.min(s.step,3)-1)/2*100}%"></i></div>
     ${s.sel.length ? `<div class="sum-chips">${s.sel.map(k=>`<span>${ICON[k]||''}${TL[k]}</span>`).join('')}</div>` : `<p class="sum-empty">${c.t('sum.empty')}</p>`}
     <dl>${row(c.t('sum.when'), esc(s.when), 2)}${row(c.t('sum.where'), esc(s.where), 2)}${row(c.t('sum.budget'), esc(s.budget), 2)}
