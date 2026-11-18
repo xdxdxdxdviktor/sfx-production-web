@@ -253,7 +253,6 @@ ${refs}
         <p class="me-hi">${t('about.hi')}</p>
         <p>${t('about.b1')}</p><p>${t('about.b2')}</p>
         <blockquote class="me-quote">${t('about.q')}</blockquote>
-        <div class="facts">${[1,2,3].map(i=>`<div class="glass"><b>${t('about.f'+i+'t')}</b><span>${t('about.f'+i+'d')}</span></div>`).join('')}</div>
         <div class="me-cta"><a class="btn primary" href="#poptavka">${t('cc.write')}</a><a class="me-mail" href="mailto:${COMPANY.email}">${ICON.mail}<span>${COMPANY.email}</span></a>${COMPANY.phone?`<a class="me-mail" href="tel:${COMPANY.phone.replace(/\s/g,'')}">${ICON.tel}<span>${COMPANY.phone}</span></a>`:''}</div>
       </div>
     </div>
