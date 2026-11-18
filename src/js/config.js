@@ -16,12 +16,22 @@ export const INDEXABLE = true;
 /* GitHub repository the admin console commits to (owner/name) and its branch. */
 export const GITHUB = { repo: 'xdxdxdxdviktor/sfx-production-web', branch: 'main' };
 
-export const COMPANY = Object.assign({
-  name: 'SFX production', person: 'Jiří Hromádka', owner: '', ico: '', street: '', city: '', zip: '', region: '', register: '',
-  phone: '', email: 'sfx-production@seznam.cz', areaServed: ['Česká republika'], sameAs: [], founded: ''
-}, SETTINGS.company || {});
-COMPANY.areaServed = (COMPANY.areaServed || []).filter(Boolean);
+const S = SETTINGS, B = S.billing || {}, BR = S.branch || {};
+export const COMPANY = {
+  name: 'SFX production', person: 'Jiří Hromádka', email: 'sfx-production@seznam.cz', phone: '', founded: '',
+  ...(S.company || {}),
+  /* billing details (fakturační údaje) */
+  owner: B.owner || '', ico: B.ico || '', dic: B.dic || '', vatPayer: !!B.vat_payer, register: B.register || '', bank: B.bank || '',
+  street: B.street || '', city: B.city || '', zip: B.zip || '',
+  /* branch office (provozovna) – used for local SEO */
+  branch: { street: BR.street || '', city: BR.city || '', zip: BR.zip || '', region: BR.region || '', note: BR.note || '' },
+  /* regions we work in */
+  areas: (S.areas || []).map(x => typeof x === 'string' ? x : x.area).filter(Boolean)
+};
 COMPANY.sameAs = (COMPANY.sameAs || []).map(x => typeof x === 'string' ? x : x.url).filter(Boolean);
+COMPANY.areaServed = COMPANY.areas.length ? COMPANY.areas : ['Česká republika'];
+/* ISO 3166-2 codes for geo meta tags */
+export const REGION_CODES = { 'Ústecký kraj':'CZ-42', 'Liberecký kraj':'CZ-51', 'Praha':'CZ-10', 'Hlavní město Praha':'CZ-10', 'Středočeský kraj':'CZ-20' };
 
 /* Search Console / Bing / Seznam verification codes (edited in the admin console). */
 export const VERIFY = Object.assign({ google: '', bing: '', seznam: '' }, SETTINGS.verify || {});

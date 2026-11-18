@@ -1,0 +1,87 @@
+{
+  "id": "praha",
+  "order": 3,
+  "code": "CZ-10",
+  "place": "Praha",
+  "slug": {
+    "cs": "praha",
+    "en": "prague"
+  },
+  "img": "festival",
+  "cities": [
+    "Praha 1",
+    "Praha 2",
+    "Praha 3",
+    "Praha 4",
+    "Praha 5",
+    "Praha 6",
+    "Praha 7",
+    "Praha 8",
+    "Praha 9",
+    "Praha 10",
+    "Smíchov",
+    "Karlín",
+    "Holešovice",
+    "Vinohrady",
+    "Žižkov",
+    "Dejvice",
+    "Chodov",
+    "Letňany",
+    "Zličín",
+    "Černý Most"
+  ],
+  "cs": {
+    "t": "Praha",
+    "h1": "Video produkce, foto a dron v Praze",
+    "seo": {
+      "title": "Video produkce, fotograf a dron – Praha",
+      "desc": "Natáčení firemních videí, reklam a eventů, profesionální fotografie, dron a 360° prohlídky v celé Praze. Od Prahy 1 po okrajové části. Nezávazná poptávka."
+    },
+    "lead": "Natáčíme a fotíme v celé Praze, od kanceláří v centru po haly a showroomy na okraji města. Firmy, eventy, reality i obsah pro sociální sítě.",
+    "intro": [
+      "V Praze nejčastěji vznikají firemní a náborová videa, záznamy konferencí a eventů, portréty týmu a fotky kanceláří. Natáčení naplánujeme tak, aby co nejméně zdrželo váš provoz.",
+      "Pro realitní kanceláře a developery fotíme byty, domy i komerční prostory a připravujeme virtuální prohlídky Matterport. Nad Prahou platí přísnější pravidla pro drony, a proto lety plánujeme a povolení vyřizujeme předem."
+    ],
+    "faq": [
+      {
+        "q": "Můžete natáčet s dronem nad Prahou?",
+        "a": "Nad Prahou je řízený prostor letišť a nad centrem zakázané zóny. Lety plánujeme podle pravidel a tam, kde je to možné, vyřídíme potřebné povolení."
+      },
+      {
+        "q": "Přijedete do kterékoli části Prahy?",
+        "a": "Ano, působíme v celé Praze. Podmínky dopravy uvedeme v nabídce."
+      },
+      {
+        "q": "Natočíte konferenci nebo firemní akci?",
+        "a": "Ano, včetně více kamer, zvuku z pódia a rychlého sestřihu pro sociální sítě."
+      }
+    ]
+  },
+  "en": {
+    "t": "Prague",
+    "h1": "Video production, photography and drone in Prague",
+    "seo": {
+      "title": "Video production, photographer and drone – Prague",
+      "desc": "Corporate videos, ads and events, professional photography, drone and 360° tours all over Prague, from the centre to the outskirts. Free enquiry."
+    },
+    "lead": "We film and photograph all over Prague, from offices in the centre to halls and showrooms on the edge of the city. Companies, events, property and social content.",
+    "intro": [
+      "In Prague we most often make corporate and recruitment videos, conference and event coverage, team portraits and office photos. We plan the shoot to disrupt your day as little as possible.",
+      "For estate agents and developers we photograph flats, houses and commercial spaces and create Matterport virtual tours. Stricter drone rules apply over Prague, so we plan flights and arrange permits in advance."
+    ],
+    "faq": [
+      {
+        "q": "Can you fly a drone over Prague?",
+        "a": "Prague has airport-controlled airspace and prohibited zones over the centre. We plan flights by the rules and arrange permits where possible."
+      },
+      {
+        "q": "Will you come to any part of Prague?",
+        "a": "Yes, we work all over Prague. Travel terms are stated in the quote."
+      },
+      {
+        "q": "Can you film a conference or company event?",
+        "a": "Yes, including multiple cameras, stage sound and a quick edit for social media."
+      }
+    ]
+  }
+}

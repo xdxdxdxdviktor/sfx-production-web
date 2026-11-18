@@ -20,8 +20,8 @@ const { SITE, COMPANY, INDEXABLE, GITHUB, CUSTOM_DOMAIN } = await import('./src/
 const { I18N } = await import('./src/js/i18n.js');
 const { SERVICES } = await import('./src/js/services.js');
 const { POSTS } = await import('./src/js/posts.js');
-const { HOME } = await import('./src/js/site-content.js');
-const { PATHS, LANGS, svcPath, postPath } = await import('./src/js/routes.js');
+const { HOME, REGIONS } = await import('./src/js/site-content.js');
+const { PATHS, LANGS, svcPath, postPath, regionPath } = await import('./src/js/routes.js');
 const P = await import('./src/js/pages.js');
 const { cmsConfig } = await import('./src/admin/cms-config.mjs');
 
@@ -64,6 +64,8 @@ for(const lang of LANGS){
   page(PATHS.services[lang], P.hubPage(lang));
   page(PATHS.blog[lang], P.blogIndex(lang));
   for(const s of SERVICES) page(svcPath(s,lang), P.servicePage(s, lang));
+  page(PATHS.areas[lang], P.areasPage(lang));
+  for(const r of REGIONS) page(regionPath(r,lang), P.regionPage(r, lang));
   for(const x of POSTS.filter(p=>p.langs.includes(lang))) page(postPath(x,lang), P.postPage(x, lang));
   for(const k of ['legal','privacy','cookies']) page(PATHS[k][lang], P.legalPage(k, lang));
 }
@@ -90,6 +92,8 @@ write('admin/config.yml', '# Generated from src/admin/cms-config.mjs (YAML is a 
 /* 6) sitemap, robots, manifest, llms.txt */
 const urls = [{loc:PATHS.home, prio:'1.0', freq:'weekly'}, {loc:PATHS.services, prio:'0.9', freq:'monthly'}];
 for(const s of SERVICES) urls.push({loc:{cs:svcPath(s,'cs'), en:svcPath(s,'en')}, prio:'0.9', freq:'monthly'});
+urls.push({loc:PATHS.areas, prio:'0.8', freq:'monthly'});
+for(const r of REGIONS) urls.push({loc:{cs:regionPath(r,'cs'), en:regionPath(r,'en')}, prio:'0.8', freq:'monthly'});
 urls.push({loc:PATHS.blog, prio:'0.7', freq:'weekly', lastmod:POSTS[0]?.date});
 for(const x of POSTS) urls.push({loc:Object.fromEntries(x.langs.map(l=>[l, postPath(x,l)])), prio:'0.6', freq:'yearly', lastmod:x.date});
 for(const k of ['legal','privacy','cookies']) urls.push({loc:PATHS[k], prio:'0.2', freq:'yearly'});
@@ -106,11 +110,15 @@ write('llms.txt', `# ${COMPANY.name}
 
 > ${HOME.cs.sub} ${HOME.en.sub}
 
-Kontakt / contact: ${COMPANY.email}${COMPANY.phone?', '+COMPANY.phone:''}${COMPANY.city?'\nSídlo / based in: '+COMPANY.city:''}
+Kontakt / contact: ${COMPANY.email}${COMPANY.phone?', '+COMPANY.phone:''}${COMPANY.ico?'\nIČO: '+COMPANY.ico:''}${COMPANY.branch.city?'\nProvozovna / branch: '+COMPANY.branch.city:''}
+Oblasti / areas: ${COMPANY.areas.join(', ')}
 Poptávka / enquiry: ${SITE}/#poptavka
 
 ## Služby (CZ)
 ${SERVICES.map(s=>`- [${s.cs.t}](${SITE}${svcPath(s,'cs')}): ${s.cs.lead}`).join('\n')}
+
+## Kde působíme / Where we work
+${REGIONS.map(r=>`- [${r.cs.t}](${SITE}${regionPath(r,'cs')}): ${r.cities.join(', ')}`).join('\n')}
 
 ## Services (EN)
 ${SERVICES.map(s=>`- [${s.en.t}](${SITE}${svcPath(s,'en')}): ${s.en.lead}`).join('\n')}
@@ -129,6 +137,7 @@ for(const lang of LANGS){
   ogJobs.push({file:pre+'home', img:path.join(OUT,'assets/img/camera-poster.webp'), kicker:H.kicker, title:H.h1.replace(/\n/g,' '), sub:H.sub});
   ogJobs.push({file:pre+'blog', img:path.join(OUT,'assets/img/edit.webp'), kicker:COMPANY.name, title:T['blog.h'], sub:T['bi.lead']});
   for(const s of SERVICES) ogJobs.push({file:pre+s.id, img:imgFile(s.hero, s.img), kicker:s[lang].t, title:s[lang].h1, sub:s[lang].s});
+  for(const r of REGIONS) ogJobs.push({file:pre+'region-'+r.id, img:imgFile(r.hero, r.img), kicker:T['m.areas'], title:r[lang].h1, sub:r.cities.slice(0,5).join(' · ')});
   for(const x of POSTS.filter(p=>p.langs.includes(lang))) ogJobs.push({file:pre+'post-'+x.id, img:imgFile(x.cover, x.img), kicker:T['m.blog'], title:x[lang].t, sub:x[lang].lead});
 }
 fs.mkdirSync(OGCACHE, {recursive:true});

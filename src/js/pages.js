@@ -1,39 +1,51 @@
 /* Full-page templates. Build-time only (Node). */
-import { SITE, COMPANY, INDEXABLE, VERIFY, RUNTIME, PARTNER_URLS } from './config.js';
+import { SITE, COMPANY, INDEXABLE, VERIFY, RUNTIME, PARTNER_URLS, REGION_CODES } from './config.js';
 import { I18N, WHY, REFS, PARTNERS } from './i18n.js';
 import { SERVICES, SVC_BY } from './services.js';
 import { postsIn } from './posts.js';
 import { LEGAL } from './legal.js';
-import { ABOUT, HOME } from './site-content.js';
+import { TEAM, HOME, REGIONS } from './site-content.js';
 import { ICON } from './icons.js';
-import { PATHS, svcPath, postPath } from './routes.js';
+import { PATHS, svcPath, postPath, regionPath } from './routes.js';
 import { ctx, esc, imgTag, srcTag, media, svcImgSrc, svcVidSrc, videoBlock, ytId, gallery, svcPreview, postCard, blogGrid, blogChips, flow, tiles, budgetBtns, summary, fmtDate, readMin } from './ui.js';
 
 export const VERSION = { css:'', js:'' };
 const abs = p => SITE + p;
 const ogImg = (k, lang='cs') => abs('/assets/og/' + (lang==='en'?'en-':'') + k + '.jpg');
-const cityLabel = lang => COMPANY.city ? (lang==='cs' ? ` – ${COMPANY.city}` : ` – ${COMPANY.city}`) : '';
+const cityLabel = lang => '';
+const geoMeta = p => { const g = p.geo || (COMPANY.branch.city ? {code: REGION_CODES[COMPANY.branch.region] || 'CZ', place: COMPANY.branch.city} : {code: REGION_CODES[COMPANY.branch.region] || REGION_CODES[COMPANY.areas[0]] || ''});
+  return g.code ? `<meta name="geo.region" content="${g.code}">${g.place?`<meta name="geo.placename" content="${esc(g.place)}">`:''}` : ''; };
 const SHOW_REFS = () => RUNTIME.showSamples || REFS.cs.some(r=>r.real);
 const SHOW_PARTNERS = () => RUNTIME.showSamples || PARTNER_URLS.some(Boolean);
 const strip = s => String(s).replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
 
 /* ================================================================ schema.org */
+const addrOf = a => ({'@type':'PostalAddress', streetAddress: a.street||undefined, addressLocality: a.city, postalCode: a.zip||undefined, addressRegion: a.region||undefined, addressCountry:'CZ'});
+const areaLD = n => /^praha$|prague/i.test(n) ? {'@type':'City', name:'Praha', sameAs:'https://www.wikidata.org/wiki/Q1085'} : {'@type':'AdministrativeArea', name:n};
+const personLD = (p, lang, i) => ({'@type':'Person', '@id': SITE+'/#person-'+i, name:p.name, jobTitle:p[lang].role, worksFor:{'@id':SITE+'/#org'},
+  ...(p.photo ? {image: /^https?:/.test(p.photo) ? p.photo : abs(p.photo)} : {}), ...(p.email ? {email:p.email} : {}), ...(p.phone ? {telephone:p.phone} : {})});
 function orgLD(lang){
-  const local = !!COMPANY.city;
-  const o = {'@type': local ? 'ProfessionalService' : 'Organization', '@id': SITE+'/#org', name: COMPANY.name, url: SITE+'/',
+  const o = {'@type':'ProfessionalService', '@id': SITE+'/#org', name: COMPANY.name, url: SITE+'/',
     logo: abs('/assets/img/icon-512.png'), image: ogImg('home', lang), email: COMPANY.email,
     description: (HOME[lang]||HOME.cs).sub,
     knowsAbout: SERVICES.map(s=>s[lang].t),
-    areaServed: COMPANY.areaServed.map(n=>({'@type':'Country', name:n}))};
+    areaServed: COMPANY.areaServed.map(areaLD)};
+  if(COMPANY.owner) o.legalName = COMPANY.owner;
   if(COMPANY.phone) o.telephone = COMPANY.phone;
   if(COMPANY.ico) o.taxID = COMPANY.ico;
+  if(COMPANY.dic) o.vatID = COMPANY.dic;
   if(COMPANY.sameAs.length) o.sameAs = COMPANY.sameAs;
   if(COMPANY.founded) o.foundingDate = COMPANY.founded;
-  if(COMPANY.person) o.founder = {'@type':'Person', '@id': SITE+'/#jiri', name: COMPANY.person, jobTitle: (ABOUT[lang]||ABOUT.cs).role, ...(ABOUT.photo ? {image: /^https?:/.test(ABOUT.photo) ? ABOUT.photo : abs(ABOUT.photo)} : {})};
-  if(local){ o.address = {'@type':'PostalAddress', streetAddress: COMPANY.street||undefined, addressLocality: COMPANY.city, postalCode: COMPANY.zip||undefined, addressRegion: COMPANY.region||undefined, addressCountry:'CZ'}; o.priceRange = '$$'; }
-  o.hasOfferCatalog = {'@type':'OfferCatalog', name: I18N[lang]['m.sluzby'], itemListElement: SERVICES.map(s=>({'@type':'Offer', itemOffered:{'@id': abs(svcPath(s,lang))+'#service'}}))};
+  const br = COMPANY.branch;
+  if(br.city) o.address = addrOf(br); else if(COMPANY.city) o.address = addrOf({street:COMPANY.street, city:COMPANY.city, zip:COMPANY.zip});
+  if(br.city && COMPANY.city && br.city !== COMPANY.city) o.location = {'@type':'Place', name: I18N[lang]['ft.branch'], address: addrOf(br)};
+  if(TEAM.people[0]) o.founder = {'@id': SITE+'/#person-0'};
+  if(TEAM.people.length) o.employee = TEAM.people.map((p,i)=>({'@id': SITE+'/#person-'+i}));
+  o.priceRange = '$$';
+  o.hasOfferCatalog = {'@type':'OfferCatalog', name: I18N[lang]['m.sluzby'], itemListElement: SERVICES.map(s=>({'@type':'Offer', itemOffered:{'@id': abs(svcPath(s,lang))+'#service'}, areaServed: COMPANY.areaServed.map(areaLD)}))};
   return o;
 }
+const teamLD = lang => TEAM.people.map((p,i)=>personLD(p, lang, i));
 const websiteLD = lang => ({'@type':'WebSite', '@id': SITE+'/#website', url: SITE+'/', name: COMPANY.name, inLanguage: ['cs-CZ','en'], publisher:{'@id': SITE+'/#org'}});
 const crumbLD = (items) => ({'@type':'BreadcrumbList', itemListElement: items.map(([n,u],i)=>({'@type':'ListItem', position:i+1, name:n, item:abs(u)}))});
 const pageLD = (p, type='WebPage') => ({'@type':type, '@id': abs(p.path)+'#webpage', url: abs(p.path), name: p.title, description: p.desc, inLanguage: p.lang==='cs'?'cs-CZ':'en', isPartOf:{'@id': SITE+'/#website'}, about:{'@id': SITE+'/#org'}, primaryImageOfPage: p.og ? {'@type':'ImageObject', url: ogImg(p.og, p.lang)} : undefined});
@@ -57,6 +69,7 @@ ${alts}
 <meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="dark">
 <meta name="author" content="${COMPANY.name}">
+${geoMeta(p)}
 <meta property="og:type" content="${p.ogType||'website'}">
 <meta property="og:site_name" content="${COMPANY.name}">
 <meta property="og:locale" content="${c.lang==='cs'?'cs_CZ':'en_GB'}">
@@ -89,7 +102,7 @@ function navBar(c, p){
     ['m.sluzby', home ? '#sluzby' : c.href(PATHS.services[c.lang]), 'sluzby'],
     ['m.proces', home ? '#proces' : c.href(H)+'#proces', 'proces'],
     ['m.blog', home ? '#blog' : c.href(PATHS.blog[c.lang]), 'blog'],
-    ['m.onas', home ? '#o-mne' : c.href(H)+'#o-mne', 'o-mne'],
+    ['m.onas', home ? '#o-nas' : c.href(H)+'#o-nas', 'o-nas'],
     ...(SHOW_REFS() ? [['m.ref', home ? '#reference' : c.href(H)+'#reference', 'reference']] : [])
   ];
   const cta = home ? '#poptavka' : c.href(H)+'#poptavka';
@@ -114,11 +127,16 @@ function navBar(c, p){
 function footer(c, p){
   const H = PATHS.home[c.lang], home = p.kind==='home';
   const sec = id => home ? '#'+id : c.href(H)+'#'+id;
+  const adr = a => [a.street, [a.zip, a.city].filter(Boolean).join(' ')].filter(Boolean).join(', ');
   const contact = [`<li><a href="mailto:${COMPANY.email}">${COMPANY.email}</a></li>`,
     COMPANY.phone?`<li><a href="tel:${COMPANY.phone.replace(/\s/g,'')}">${COMPANY.phone}</a></li>`:'',
-    COMPANY.city?`<li>${esc([COMPANY.street,[COMPANY.zip,COMPANY.city].filter(Boolean).join(' ')].filter(Boolean).join(', '))}</li>`:'',
-    COMPANY.ico?`<li>${c.t('ft.ico')}: ${COMPANY.ico}</li>`:'',
+    ...TEAM.people.filter(x=>x.email||x.phone).filter(x=>x.email!==COMPANY.email||x.phone).map(x=>`<li><span class="ft-p">${esc(x.name)}, ${esc(x[c.lang].role)}</span>${x.phone?`<a href="tel:${x.phone.replace(/\s/g,'')}">${esc(x.phone)}</a>`:''}${x.email&&x.email!==COMPANY.email?`<a href="mailto:${x.email}">${esc(x.email)}</a>`:''}</li>`),
     ...COMPANY.sameAs.map(u=>`<li><a href="${u}" rel="me noopener" target="_blank">${esc(u.replace(/^https?:\/\/(www\.)?/,'').replace(/\/$/,''))}</a></li>`)].join('');
+  const bill = [COMPANY.owner?`<li>${esc(COMPANY.owner)}</li>`:'',
+    COMPANY.ico?`<li>${c.t('ft.ico')}: ${COMPANY.ico}</li>`:'',
+    COMPANY.dic?`<li>${c.t('ft.dic')}: ${esc(COMPANY.dic)}</li>`:(COMPANY.ico && !COMPANY.vatPayer?`<li>${c.t('ft.noVat')}</li>`:''),
+    COMPANY.city?`<li>${c.t('ft.seat')}: ${esc(adr(COMPANY))}</li>`:'',
+    COMPANY.branch.city?`<li>${c.t('ft.branch')}: ${esc(adr(COMPANY.branch))}</li>`:''].join('');
   return `<footer class="foot">
   <div class="foot-grid">
     <div class="foot-brand"><a href="${home?'#top':c.href(H)}" aria-label="${COMPANY.name}"><img src="${c.asset('img/logo.webp')}" alt="${COMPANY.name}" width="116" height="60" loading="lazy"></a><p>${c.t('ft.claim')}</p></div>
@@ -126,8 +144,9 @@ function footer(c, p){
     <div><h2 class="fh">${c.t('ft.web')}</h2><ul>
       <li><a href="${c.href(PATHS.services[c.lang])}">${c.t('m.sluzby')}</a></li>
       <li><a href="${sec('proces')}">${c.t('m.proces')}</a></li><li><a href="${c.href(PATHS.blog[c.lang])}">${c.t('m.blog')}</a></li>
-      <li><a href="${sec('o-mne')}">${c.t('m.onas')}</a></li><li><a href="${sec('poptavka')}">${c.t('m.poptavka')}</a></li></ul></div>
-    <div><h2 class="fh">${c.t('ft.contact')}</h2><ul>${contact}</ul></div>
+      <li><a href="${sec('o-nas')}">${c.t('m.onas')}</a></li><li><a href="${sec('poptavka')}">${c.t('m.poptavka')}</a></li></ul>
+      <h2 class="fh fh2">${c.t('m.areas')}</h2><ul>${REGIONS.map(r=>`<li><a href="${c.href(regionPath(r,c.lang))}">${r[c.lang].t}</a></li>`).join('')}</ul></div>
+    <div><h2 class="fh">${c.t('ft.contact')}</h2><ul>${contact}</ul>${bill?`<h2 class="fh fh2">${c.t('ft.bill')}</h2><ul class="ft-bill">${bill}</ul>`:''}</div>
   </div>
   <div class="copy">
     <span id="ftCopy">© ${new Date().getFullYear()} ${COMPANY.owner||COMPANY.name}. ${c.t('ft.rights')}</span>
@@ -156,15 +175,15 @@ const faqLD = faq => ({'@type':'FAQPage', mainEntity: faq.map(([q,a])=>({'@type'
 export function homePage(lang){
   const path = PATHS.home[lang], c = ctx(lang, path), t = c.t;
   const p = {kind:'home', lang, path, alt:PATHS.home, og:'home', bodyClass:'',
-    fullTitle: lang==='cs' ? `SFX production – video produkce, fotografie, dron a 3D vizualizace${cityLabel(lang)}` : `SFX production – video, photography, drone and 3D`,
+    fullTitle: lang==='cs' ? 'Video, foto a dron – Ústí, Liberec, Praha | SFX production' : 'Video, photo and drone – Ústí, Liberec, Prague | SFX production',
     title:'SFX production',
-    desc: lang==='cs' ? 'Video produkce, fotografie, dron, 360° prohlídky Matterport, 3D rendery a vizualizace pod jednou střechou. Od nápadu po hotový výstup, nezávazná poptávka zdarma.'
-                      : 'Video production, photography, drone, Matterport 360° tours, 3D renders and visualisation under one roof. From the first idea to the finished piece. Free enquiry.',
+    desc: lang==='cs' ? 'Video produkce, fotografie, dron, 360° prohlídky a 3D v Ústeckém a Libereckém kraji a v celé Praze. Od nápadu po hotový výstup, nezávazná poptávka zdarma.'
+                      : 'Video production, photography, drone, 360° tours and 3D in the Ústí and Liberec regions and all over Prague. From idea to finished piece. Free enquiry.',
     preload:`<link rel="preload" as="image" href="${c.asset('img/camera-poster.webp')}" fetchpriority="high">`};
-  p.ld = [orgLD(lang), websiteLD(lang), pageLD({...p, title:p.fullTitle}),
+  p.ld = [orgLD(lang), ...teamLD(lang), websiteLD(lang), pageLD({...p, title:p.fullTitle}),
     {'@type':'ItemList', name:t('m.sluzby'), itemListElement: SERVICES.map((s,i)=>({'@type':'ListItem', position:i+1, url:abs(svcPath(s,lang)), name:s[lang].t}))}];
   const posts = postsIn(lang).slice(0,4);
-  const H = HOME[lang] || HOME.cs, A = ABOUT[lang] || ABOUT.cs;
+  const H = HOME[lang] || HOME.cs;
   const reelYt = ytId(HOME.showreel_youtube);
   const reelVideo = c.asset('video/showreel.mp4');
   const reelPoster = HOME.showreel_poster ? media(c, HOME.showreel_poster) : reelYt ? `https://i.ytimg.com/vi/${reelYt}/maxresdefault.jpg` : c.asset('img/festival.webp');
@@ -241,25 +260,11 @@ export function homePage(lang){
     <p class="sec-more"><a class="btn glass" href="${c.href(PATHS.blog[lang])}">${t('blog.more')} ${ICON.arrow}</a></p>
   </section>
 ${refs}
-  <section class="sec" id="o-mne" data-sec>
-    <div class="sec-head"><h2>${esc(A.h)}</h2></div>
-    <div class="me">
-      <figure class="me-photo">
-        <div class="me-frame">${ABOUT.photo
-          ? `<img src="${media(c, ABOUT.photo)}" alt="${esc(ABOUT.name || COMPANY.person)}, ${esc(A.role)}" width="900" height="900" loading="lazy" decoding="async">`
-          : `<span class="me-ph" aria-hidden="true">JH</span>`}
-          <span class="vf-c tl"></span><span class="vf-c tr"></span><span class="vf-c bl"></span><span class="vf-c br"></span>
-          <span class="me-rec" aria-hidden="true">REC</span></div>
-      </figure>
-      <div class="me-text">
-        <h3>${esc(ABOUT.name || COMPANY.person)}</h3>
-        ${A.role?`<p class="me-role">${esc(A.role)}</p>`:''}
-        ${A.hi?`<p class="me-hi">${esc(A.hi)}</p>`:''}
-        ${[A.b1, A.b2].filter(Boolean).map(x=>`<p>${esc(x)}</p>`).join('')}
-        ${A.quote?`<blockquote class="me-quote">${esc(A.quote)}</blockquote>`:''}
-        <div class="me-cta"><a class="btn primary" href="#poptavka">${t('cc.write')}</a><a class="me-mail" href="mailto:${COMPANY.email}">${ICON.mail}<span>${COMPANY.email}</span></a>${COMPANY.phone?`<a class="me-mail" href="tel:${COMPANY.phone.replace(/\s/g,'')}">${ICON.tel}<span>${COMPANY.phone}</span></a>`:''}</div>
-      </div>
-    </div>
+  ${areasSection(c)}
+  <section class="sec" id="o-nas" data-sec>
+    <div class="sec-head"><h2>${esc((TEAM[lang]||TEAM.cs).h)}</h2></div>
+    ${TEAM.people.map((m,i)=>person(c, m, i)).join('')}
+    <div class="me-cta team-cta"><a class="btn primary" href="#poptavka">${t('cc.write')}</a><a class="me-mail" href="mailto:${COMPANY.email}">${ICON.mail}<span>${COMPANY.email}</span></a>${COMPANY.phone?`<a class="me-mail" href="tel:${COMPANY.phone.replace(/\s/g,'')}">${ICON.tel}<span>${COMPANY.phone}</span></a>`:''}</div>
   </section>
 ${partners}
   ${enquiry(c)}
@@ -338,7 +343,7 @@ function enquiry(c){
       </form>
       <aside class="inq-aside">
         <div class="sum glass" id="liveSum" aria-live="polite">${summary(c, {sel:[], step:1, who:'', when:'', where:'', budget:'', contact:''})}</div>
-        <div class="inq-person glass"><span class="av">JH</span><span><b>${esc(ABOUT.name || COMPANY.person)}</b><small>${esc((ABOUT[lang]||ABOUT.cs).role)}</small></span><a href="mailto:${COMPANY.email}">${COMPANY.email}</a>${COMPANY.phone?`<a href="tel:${COMPANY.phone.replace(/\s/g,'')}">${COMPANY.phone}</a>`:''}</div>
+        <div class="inq-person glass">${TEAM.people.map(m=>`<div class="ip"><span class="av">${initials(m.name)}</span><span><b>${esc(m.name)}</b><small>${esc(m[lang].role)}</small></span>${m.phone?`<a href="tel:${m.phone.replace(/\s/g,'')}">${esc(m.phone)}</a>`:''}</div>`).join('')}<a class="ip-mail" href="mailto:${COMPANY.email}">${COMPANY.email}</a>${COMPANY.phone?`<a class="ip-mail" href="tel:${COMPANY.phone.replace(/\s/g,'')}">${COMPANY.phone}</a>`:''}</div>
       </aside>
     </div>
   </section>`;
@@ -397,6 +402,7 @@ export function servicePage(s, lang){
     <aside class="pg-card glass"><h2>${t('pg.who')}</h2><ul class="pg-list">${d.who.map(x=>`<li>${x}</li>`).join('')}</ul></aside>
   </section>
 
+  ${areaStrip(c)}
   <div class="pg-cols">
     <section class="pg-card glass"><h2>${t('pg.inc')}</h2><ul class="pg-list">${d.inc.map(x=>`<li>${x}</li>`).join('')}</ul></section>
     <section class="pg-card glass"><h2>${t('pg.get')}</h2><ul class="pg-list">${d.get.map(x=>`<li>${x}</li>`).join('')}</ul>
@@ -491,6 +497,94 @@ export function postPage(x, lang){
   return doc(c, p, main);
 }
 
+
+
+/* ================================================================ TEAM + AREAS */
+const initials = n => String(n||'').split(/\s+/).map(w=>w[0]||'').join('').slice(0,2).toUpperCase();
+function person(c, m, i){
+  const d = m[c.lang] || m.cs;
+  const contacts = [m.email?`<a class="me-mail" href="mailto:${m.email}">${ICON.mail}<span>${esc(m.email)}</span></a>`:'', m.phone?`<a class="me-mail" href="tel:${m.phone.replace(/\s/g,'')}">${ICON.tel}<span>${esc(m.phone)}</span></a>`:''].join('');
+  return `<div class="me${i%2?' rev':''}" id="${'tym-'+(i+1)}">
+      <figure class="me-photo"><div class="me-frame">${m.photo
+          ? `<img src="${media(c, m.photo)}" alt="${esc(m.name)}, ${esc(d.role)}" width="900" height="900" loading="lazy" decoding="async">`
+          : `<span class="me-ph" aria-hidden="true">${initials(m.name)}</span>`}
+          <span class="vf-c tl"></span><span class="vf-c tr"></span><span class="vf-c bl"></span><span class="vf-c br"></span><span class="me-rec" aria-hidden="true">REC</span></div></figure>
+      <div class="me-text">
+        <h3>${esc(m.name)}</h3>
+        ${d.role?`<p class="me-role">${esc(d.role)}</p>`:''}
+        ${d.hi?`<p class="me-hi">${esc(d.hi)}</p>`:''}
+        ${[d.b1, d.b2].filter(Boolean).map(x=>`<p>${esc(x)}</p>`).join('')}
+        ${d.quote?`<blockquote class="me-quote">${esc(d.quote)}</blockquote>`:''}
+        ${contacts?`<div class="me-cta">${contacts}</div>`:''}
+      </div>
+    </div>`;
+}
+const regionImg = (c, r) => r.hero ? media(c, r.hero) : c.asset('img/'+r.img+'.webp');
+function regionCards(c, list=REGIONS){
+  return `<ul class="area-grid">${list.map(r=>{ const d=r[c.lang]; return `<li><a class="area-card glass" href="${c.href(regionPath(r,c.lang))}">
+    <div class="ac-img">${srcTag(regionImg(c,r), d.h1)}<span class="ac-pin">${r.code}</span></div>
+    <div class="ac-b"><h3>${d.t}</h3><p>${d.lead}</p><p class="ac-cities">${r.cities.slice(0,6).join(' · ')}${r.cities.length>6?' …':''}</p><span class="more">${c.t('area.more')} ${ICON.arrow}</span></div></a></li>`; }).join('')}</ul>`;
+}
+function areasSection(c){
+  return `<section class="sec" id="oblasti" data-sec>
+    <div class="sec-head"><h2>${c.t('area.h')}</h2><p>${c.t('area.p')}</p></div>
+    ${regionCards(c)}
+  </section>`;
+}
+const areaStrip = c => `<nav class="area-strip" aria-label="${c.t('m.areas')}"><span>${c.t('area.svcNote')}</span>${REGIONS.map(r=>`<a href="${c.href(regionPath(r,c.lang))}">${r[c.lang].t}</a>`).join('')}</nav>`;
+
+export function areasPage(lang){
+  const path = PATHS.areas[lang], c = ctx(lang, path), t = c.t;
+  const p = {kind:'areas', lang, path, alt:PATHS.areas, og:'home', title:t('area.title'), desc:t('area.desc')};
+  const crumbsArr = [[PATHS.home[lang], t('pg.home')], [null, t('m.areas')]];
+  p.ld = [orgLD(lang), websiteLD(lang), {...pageLD(p,'CollectionPage'), mainEntity:{'@type':'ItemList', itemListElement:REGIONS.map((r,i)=>({'@type':'ListItem', position:i+1, url:abs(regionPath(r,lang)), name:r[lang].t}))}},
+    crumbLD(crumbsArr.map(([u,n])=>[n, u||path]))];
+  const main = `<main id="main" class="page">
+  ${crumbs(c, crumbsArr)}
+  <header class="pg-hero hub-hero"><div><p class="kicker">${COMPANY.name}</p><h1>${t('area.h')}</h1></div><div><p class="lead">${t('area.p')}</p></div></header>
+  ${regionCards(c)}
+  <section class="pg-sec"><h2>${t('area.cities')}</h2>${REGIONS.map(r=>`<h3 class="area-sub"><a href="${c.href(regionPath(r,lang))}">${r[lang].t}</a></h3><ul class="city-chips">${r.cities.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`).join('')}<p class="mp-p">${t('area.travel')}</p></section>
+  <section class="cta-box glass"><div><h2>${t('pg.ctaH')}</h2><p>${t('pg.ctaP')}</p></div><a class="btn primary" href="${c.href(PATHS.home[lang])}#poptavka">${t('nav.cta')}</a></section>
+</main>`;
+  return doc(c, p, main);
+}
+
+export function regionPage(r, lang){
+  const path = regionPath(r, lang), c = ctx(lang, path), t = c.t, d = r[lang];
+  const alt = {cs:regionPath(r,'cs'), en:regionPath(r,'en')};
+  const crumbsArr = [[PATHS.home[lang], t('pg.home')], [PATHS.areas[lang], t('m.areas')], [null, d.t]];
+  const p = {kind:'region', lang, path, alt, og:'region-'+r.id, title:d.seo.title, desc:d.seo.desc, ogTitle:`${d.h1} | ${COMPANY.name}`, geo:{code:r.code, place:r.place},
+    preload:`<link rel="preload" as="image" href="${regionImg(c,r)}" fetchpriority="high">`};
+  const area = areaLD(d.t === 'Prague' ? 'Praha' : (lang==='en' ? ({'ustecky-kraj':'Ústecký kraj','liberecky-kraj':'Liberecký kraj'}[r.id] || d.t) : d.t));
+  p.ld = [orgLD(lang), websiteLD(lang), {...pageLD(p), breadcrumb:{'@id':abs(path)+'#breadcrumb'}},
+    {'@type':'Service', '@id':abs(path)+'#service', name:d.h1, description:d.lead, url:abs(path), provider:{'@id':SITE+'/#org'}, areaServed:{...area, containsPlace: r.cities.map(x=>({'@type':'Place', name:x}))},
+      hasOfferCatalog:{'@type':'OfferCatalog', name:d.h1, itemListElement:SERVICES.map(s=>({'@type':'Offer', itemOffered:{'@id':abs(svcPath(s,lang))+'#service'}}))}},
+    ...(d.faq.length ? [faqLD(d.faq)] : []), {...crumbLD(crumbsArr.map(([u,n])=>[n, u||path])), '@id':abs(path)+'#breadcrumb'}];
+  const main = `<main id="main" class="page">
+  ${crumbs(c, crumbsArr)}
+  <header class="pg-hero sv-hero">
+    <div class="pg-hero-t">
+      <p class="kicker">${t('m.areas')} · ${d.t}</p>
+      <h1>${d.h1}</h1>
+      <p class="lead">${d.lead}</p>
+      <ul class="pg-chips">${r.cities.slice(0,4).map(x=>`<li>${esc(x)}</li>`).join('')}${r.cities.length>4?`<li>+${r.cities.length-4}</li>`:''}</ul>
+      <div class="btns"><a class="btn primary" href="${c.href(PATHS.home[lang])}#poptavka">${t('nav.cta')}</a><a class="btn glass" href="#sluzby-v-regionu">${t('area.svc')}</a></div>
+    </div>
+    <div class="sv sv-region">${srcTag(regionImg(c,r), d.h1, '', true)}<span class="ac-pin big">${r.code}</span></div>
+  </header>
+  <section class="pg-intro"><div class="pg-intro-t">${d.intro.map(x=>`<p>${x}</p>`).join('')}</div>
+    <aside class="pg-card glass"><h2>${t('area.cities')}</h2><ul class="city-chips">${r.cities.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><p class="mp-p">${t('area.travel')}</p></aside></section>
+  <section class="pg-sec" id="sluzby-v-regionu"><h2>${t('area.svc')}</h2>
+    <ul class="hub-grid">${SERVICES.map(s=>{ const sd=s[lang]; return `<li><a class="hub-card glass" href="${c.href(svcPath(s,lang))}">
+      <div class="hc-img">${srcTag(svcImgSrc(c, s), sd.t)}<span class="ico">${ICON[s.icon]}</span></div>
+      <div class="hc-b"><h3 class="hc-h">${sd.t}</h3><p>${sd.s}</p><span class="more">${t('svc.more')} ${ICON.arrow}</span></div></a></li>`; }).join('')}</ul></section>
+  <section class="pg-sec"><h2>${t('pg.how')}</h2>${flow(c)}</section>
+  ${d.faq.length?`<section class="pg-sec"><h2>${t('pg.faq')}</h2>${faqHTML(d.faq)}</section>`:''}
+  <section class="cta-box glass"><div><h2>${t('pg.ctaH')}</h2><p>${t('pg.ctaP')}</p></div><a class="btn primary" href="${c.href(PATHS.home[lang])}#poptavka">${t('nav.cta')}</a></section>
+  <section class="pg-sec"><h2>${t('area.other')}</h2><div class="other">${REGIONS.filter(x=>x.id!==r.id).map(x=>`<a href="${c.href(regionPath(x,lang))}">${ICON.viz}${x[lang].t}</a>`).join('')}</div></section>
+</main>`;
+  return doc(c, p, main);
+}
 
 /* ================================================================ LEGAL, 404, ADMIN */
 export function legalPage(key, lang){

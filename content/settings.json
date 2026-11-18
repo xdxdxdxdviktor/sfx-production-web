@@ -2,24 +2,37 @@
   "company": {
     "name": "SFX production",
     "person": "Jiří Hromádka",
-    "owner": "",
-    "ico": "",
-    "street": "",
-    "city": "",
-    "zip": "",
-    "region": "",
-    "register": "",
-    "phone": "",
     "email": "sfx-production@seznam.cz",
-    "areaServed": [
-      "Česká republika"
-    ],
-    "sameAs": [],
-    "founded": ""
+    "phone": "",
+    "founded": "",
+    "sameAs": []
   },
   "verify": {
     "google": "",
     "bing": "",
     "seznam": ""
-  }
+  },
+  "billing": {
+    "owner": "",
+    "ico": "05042101",
+    "dic": "",
+    "vat_payer": false,
+    "street": "",
+    "city": "",
+    "zip": "",
+    "register": "",
+    "bank": ""
+  },
+  "branch": {
+    "street": "",
+    "city": "",
+    "zip": "",
+    "region": "Ústecký kraj",
+    "note": ""
+  },
+  "areas": [
+    "Ústecký kraj",
+    "Liberecký kraj",
+    "Praha"
+  ]
 }

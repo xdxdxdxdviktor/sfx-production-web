@@ -1,20 +1,50 @@
 {
-  "name": "Jiří Hromádka",
-  "photo": "/assets/img/jiri-hromadka.jpg",
   "cs": {
-    "h": "O mně",
-    "role": "Art director / project manager",
-    "hi": "Ahoj, jsem Jirka.",
-    "b1": "Natáčím, fotím a stříhám. Nejvíc mě baví hledat, jak věci ukázat jinak: světlem, pohybem kamery nebo pohledem z dronu. U každé zakázky jsem osobně od první schůzky až po finální výsledek.",
-    "b2": "Když je projekt větší, přizvu lidi, se kterými se znám a kterým věřím: druhého kameramana, zvukaře nebo 3D grafika. Vy ale pořád řešíte všechno jen se mnou.",
-    "quote": "Dobrý záběr nevznikne náhodou. Vznikne z přípravy, světla a trpělivosti."
+    "h": "O nás"
   },
   "en": {
-    "h": "About me",
-    "role": "Art director / project manager",
-    "hi": "Hi, I’m Jirka.",
-    "b1": "I film, photograph and edit. What I enjoy most is finding a different way to show things: with light, camera movement or a view from a drone. I’m personally on every job, from the first meeting to the final export.",
-    "b2": "For bigger projects I bring in people I know and trust: a second camera operator, a sound recordist or a 3D artist. But you still deal with just me.",
-    "quote": "A good shot doesn’t happen by accident. It comes from preparation, light and patience."
-  }
+    "h": "About us"
+  },
+  "people": [
+    {
+      "name": "Jiří Hromádka",
+      "photo": "/assets/img/jiri-hromadka.jpg",
+      "email": "sfx-production@seznam.cz",
+      "phone": "",
+      "cs": {
+        "hi": "Ahoj, jsem Jirka.",
+        "b1": "Natáčím, fotím a stříhám. Nejvíc mě baví hledat, jak věci ukázat jinak: světlem, pohybem kamery nebo pohledem z dronu. U každé zakázky jsem osobně od první schůzky až po finální výsledek.",
+        "quote": "Dobrý záběr nevznikne náhodou. Vznikne z přípravy, světla a trpělivosti.",
+        "role": "Art director",
+        "b2": "Když je projekt větší, přizvu lidi, se kterými se znám a kterým věřím: druhého kameramana, zvukaře nebo 3D grafika. Organizaci, termíny a komunikaci s vámi drží v ruce Jaroslav."
+      },
+      "en": {
+        "hi": "Hi, I’m Jirka.",
+        "b1": "I film, photograph and edit. What I enjoy most is finding a different way to show things: with light, camera movement or a view from a drone. I’m personally on every job, from the first meeting to the final export.",
+        "quote": "A good shot doesn’t happen by accident. It comes from preparation, light and patience.",
+        "role": "Art director",
+        "b2": "For bigger projects I bring in people I know and trust: a second camera operator, a sound recordist or a 3D artist. Jaroslav keeps the planning, deadlines and communication with you on track."
+      }
+    },
+    {
+      "name": "Jaroslav Lauerman",
+      "photo": "",
+      "email": "",
+      "phone": "",
+      "cs": {
+        "role": "Project manager",
+        "hi": "Jsem Jarda a hlídám, aby všechno klaplo.",
+        "b1": "Postarám se o to, co není vidět, ale bez čeho to nejde: plán natáčení, termíny, lokace, povolení a rozpočet. Jsem váš kontakt od první poptávky až po předání hotových souborů.",
+        "b2": "Když se něco změní, víte o tom ode mě jako první. Žádné dohledávání v e-mailech, jasný plán a jedna osoba, která za ním stojí.",
+        "quote": ""
+      },
+      "en": {
+        "role": "Project manager",
+        "hi": "I’m Jarda and I make sure everything runs smoothly.",
+        "b1": "I take care of what you don’t see but can’t do without: the shoot plan, deadlines, locations, permits and budget. I’m your contact from the first enquiry to the final delivery.",
+        "b2": "If anything changes, you hear it from me first. No digging through emails, just a clear plan and one person behind it.",
+        "quote": ""
+      }
+    }
+  ]
 }

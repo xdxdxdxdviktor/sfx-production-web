@@ -3,7 +3,7 @@ export const I18N = {
 cs: {
   'skip':'Přeskočit na obsah','intro.skip':'Přeskočit',
   'nav.cta':'Poptávka','nav.menu':'Otevřít menu','nav.lang':'Jazyk',
-  'm.sluzby':'Služby','m.proces':'Jak pracujeme','m.blog':'Blog','m.ref':'Reference','m.onas':'O mně','m.partneri':'Partneři','m.poptavka':'Poptávka',
+  'm.sluzby':'Služby','m.proces':'Jak pracujeme','m.blog':'Blog','m.ref':'Reference','m.onas':'O nás','m.areas':'Kde působíme','m.partneri':'Partneři','m.poptavka':'Poptávka',
   'm.pravni':'Právní informace','m.gdpr':'Ochrana osobních údajů','m.cookies':'Cookies',
   'hero.kicker':'Videoprodukce · fotografie · dron · 3D',
   'hero.h1':'Obraz,<br>který zůstane.',
@@ -73,12 +73,14 @@ cs: {
   'hub.title':'Služby – video, foto, dron, 3D a vizualizace',
   'bi.lead':'Návody a tipy k natáčení videí, focení, letům s dronem, virtuálním prohlídkám Matterport a 3D renderům. Kolik co stojí a jak se připravit. Píšeme z praxe.',
   'nf.t':'Tenhle záběr jsme nenatočili.','nf.p':'Stránka neexistuje nebo byla přesunuta. Zkuste začít od úvodu.','nf.home':'Zpět na úvod','nf.svc':'Prohlédnout služby',
+  'area.h':'Kde působíme','area.p':'Natáčíme a fotíme hlavně v Ústeckém a Libereckém kraji a v celé Praze. Za zajímavým projektem vyrazíme kamkoli v Česku.','area.cities':'Kde natáčíme a fotíme','area.svc':'Co pro vás v regionu uděláme','area.more':'Detail oblasti','area.other':'Další oblasti','area.svcNote':'Působíme hlavně tady:','area.title':'Kde působíme – Ústecký kraj, Liberecký kraj a Praha','area.desc':'Video produkce, fotografie, dron a 360° prohlídky v Ústeckém a Libereckém kraji a v celé Praze. Města, kde natáčíme, a jak to funguje s dopravou.','area.travel':'Jinde v Česku? Napište nám, rádi přijedeme.',
+  'ft.bill':'Fakturační údaje','ft.dic':'DIČ','ft.seat':'Sídlo','ft.branch':'Provozovna','ft.noVat':'Neplátce DPH','team.contact':'Kontakt',
   'ft.svc':'Služby','ft.web':'Web','ft.contact':'Kontakt','ft.rights':'Všechna práva vyhrazena.','ft.ico':'IČO','ft.claim':'Video, fotografie, dron, 360° prohlídky, 3D a střih pod jednou střechou.'
 },
 en: {
   'skip':'Skip to content','intro.skip':'Skip',
   'nav.cta':'Get a quote','nav.menu':'Open menu','nav.lang':'Language',
-  'm.sluzby':'Services','m.proces':'How we work','m.blog':'Blog','m.ref':'References','m.onas':'About me','m.partneri':'Partners','m.poptavka':'Get a quote',
+  'm.sluzby':'Services','m.proces':'How we work','m.blog':'Blog','m.ref':'References','m.onas':'About us','m.areas':'Where we work','m.partneri':'Partners','m.poptavka':'Get a quote',
   'm.pravni':'Legal information','m.gdpr':'Privacy policy','m.cookies':'Cookies',
   'hero.kicker':'Video production · photography · drone · 3D',
   'hero.h1':'Images<br>that stay.',
@@ -145,6 +147,8 @@ en: {
   'hub.title':'Services – video, photo, drone, 3D and visualisation',
   'bi.lead':'Guides and tips on video, photography, drone flights, Matterport virtual tours and 3D renders. What things cost and how to prepare. Written from practice.',
   'nf.t':'We didn’t shoot this one.','nf.p':'The page doesn’t exist or has moved. Try starting from the home page.','nf.home':'Back to home','nf.svc':'Explore services',
+  'area.h':'Where we work','area.p':'We mostly film and photograph in the Ústí and Liberec regions and all over Prague. For an interesting project we’ll travel anywhere in Czechia.','area.cities':'Where we film and photograph','area.svc':'What we do in the region','area.more':'Area details','area.other':'Other areas','area.svcNote':'We mostly work in:','area.title':'Where we work – Ústí Region, Liberec Region and Prague','area.desc':'Video production, photography, drone and 360° tours in the Ústí and Liberec regions and all over Prague. Towns we cover and how travel works.','area.travel':'Somewhere else in Czechia? Get in touch, we’re happy to travel.',
+  'ft.bill':'Billing details','ft.dic':'VAT ID','ft.seat':'Registered office','ft.branch':'Branch office','ft.noVat':'Not a VAT payer','team.contact':'Contact',
   'ft.svc':'Services','ft.web':'Website','ft.contact':'Contact','ft.rights':'All rights reserved.','ft.ico':'Company ID','ft.claim':'Video, photography, drone, 360° tours, 3D and editing under one roof.'
 }};
 

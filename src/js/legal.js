@@ -3,7 +3,9 @@ import { COMPANY, RUNTIME } from './config.js';
 
 const todo = l => `<i>${l==='cs'?'doplníme':'to be added'}</i>`;
 const mail = () => `<a href="mailto:${COMPANY.email}">${COMPANY.email}</a>`;
-const addr = () => [COMPANY.street, [COMPANY.zip, COMPANY.city].filter(Boolean).join(' ')].filter(Boolean).join(', ');
+const addr = (a = COMPANY) => [a.street, [a.zip, a.city].filter(Boolean).join(' ')].filter(Boolean).join(', ');
+const vat = l => COMPANY.dic ? `<br>${l==='cs'?'DIČ':'VAT ID'}: ${COMPANY.dic}` : (COMPANY.ico ? `<br>${l==='cs'?'Neplátce DPH':'Not a VAT payer'}` : '');
+const branch = l => COMPANY.branch.city ? `<br>${l==='cs'?'Provozovna':'Branch office'}: ${addr(COMPANY.branch)}` : '';
 const processor = l => /formsubmit/.test(RUNTIME.formEndpoint)
   ? (l==='cs' ? ' a služba FormSubmit (formsubmit.co), přes kterou se poptávka z formuláře doručí do naší e-mailové schránky'
               : ' and FormSubmit (formsubmit.co), which delivers the enquiry from the form to our inbox') : '';
@@ -12,7 +14,7 @@ export const LEGAL = {
  legal:{
   cs:{t:'Právní informace', d:'Provozovatel webu SFX production, autorská práva a odpovědnost.', body:()=>`
    <h2>Provozovatel webu</h2>
-   <p>${COMPANY.owner||'<i>Obchodní firma / jméno: doplníme</i>'}<br>IČO: ${COMPANY.ico||todo('cs')}<br>Sídlo: ${addr()||todo('cs')}<br>${COMPANY.register||'<i>Zápis v rejstříku: doplníme</i>'}</p>
+   <p>${COMPANY.owner||'<i>Obchodní firma / jméno: doplníme</i>'}<br>IČO: ${COMPANY.ico||todo('cs')}${vat('cs')}<br>Sídlo: ${addr()||todo('cs')}${branch('cs')}<br>${COMPANY.register||'<i>Zápis v rejstříku: doplníme</i>'}</p>
    <p>E-mail: ${mail()}${COMPANY.phone?'<br>Telefon: '+COMPANY.phone:''}</p>
    <h2>Autorská práva</h2>
    <p>Veškerý obsah tohoto webu, zejména fotografie, videa, vizualizace, texty a grafika, je chráněn autorským zákonem (zákon č. 121/2000 Sb.). Bez předchozího písemného souhlasu jej není dovoleno kopírovat, šířit ani jinak používat.</p>
@@ -20,7 +22,7 @@ export const LEGAL = {
    <p>Informace na webu mají informativní charakter a nejsou nabídkou k uzavření smlouvy. Konkrétní podmínky spolupráce a cenu vždy uvádíme v nabídce.</p>`},
   en:{t:'Legal information', d:'Website operator, copyright and liability.', body:()=>`
    <h2>Website operator</h2>
-   <p>${COMPANY.owner||'<i>Company / name: to be added</i>'}<br>Company ID (IČO): ${COMPANY.ico||todo('en')}<br>Registered office: ${addr()||todo('en')}<br>${COMPANY.register||'<i>Register entry: to be added</i>'}</p>
+   <p>${COMPANY.owner||'<i>Company / name: to be added</i>'}<br>Company ID (IČO): ${COMPANY.ico||todo('en')}${vat('en')}<br>Registered office: ${addr()||todo('en')}${branch('en')}<br>${COMPANY.register||'<i>Register entry: to be added</i>'}</p>
    <p>Email: ${mail()}${COMPANY.phone?'<br>Phone: '+COMPANY.phone:''}</p>
    <h2>Copyright</h2>
    <p>All content on this website, including photos, videos, visualisations, text and graphics, is protected by the Czech Copyright Act (No. 121/2000 Coll.). It may not be copied, distributed or otherwise used without prior written consent.</p>

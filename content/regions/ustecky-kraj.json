@@ -1,0 +1,81 @@
+{
+  "id": "ustecky-kraj",
+  "order": 1,
+  "code": "CZ-42",
+  "place": "Ústí nad Labem",
+  "slug": {
+    "cs": "ustecky-kraj",
+    "en": "usti-region"
+  },
+  "img": "aerial",
+  "cities": [
+    "Ústí nad Labem",
+    "Děčín",
+    "Teplice",
+    "Most",
+    "Chomutov",
+    "Litoměřice",
+    "Louny",
+    "Žatec",
+    "Kadaň",
+    "Bílina",
+    "Roudnice nad Labem",
+    "Lovosice",
+    "Varnsdorf",
+    "Rumburk"
+  ],
+  "cs": {
+    "t": "Ústecký kraj",
+    "h1": "Video produkce, foto a dron v Ústeckém kraji",
+    "seo": {
+      "title": "Video, foto a dron – Ústí nad Labem a Ústecký kraj",
+      "desc": "Natáčení videí, fotografie, letecké záběry dronem a 360° prohlídky v Ústí nad Labem, Děčíně, Teplicích, Mostě a celém Ústeckém kraji. Nezávazná poptávka."
+    },
+    "lead": "Ústecký kraj je naše domovská oblast. Natáčíme a fotíme od Děčína po Chomutov, od firem a průmyslu po krajinu Českého středohoří.",
+    "intro": [
+      "Pro firmy z Ústeckého kraje připravujeme firemní a náborová videa, produktové fotky, letecké záběry dronem i virtuální prohlídky prostor. Výroba, logistika a průmysl tu mají silnou tradici a dobré video pomůže ukázat lidi, kteří za nimi stojí.",
+      "Krajina kolem Labe, České středohoří, Krušné hory a České Švýcarsko je skvělá kulisa pro reklamu, turistické video i letecké záběry. Termín přizpůsobíme světlu a počasí, protože jsme kousek."
+    ],
+    "faq": [
+      {
+        "q": "Účtujete dopravu po Ústeckém kraji?",
+        "a": "Doprava v rámci kraje je u běžných zakázek v ceně. Konkrétní podmínky vždy uvedeme v nabídce."
+      },
+      {
+        "q": "Jak rychle můžete přijet?",
+        "a": "Jsme v regionu, takže krátké natáčení nebo focení zvládneme často i během několika dní. Záleží na aktuální vytíženosti."
+      },
+      {
+        "q": "Létáte s dronem i v Českém Švýcarsku?",
+        "a": "V národním parku platí přísná pravidla a létání tam bývá zakázané. Navrhneme místa mimo chráněná území nebo vyřídíme výjimku, pokud je to možné."
+      }
+    ]
+  },
+  "en": {
+    "t": "Ústí Region",
+    "h1": "Video production, photography and drone in the Ústí Region",
+    "seo": {
+      "title": "Video, photo and drone – Ústí nad Labem and the Ústí Region",
+      "desc": "Video production, photography, drone aerials and 360° tours in Ústí nad Labem, Děčín, Teplice, Most and the whole Ústí Region. Free enquiry."
+    },
+    "lead": "The Ústí Region is our home turf. We film and photograph from Děčín to Chomutov, from industry and companies to the landscape of the Central Bohemian Uplands.",
+    "intro": [
+      "For companies in the Ústí Region we make corporate and recruitment videos, product photos, drone aerials and virtual tours. Manufacturing and logistics have a long tradition here, and a good video shows the people behind them.",
+      "The Elbe valley, the Central Bohemian Uplands, the Ore Mountains and Bohemian Switzerland make a great backdrop for ads, tourism videos and aerials. We’re close, so we can time the shoot to the light and weather."
+    ],
+    "faq": [
+      {
+        "q": "Do you charge travel within the Ústí Region?",
+        "a": "Travel within the region is included for typical jobs. We always state the terms in the quote."
+      },
+      {
+        "q": "How quickly can you come?",
+        "a": "We’re local, so a short shoot is often possible within a few days, depending on our schedule."
+      },
+      {
+        "q": "Can you fly a drone in Bohemian Switzerland?",
+        "a": "Strict rules apply in the national park and flying is usually prohibited. We suggest locations outside protected areas or apply for an exemption where possible."
+      }
+    ]
+  }
+}

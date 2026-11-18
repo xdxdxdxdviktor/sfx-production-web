@@ -66,12 +66,22 @@ export function generate(ROOT){
 
   /* ---------- site texts ---------- */
   const about = read(path.join(C,'about.json')), home = read(path.join(C,'home.json')), settings = read(path.join(C,'settings.json'));
+  const team = { cs:about.cs||{h:'O nás'}, en:about.en||{h:'About us'}, people: arr(about.people).map(p=>({
+    name:p.name||'', photo:p.photo||'', email:p.email||'', phone:p.phone||'',
+    cs:{role:p.cs?.role||'', hi:p.cs?.hi||'', b1:p.cs?.b1||'', b2:p.cs?.b2||'', quote:p.cs?.quote||''},
+    en:{role:p.en?.role||p.cs?.role||'', hi:p.en?.hi||'', b1:p.en?.b1||'', b2:p.en?.b2||'', quote:p.en?.quote||''} })).filter(p=>p.name) };
+  const regions = list(path.join(C,'regions')).sort((a,b)=>(a.order||99)-(b.order||99)).map(r => {
+    const L = l => { const d = r[l] || {}; return { t:d.t, h1:d.h1||d.t, lead:d.lead||'', seo:{title:d.seo?.title||d.t, desc:d.seo?.desc||d.lead||''},
+      intro:strs(d.intro), faq:arr(d.faq).map(f=>[f.q||'', f.a||'']).filter(f=>f[0]&&f[1]) }; };
+    return { id:r.id, code:r.code||'', place:r.place||'', img:r.img||'aerial', hero:r.hero_image||'', cities:strs(r.cities),
+      slug:{cs:r.slug?.cs||r.id, en:r.slug?.en||r.id}, cs:L('cs'), en:L('en') };
+  });
 
   const banner = '/* GENERATED from /content by tools/content.mjs — edit the content (or use /admin/), not this file. */\n';
   fs.writeFileSync(path.join(OUTJS,'services.js'), banner +
     `export const SERVICES = ${JSON.stringify(services)};\nexport const SVC_BY = Object.fromEntries(SERVICES.map(s=>[s.id,s]));\nexport const SVC_BY_TILE = Object.fromEntries(SERVICES.map(s=>[s.tile,s]));\n`);
   fs.writeFileSync(path.join(OUTJS,'posts.js'), banner + `export const POSTS = ${JSON.stringify(posts)};\nexport const postsIn = lang => POSTS.filter(p => p.langs.includes(lang));\n`);
   fs.writeFileSync(path.join(OUTJS,'site-content.js'), banner +
-    `export const ABOUT = ${JSON.stringify(about)};\nexport const HOME = ${JSON.stringify(home)};\nexport const SETTINGS = ${JSON.stringify(settings)};\n`);
-  return { services:services.length, posts:posts.length };
+    `export const TEAM = ${JSON.stringify(team)};\nexport const ABOUT = TEAM;\nexport const REGIONS = ${JSON.stringify(regions)};\nexport const HOME = ${JSON.stringify(home)};\nexport const SETTINGS = ${JSON.stringify(settings)};\n`);
+  return { services:services.length, posts:posts.length, regions:regions.length };
 }

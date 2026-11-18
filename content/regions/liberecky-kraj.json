@@ -1,0 +1,79 @@
+{
+  "id": "liberecky-kraj",
+  "order": 2,
+  "code": "CZ-51",
+  "place": "Liberec",
+  "slug": {
+    "cs": "liberecky-kraj",
+    "en": "liberec-region"
+  },
+  "img": "building",
+  "cities": [
+    "Liberec",
+    "Jablonec nad Nisou",
+    "Česká Lípa",
+    "Turnov",
+    "Semily",
+    "Nový Bor",
+    "Frýdlant",
+    "Jilemnice",
+    "Tanvald",
+    "Železný Brod",
+    "Hrádek nad Nisou",
+    "Mimoň"
+  ],
+  "cs": {
+    "t": "Liberecký kraj",
+    "h1": "Video produkce, foto a dron v Libereckém kraji",
+    "seo": {
+      "title": "Video, foto a dron – Liberec a Liberecký kraj",
+      "desc": "Natáčení videí, fotografie, letecké záběry dronem a 360° prohlídky v Liberci, Jablonci nad Nisou, České Lípě, Turnově a celém Libereckém kraji."
+    },
+    "lead": "Z Ústeckého kraje to máme do Liberce, Jablonce i České Lípy kousek. Natáčíme pro firmy, hotely, sport i turistický ruch.",
+    "intro": [
+      "Liberecký kraj je plný firem se skvělými příběhy: sklářství a bižuterie, strojírenství, textil i moderní technologie. Ukážeme je ve firemním videu, na produktových fotkách nebo v 3D renderech.",
+      "Jizerské hory, Ještěd, Krkonoše a Český ráj nabízejí kulisu, která sama prodává. Pro hotely, penziony a sportovní areály připravujeme letecké záběry, fotky a virtuální prohlídky Matterport."
+    ],
+    "faq": [
+      {
+        "q": "Jezdíte natáčet i do Libereckého kraje?",
+        "a": "Ano, Liberecký kraj patří k oblastem, kde působíme pravidelně. Dopravu uvedeme v nabídce."
+      },
+      {
+        "q": "Uděláte virtuální prohlídku hotelu nebo penzionu?",
+        "a": "Ano. Naskenujeme pokoje i společné prostory a prohlídku předáme jako odkaz a kód pro vložení na web nebo do rezervačních portálů."
+      },
+      {
+        "q": "Natáčíte i zimní sporty?",
+        "a": "Ano, sportovní a zimní záběry včetně dronu natáčíme podle podmínek a pravidel daného areálu."
+      }
+    ]
+  },
+  "en": {
+    "t": "Liberec Region",
+    "h1": "Video production, photography and drone in the Liberec Region",
+    "seo": {
+      "title": "Video, photo and drone – Liberec and the Liberec Region",
+      "desc": "Video production, photography, drone aerials and 360° tours in Liberec, Jablonec nad Nisou, Česká Lípa, Turnov and the whole Liberec Region."
+    },
+    "lead": "From the Ústí Region it’s a short drive to Liberec, Jablonec and Česká Lípa. We film for companies, hotels, sport and tourism.",
+    "intro": [
+      "The Liberec Region is full of companies with great stories: glass and jewellery, engineering, textiles and modern tech. We show them in corporate videos, product photos or 3D renders.",
+      "The Jizera Mountains, Ještěd, the Giant Mountains and Bohemian Paradise are a backdrop that sells itself. For hotels, guesthouses and sports resorts we shoot aerials, photos and Matterport virtual tours."
+    ],
+    "faq": [
+      {
+        "q": "Do you work in the Liberec Region?",
+        "a": "Yes, it’s one of the areas we work in regularly. Travel is stated in the quote."
+      },
+      {
+        "q": "Can you make a virtual tour of a hotel or guesthouse?",
+        "a": "Yes. We scan rooms and common areas and deliver the tour as a link and embed code for your website or booking portals."
+      },
+      {
+        "q": "Do you film winter sports?",
+        "a": "Yes, including drone shots, depending on conditions and the resort’s rules."
+      }
+    ]
+  }
+}

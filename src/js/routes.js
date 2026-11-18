@@ -5,6 +5,7 @@ export const PATHS = {
   home:     {cs:'/',                         en:'/en/'},
   services: {cs:'/sluzby/',                  en:'/en/services/'},
   blog:     {cs:'/blog/',                    en:'/en/blog/'},
+  areas:    {cs:'/kde-pusobime/',            en:'/en/where-we-work/'},
   legal:    {cs:'/pravni-informace/',        en:'/en/legal/'},
   privacy:  {cs:'/ochrana-osobnich-udaju/',  en:'/en/privacy/'},
   cookies:  {cs:'/cookies/',                 en:'/en/cookies/'},
@@ -14,6 +15,7 @@ export const FORM_HASH = {cs:'#poptavka', en:'#poptavka'};
 
 export const svcPath  = (svc, lang) => PATHS.services[lang] + svc.slug[lang] + '/';
 export const postPath = (p, lang)   => PATHS.blog[lang] + p.slug[lang] + '/';
+export const regionPath = (r, lang) => PATHS.areas[lang] + r.slug[lang] + '/';
 
 /* relative URL from page `from` (site path, ends with "/" or ".html") to site path `to` */
 export function rel(from, to){

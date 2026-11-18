@@ -8,10 +8,12 @@ Co se v ní dá dělat:
 
 - **Blog:** psát a mazat články, nahrávat úvodní fotku a galerii a vložit video odkazem z YouTube. Text se formátuje jednoduše: `## Mezititulek`, `- odrážka`, `**tučně**`.
 - **Služby:** upravovat texty, techniku, časté dotazy a štítky a nahrát hlavní fotku a galerii „Ukázky práce“ s videem z YouTube.
+- **Kde působíme:** stránky pro Ústecký kraj, Liberecký kraj a Prahu (texty, města, časté dotazy, fotka). Slouží pro místní vyhledávání.
 - **Stránky a nastavení:**
-  - sekce „O mně“ (text a fotka),
+  - O nás: tým, u každého člověka fotka, role, texty, e-mail a telefon,
   - úvodní stránka (nadpis a showreel z YouTube),
-  - kontakty a údaje o firmě: IČO, adresa, telefon, profily na sítích a ověřovací kódy pro Google a Seznam.
+  - kontakty, fakturační údaje (IČO, DIČ, sídlo, plátce DPH) a provozovna. Adresa provozovny je důležitá pro Google mapy a místní výsledky.
+  - oblasti působnosti a ověřovací kódy pro Google a Seznam.
 
 Fotky se nahrávají do administrace a samy se převedou na WebP s maximální šířkou 2400 px. Videa se nenahrávají, vkládají se odkazem z YouTube. Článek, který má vyplněnou jen češtinu, se zobrazí jen na české verzi webu.
 
