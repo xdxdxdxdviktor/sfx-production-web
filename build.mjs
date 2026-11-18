@@ -39,7 +39,8 @@ const portraitSrc = ['jpg','jpeg','png','JPG','JPEG','PNG'].map(e=>path.join(ROO
 if(portraitSrc){
   const dim = k => Number(execFileSync('sips', ['-g',k, portraitSrc]).toString().match(/:\s*(\d+)/)[1]);
   const W = dim('pixelWidth'), H = dim('pixelHeight');
-  const sz = Math.min(W, H, Math.round((W < H ? W : H) * PORTRAIT.size));
+  const square = Math.abs(W - H) <= 4;   // an already-square photo is used whole
+  const sz = square ? Math.min(W, H) : Math.min(W, H, Math.round((W < H ? W : H) * PORTRAIT.size));
   const ox = Math.max(0, Math.min(W-sz, Math.round(W*PORTRAIT.x - sz/2))), oy = Math.max(0, Math.min(H-sz, Math.round(H*PORTRAIT.y - sz/2)));
   const out = path.join(OUT,'assets/img/jiri-hromadka.jpg');
   execFileSync('sips', ['-s','format','jpeg','-s','formatOptions','84','-c',String(sz),String(sz),'--cropOffset',String(oy),String(ox), portraitSrc, '--out', out], {stdio:'ignore'});
