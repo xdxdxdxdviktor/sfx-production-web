@@ -31,7 +31,6 @@ async function sendByEmail(rec, text){
     [L?'Telefon':'Phone']: rec.phone ? rec.phone + (rec.call_time ? ` (${rec.call_time})` : '') : '—',
     [L?'Služby':'Services']: rec.services_label,
     [L?'Upřesnění':'Details']: Object.entries(rec.details||{}).map(([k,v])=>`${k}: ${v}`).join('; ') || '—',
-    [L?'Kalkulace':'Estimate']: rec.estimate || '—',
     [L?'Termín':'Date']: (rec.date || '—') + (rec.flexible ? (L?' (flexibilní)':' (flexible)') : ''),
     [L?'Lokalita':'Location']: rec.location || '—',
     [L?'Rozpočet':'Budget']: rec.budget || '—',

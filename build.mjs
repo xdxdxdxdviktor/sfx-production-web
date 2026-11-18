@@ -11,13 +11,12 @@ import { I18N } from './src/js/i18n.js';
 import { SERVICES } from './src/js/services.js';
 import { POSTS } from './src/js/posts.js';
 import { PATHS, LANGS, svcPath, postPath } from './src/js/routes.js';
-import { money } from './src/js/calc.js';
 import * as P from './src/js/pages.js';
 
 const ROOT = path.dirname(new URL(import.meta.url).pathname);
 const SRC = path.join(ROOT, 'src');
 const OUT = path.join(ROOT, 'github-pages');
-const BROWSER_JS = ['app.js','ui.js','calc.js','config.js','i18n.js','services.js','posts.js','icons.js','routes.js','camera3d.js','db.js','admin.js'];
+const BROWSER_JS = ['app.js','ui.js','config.js','i18n.js','services.js','posts.js','icons.js','routes.js','camera3d.js','db.js','admin.js'];
 const today = new Date().toISOString().slice(0,10);
 
 const hash = buf => crypto.createHash('sha1').update(buf).digest('hex').slice(0,8);
@@ -91,7 +90,7 @@ Kontakt / contact: ${COMPANY.email}${COMPANY.phone?', '+COMPANY.phone:''}${COMPA
 Poptávka / enquiry: ${SITE}/#poptavka
 
 ## Služby (CZ)
-${SERVICES.map(s=>`- [${s.cs.t}](${SITE}${svcPath(s,'cs')}): ${s.cs.lead} Cena od ${money(s.from,'cs').replace(/ /g,' ')}.`).join('\n')}
+${SERVICES.map(s=>`- [${s.cs.t}](${SITE}${svcPath(s,'cs')}): ${s.cs.lead}`).join('\n')}
 
 ## Services (EN)
 ${SERVICES.map(s=>`- [${s.en.t}](${SITE}${svcPath(s,'en')}): ${s.en.lead}`).join('\n')}
@@ -108,7 +107,7 @@ for(const lang of LANGS){
   const T = I18N[lang], pre = lang==='en' ? 'en-' : '';
   ogJobs.push({file:pre+'home', img:'camera-poster', kicker:T['hero.kicker'], title:T['hero.h1'].replace('<br>',' '), sub:T['hero.sub'], logo:true});
   ogJobs.push({file:pre+'blog', img:'edit', kicker:COMPANY.name, title:T['blog.h'], sub:T['bi.lead']});
-  for(const s of SERVICES) ogJobs.push({file:pre+s.id, img:s.img, kicker:s[lang].t, title:s[lang].h1, sub:`${T['pg.priceFrom']} ${money(s.from,lang)}`});
+  for(const s of SERVICES) ogJobs.push({file:pre+s.id, img:s.img, kicker:s[lang].t, title:s[lang].h1, sub:s[lang].s});
   for(const x of POSTS) ogJobs.push({file:pre+'post-'+x.id, img:x.img, kicker:T['m.blog'], title:x[lang].t, sub:x[lang].lead});
 }
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';

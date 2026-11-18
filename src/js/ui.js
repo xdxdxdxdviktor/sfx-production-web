@@ -4,7 +4,6 @@ import { SERVICES, SVC_BY } from './services.js';
 import { POSTS } from './posts.js';
 import { ICON } from './icons.js';
 import { PATHS, svcPath, postPath, rel } from './routes.js';
-import { L, compute, defaults, rangeCfg, unitFor, money, moneyRange } from './calc.js';
 
 export const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
@@ -28,8 +27,8 @@ export function svcPreview(c, id){
   const sv = SVC_BY[id], d = sv[c.lang], k = sv.img;
   return `<div class="pv-img">${imgTag(c, k, d.t)}<video muted loop playsinline preload="none" data-src="${c.asset('video/'+k+'.mp4')}" poster="${c.asset('img/'+k+'.webp')}"></video><span class="ico">${ICON[sv.icon]}</span></div>
     <div class="pv-b"><h3>${d.t}</h3><p>${d.lead}</p>
-    <p class="pv-price">${c.t('pg.priceFrom')} <b>${money(sv.from, c.lang)}</b></p>
-    <div class="btns"><a class="btn primary" href="${c.href(svcPath(sv,c.lang))}">${c.t('svc.more')}</a><a class="btn glass" href="${c.href(svcPath(sv,c.lang))}#kalkulacka">${c.t('svc.calc')}</a></div></div>`;
+    <ul class="tags">${sv.tags[c.lang].map(x=>`<li>${x}</li>`).join('')}</ul>
+    <div class="btns"><a class="btn primary" href="${c.href(svcPath(sv,c.lang))}">${c.t('svc.more')}</a></div></div>`;
 }
 
 /* ---------- blog cards ---------- */
@@ -69,44 +68,6 @@ export function qblocks(c, sel, q){
 }
 export const budgetBtns = (c, b) => c.t('budgets').map((x,i)=>`<button type="button" data-b="${i}" aria-pressed="${b===i}">${x}</button>`).join('');
 
-/* ---------- calculator ---------- */
-export function calcFields(c, svc, state){
-  const lang = c.lang;
-  return svc.calc.fields.map(f=>{
-    if(f.kind==='choice') return `<fieldset class="cf cf-choice" data-f="${f.id}"><legend>${L(f.label,lang)}</legend>
-      <div class="opts${f.opts.length>3?' four':''}">${f.opts.map(o=>`<label class="opt"><input type="radio" name="c-${f.id}" value="${o.id}"${state[f.id]===o.id?' checked':''}><span><b>${L(o.label,lang)}</b>${o.hint?`<small>${L(o.hint,lang)}</small>`:''}${o.add&&o.add[1]?`<em>${c.t('svc.from')} ${money(o.add[0],lang)}</em>`:o.mult&&o.mult!==1?`<em>×${String(o.mult).replace('.', lang==='cs'?',':'.')}</em>`:''}</span></label>`).join('')}</div></fieldset>`;
-    if(f.kind==='range'){ const r = rangeCfg(f, state); if(!r) return `<div class="cf cf-range" data-f="${f.id}" hidden></div>`;
-      const v = state[f.id] ?? r.def; const pct = (v-r.min)/(r.max-r.min)*100;
-      return `<div class="cf cf-range" data-f="${f.id}"><div class="cf-top"><label for="c-${f.id}">${L(r.label,lang)}</label><output for="c-${f.id}"><b>${v}</b> <span>${unitFor(r.unit,v,lang)}</span></output></div>
-        <div class="rng"><button type="button" class="step" data-d="-1" aria-label="−">−</button><input type="range" id="c-${f.id}" name="c-${f.id}" min="${r.min}" max="${r.max}" step="${r.step}" value="${v}" style="--p:${pct}%"><button type="button" class="step" data-d="1" aria-label="+">+</button></div>
-        <small class="cf-hint">${money(r.price[0],lang).replace(/\u00a0Kč$/,'')}–${money(r.price[1],lang)} / ${unitFor(r.unit,1,lang)}${r.free?` · ${r.free} ${unitFor(r.unit,r.free,lang)} ${lang==='cs'?'v základu':'included'}`:''}</small></div>`; }
-    if(f.kind==='extras') return `<fieldset class="cf cf-extras" data-f="${f.id}"><legend>${L(f.label,lang)}</legend>
-      <div class="xopts">${f.opts.map(o=>`<label class="xopt"><input type="checkbox" name="c-${f.id}" value="${o.id}"${(state[f.id]||[]).includes(o.id)?' checked':''}><span><i></i>${L(o.label,lang)}<em>${o.add?`+${money(o.add[0],lang)}${o.per?` / ${unitFor(rangeCfg(svc.calc.fields.find(x=>x.id===o.per),state)?.unit||'',1,lang)}`:''}`:`+${Math.round((o.mult-1)*100)} %`}</em></span></label>`).join('')}</div></fieldset>`;
-    return '';
-  }).join('');
-}
-export function calcResult(c, svc, state){
-  const r = compute(svc, state, c.lang);
-  const lines = r.lines.map(l=>`<li><span>${esc(l.label)}</span><b>${l.mult?`×${String(l.mult).replace('.', c.lang==='cs'?',':'.')}`:`${money(l.min,c.lang)} – ${money(l.max,c.lang)}`}</b></li>`).join('');
-  return `<div class="cr-k">${c.t('calc.result')}</div>
-    <div class="cr-v" data-min="${r.min}" data-max="${r.max}">${moneyRange(r.min, r.max, c.lang)}</div>
-    <div class="cr-meter" aria-hidden="true"><i style="left:${Math.min(96,Math.log10(Math.max(r.min,1000))/Math.log10(400000)*100)}%;right:${Math.max(0,100-Math.log10(Math.max(r.max,1000))/Math.log10(400000)*100)}%"></i></div>
-    <div class="cr-days">${ICON.clock}<span>${c.t('calc.days')} <b>${r.days[0]}–${r.days[1]}</b> ${c.t('calc.wd')}</span></div>
-    <details class="cr-break"><summary>${c.t('calc.breakdown')}</summary><ul>${lines}</ul></details>`;
-}
-export function calculator(c, svc){
-  const state = defaults(svc);
-  return `<section class="calc" id="kalkulacka" data-svc="${svc.id}" aria-labelledby="calc-h">
-    <div class="calc-head"><span class="calc-ico">${ICON.calc}</span><div><h2 id="calc-h">${c.t('calc.h')}</h2><p>${c.t('calc.p')}</p></div></div>
-    <div class="calc-body">
-      <form class="calc-form glass" novalidate>${calcFields(c, svc, state)}</form>
-      <aside class="calc-res glass"><div class="cr-live" aria-live="polite">${calcResult(c, svc, state)}</div>
-        <button type="button" class="btn primary cr-send" data-act="send">${c.t('calc.send')}</button>
-        <div class="cr-tools"><button type="button" class="ad-link" data-act="copy">${ICON.link}<span>${c.t('calc.copy')}</span></button><button type="button" class="ad-link" data-act="reset">${c.t('calc.reset')}</button></div>
-        <p class="cr-note">${c.t('calc.note')}</p></aside>
-    </div></section>`;
-}
-
 /* ---------- enquiry summary: clapperboard ---------- */
 export function summary(c, s){
   const TL = c.t('tiles');
@@ -116,10 +77,10 @@ export function summary(c, s){
     <div class="slate"><div><span>${c.t('sum.prod')}</span><b>SFX production</b></div><div><span>${c.t('sum.scene')}</span><b>${s.sel.length?String(s.sel.length).padStart(2,'0'):'—'}</b></div><div><span>${c.t('sum.take')}</span><b>${String(Math.min(s.step,4)).padStart(2,'0')}</b></div><div class="wide"><span>${c.t('sum.dir')}</span><b>${esc(s.who)||'—'}</b></div></div>
     <div class="sum-bar"><i style="width:${(Math.min(s.step,4)-1)/3*100}%"></i></div>
     ${s.sel.length ? `<div class="sum-chips">${s.sel.map(k=>`<span>${ICON[k]||''}${TL[k]}</span>`).join('')}</div>` : `<p class="sum-empty">${c.t('sum.empty')}</p>`}
-    <dl>${s.calc?row(c.t('sum.calc'), esc(s.calc)):''}${s.det?row(c.t('sum.det'), esc(s.det), 2):''}
+    <dl>${s.det?row(c.t('sum.det'), esc(s.det), 2):''}
       ${row(c.t('sum.when'), esc(s.when), 3)}${row(c.t('sum.where'), esc(s.where), 3)}${row(c.t('sum.budget'), esc(s.budget), 3)}
       ${row(c.t('sum.contact'), esc(s.contact), 4)}</dl>
     <ul class="sum-trust"><li>${c.t('sum.t1')}</li><li>${c.t('sum.t2')}</li><li>${c.t('sum.t3')}</li></ul>`;
 }
 
-export { SERVICES, SVC_BY, POSTS, ICON, PATHS, svcPath, postPath, money, moneyRange };
+export { SERVICES, SVC_BY, POSTS, ICON, PATHS, svcPath, postPath };

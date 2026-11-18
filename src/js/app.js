@@ -5,8 +5,7 @@ import { SERVICES, SVC_BY, SVC_BY_TILE } from './services.js';
 import { POSTS } from './posts.js';
 import { ICON } from './icons.js';
 import { PATHS } from './routes.js';
-import { ctx, esc, svcPreview, blogGrid, blogChips, postCard, tiles, qblocks, budgetBtns, calcFields, calcResult, summary, ORDER } from './ui.js';
-import { compute, defaults, sanitize, encodeState, decodeState, moneyRange, budgetBucket, rangeCfg, unitFor } from './calc.js';
+import { ctx, esc, svcPreview, blogGrid, blogChips, postCard, tiles, qblocks, budgetBtns, summary, ORDER } from './ui.js';
 import { DB } from './db.js';
 
 const $ = (s,r=document)=>r.querySelector(s), $$ = (s,r=document)=>[...r.querySelectorAll(s)];
@@ -164,7 +163,7 @@ function initIntro(){
 /* =============================================================== ENQUIRY FORM */
 function initForm(){
   const NSTEP = 4; let step = 1;
-  const form = {sel:new Set(), budget:-1, pref:'mail', q:{}, calc:null};
+  const form = {sel:new Set(), budget:-1, pref:'mail', q:{}};
   const F = id => $('#'+id);
   const FIELDS = ['fProj','fLoc','fDesc','fDate','fLink','fName','fCompany','fMail','fTel','fTime'];
   const TL = t('tiles');
@@ -182,18 +181,6 @@ function initForm(){
     form.sel = new Set(d.sel||[]); form.budget = d.budget??-1; form.pref = d.pref||'mail'; form.q = d.q||{}; F('fFlex').checked = !!d.flex;
     FIELDS.forEach(id=>{ if(d[id] && F(id)) F(id).value = d[id]; });
     F('draftNote').hidden = false; paintTiles(); paintBudget(); setPref(form.pref); updateCount();
-  }
-  /* estimate handed over from a service-page calculator */
-  function loadCalc(){
-    let c; try{ c = JSON.parse(store.get('sfx-calc')||'null'); }catch(e){ c=null; }
-    if(!c || !SVC_BY[c.svc]) return;
-    const sv = SVC_BY[c.svc], st = sanitize(sv, c.state||{}), r = compute(sv, st, lang);
-    form.calc = {svc:c.svc, state:st, min:r.min, max:r.max, text:`${sv[lang].t}: ${moneyRange(r.min, r.max, lang)}`, lines:r.lines.map(l=>l.label).join('; ')};
-    form.sel.add(sv.tile); form.sel.delete('unsure');
-    if(form.budget<0) form.budget = budgetBucket(r.min, r.max);
-    const chip = F('calcChip'); chip.hidden = false;
-    chip.innerHTML = `<span class="cc-i">${ICON.calc}</span><span><small>${t('f.calcNote')}</small><b>${esc(form.calc.text)}</b><em>${esc(form.calc.lines)}</em></span><button type="button" data-act="rmcalc" aria-label="${t('f.calcRm')}">${ICON.x}</button>`;
-    paintTiles(); paintBudget();
   }
   function pick(keys){ String(keys).split(',').filter(Boolean).forEach(k=>form.sel.add(k)); form.sel.delete('unsure'); paintTiles(); go(1); saveDraft(); }
   window.SFXForm = { pick };
@@ -229,7 +216,7 @@ function initForm(){
       when:(fmtD(F('fDate').value)||'') + (F('fFlex').checked ? ` (${t('f.flex').toLowerCase()})` : ''),
       where:F('fLoc').value.trim(), budget: form.budget>=0 ? t('budgets')[form.budget] : '',
       contact: form.pref==='tel' ? F('fTel').value.trim() : F('fMail').value.trim(),
-      det, calc: form.calc ? form.calc.text : ''});
+      det});
   }
   const setNext = () => { F('wNext').textContent = step===1?t('f.next1'):step===2?t('f.next2'):step===3?t('f.next3'):t('f.send'); };
   function go(s){
@@ -259,7 +246,6 @@ function initForm(){
     const sd = e.target.closest('.steps-ind li.done'); if(sd) go(+sd.dataset.go);
     const ed = e.target.closest('.sum [data-go]'); if(ed && !F('doneView').classList.contains('on')){ go(+ed.dataset.go); F('wiz').scrollIntoView({behavior:RM?'auto':'smooth', block:'start'}); }
     const h = e.target.closest('.sum-head'); if(h && matchMedia('(max-width:1100px)').matches){ F('liveSum').classList.toggle('open'); h.setAttribute('aria-expanded', F('liveSum').classList.contains('open')); }
-    if(e.target.closest('[data-act="rmcalc"]')){ form.calc=null; store.del('sfx-calc'); F('calcChip').hidden=true; renderLive(); }
   });
   F('fDesc').addEventListener('input', updateCount);
   F('wiz').addEventListener('input', saveDraft);
@@ -293,7 +279,6 @@ function initForm(){
     const det = detailsObj(), ref = refCode();
     const services_label = ORDER.filter(k=>form.sel.has(k)).map(k=>TL[k]).join(', ');
     const lines = [`${t('f.refL')}: ${ref}`, `${t('sum.svc')}: ${services_label}`, ...Object.entries(det).map(([k,v])=>`${k}: ${v}`),
-      form.calc ? `${t('sum.calc')}: ${form.calc.text} (${form.calc.lines})` : '',
       `${t('f.proj')}: ${F('fProj').value}`, `${t('f.loc')}: ${F('fLoc').value}`, `${t('f.date')}: ${F('fDate').value}${F('fFlex').checked?' ('+t('f.flex')+')':''}`,
       `${t('f.budget')}: ${form.budget>=0?t('budgets')[form.budget]:'-'}`, `${t('f.link')}: ${F('fLink').value}`, '', F('fDesc').value, '',
       [F('fName').value, F('fCompany').value].filter(Boolean).join(', '), form.pref==='tel' ? `${t('f.telReq')}: ${F('fTel').value}${F('fTime').value?' ('+F('fTime').value+')':''}` : `${t('f.mail')}: ${F('fMail').value}`].filter(x=>x!=='').join('\n');
@@ -301,14 +286,13 @@ function initForm(){
     F('mailtoLink').href = mailto;
     const rec = {ref_code:ref, services:[...form.sel], services_label, details:det, project:F('fProj').value, location:F('fLoc').value, description:F('fDesc').value, date:F('fDate').value||null, flexible:F('fFlex').checked,
       budget:form.budget>=0?t('budgets')[form.budget]:null, link:F('fLink').value, name:F('fName').value.trim(), company:F('fCompany').value.trim()||null, contact_pref:form.pref,
-      email:form.pref==='mail'?F('fMail').value.trim():null, phone:form.pref==='tel'?F('fTel').value.trim():null, call_time:form.pref==='tel'?F('fTime').value:null, lang,
-      estimate: form.calc ? `${form.calc.text} (${form.calc.lines})` : null};
+      email:form.pref==='mail'?F('fMail').value.trim():null, phone:form.pref==='tel'?F('fTel').value.trim():null, call_time:form.pref==='tel'?F('fTime').value:null, lang};
     const btn = F('wNext'); btn.disabled = true; btn.textContent = t('f.sending');
     DB.addInquiry(rec, tsToken).then(res=>{
       btn.disabled = false; setNext();
-      store.del('sfx-draft'); store.del('sfx-calc');
+      store.del('sfx-draft');
       F('refCode').textContent = (res && res.ref) || ref;
-      $$('.wstep,#wizTop,#wizNav,#wizErr,#draftNote,#calcChip').forEach(x=>x.style.display='none');
+      $$('.wstep,#wizTop,#wizNav,#wizErr,#draftNote').forEach(x=>x.style.display='none');
       F('doneView').classList.add('on'); F('wiz').classList.add('wrapped');
       step = NSTEP+1; renderLive(); const h3 = $('#doneView h3'); h3.focus();
     }).catch(err=>{
@@ -319,85 +303,17 @@ function initForm(){
     });
   }
   F('wAgain').addEventListener('click', ()=>{
-    form.sel.clear(); form.budget=-1; form.q={}; form.calc=null; F('wiz').reset(); setPref('mail'); updateCount();
+    form.sel.clear(); form.budget=-1; form.q={}; F('wiz').reset(); setPref('mail'); updateCount();
     $$('.wstep,#wizTop,#wizNav,#wizErr').forEach(x=>x.style.display='');
-    F('doneView').classList.remove('on'); F('wiz').classList.remove('wrapped'); F('calcChip').hidden = true; paintTiles(); paintBudget(); go(1);
+    F('doneView').classList.remove('on'); F('wiz').classList.remove('wrapped'); paintTiles(); paintBudget(); go(1);
   });
 
-  loadDraft(); loadCalc();
+  loadDraft();
   const pk = sess.get('sfx-pick'); if(pk){ pk.split(',').forEach(k=>form.sel.add(k)); form.sel.delete('unsure'); sess.del('sfx-pick'); paintTiles(); saveDraft(); }
   renderLive(); updateCount();
 }
 
 /* =============================================================== SERVICE PAGES */
-const calcEl = $('#kalkulacka');
-if(calcEl) initCalc(calcEl);
-function initCalc(root){
-  const sv = SVC_BY[root.dataset.svc]; if(!sv) return;
-  const formEl = $('.calc-form', root), live = $('.cr-live', root);
-  let state = defaults(sv);
-  const m = location.hash.match(/kalkulacka=([^&]+)/);
-  if(m) state = sanitize(sv, decodeState(decodeURIComponent(m[1])));
-  else { try{ const s = JSON.parse(store.get('sfx-calc-'+sv.id)||'null'); if(s) state = sanitize(sv, s); }catch(e){} }
-  let shown = null;
-  function animate(el, from, to){
-    if(RM || !from){ el.innerHTML = moneyRange(to.min, to.max, lang); return; }
-    const t0 = performance.now(), D = 450;
-    const step = now => { const k = Math.min(1,(now-t0)/D), e = 1-Math.pow(1-k,3);
-      const a = from.min+(to.min-from.min)*e, b = from.max+(to.max-from.max)*e, r = to.max>60000?1000:500;
-      el.innerHTML = moneyRange(Math.round(a/r)*r, Math.round(b/r)*r, lang); if(k<1) requestAnimationFrame(step); };
-    requestAnimationFrame(step);
-  }
-  function render(full){
-    if(full) formEl.innerHTML = calcFields(C, sv, state);
-    const r = compute(sv, state, lang);
-    const prevOpen = $('.cr-break', live)?.open;
-    live.innerHTML = calcResult(C, sv, state);
-    if(prevOpen) $('.cr-break', live).open = true;
-    animate($('.cr-v', live), shown, r); shown = {min:r.min, max:r.max};
-    root.classList.remove('bump'); void root.offsetWidth; root.classList.add('bump');
-    store.set('sfx-calc-'+sv.id, JSON.stringify(state));
-    fl.querySelector('b').textContent = moneyRange(r.min, r.max, lang);
-  }
-  /* phones/tablets: floating price while the options are on screen and the result is not */
-  const fl = document.createElement('a'); fl.className = 'calc-float'; fl.href = '#'; fl.setAttribute('aria-hidden','true'); fl.tabIndex = -1;
-  fl.innerHTML = `<span>${t('calc.result')}</span><b></b>${ICON.arrow}`;
-  fl.addEventListener('click', e=>{ e.preventDefault(); $('.calc-res', root).scrollIntoView({behavior:RM?'auto':'smooth', block:'center'}); });
-  document.body.appendChild(fl);
-  let inForm = false, inRes = false;
-  const flUpd = () => fl.classList.toggle('show', inForm && !inRes);
-  new IntersectionObserver(es=>es.forEach(e=>{ if(e.target===formEl) inForm = e.isIntersecting; else inRes = e.isIntersecting; flUpd(); }), {threshold:[0, .25]}).observe(formEl);
-  new IntersectionObserver(es=>es.forEach(e=>{ inRes = e.intersectionRatio > .25; flUpd(); }), {threshold:[0, .25]}).observe($('.calc-res', root));
-  formEl.addEventListener('input', e=>{
-    const el = e.target, fid = el.name?.replace(/^c-/,''); if(!fid) return;
-    const f = sv.calc.fields.find(x=>x.id===fid);
-    if(f.kind==='choice'){ state[fid] = el.value; const needs = sv.calc.fields.some(x=>x.byType); if(fid==='type' && needs){ state = sanitize(sv, state); return render(true); } }
-    else if(f.kind==='range'){ state[fid] = +el.value; const r = el.closest('.cf'), rc = rangeCfg(f, state); $('output b', r).textContent = el.value; $('output span', r).textContent = unitFor(rc.unit, +el.value, lang); el.style.setProperty('--p', ((el.value-el.min)/(el.max-el.min)*100)+'%'); }
-    else if(f.kind==='extras'){ state[fid] = $$(`input[name="c-${fid}"]:checked`, formEl).map(x=>x.value); }
-    render(false);
-  });
-  formEl.addEventListener('click', e=>{
-    const b = e.target.closest('.step'); if(!b) return;
-    const inp = $('input[type=range]', b.parentElement); const v = Math.min(+inp.max, Math.max(+inp.min, +inp.value + (+b.dataset.d)*(+inp.step)));
-    inp.value = v; inp.dispatchEvent(new Event('input', {bubbles:true}));
-  });
-  root.addEventListener('click', e=>{
-    const a = e.target.closest('[data-act]'); if(!a) return;
-    if(a.dataset.act==='reset'){ state = defaults(sv); render(true); }
-    if(a.dataset.act==='copy'){
-      const url = location.href.split('#')[0] + '#kalkulacka=' + encodeURIComponent(encodeState(state));
-      history.replaceState(null, '', url);
-      (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(()=>{ $('span', a).textContent = t('calc.copied'); setTimeout(()=>{ $('span', a).textContent = t('calc.copy'); }, 1800); }).catch(()=>{});
-    }
-    if(a.dataset.act==='send'){
-      store.set('sfx-calc', JSON.stringify({svc:sv.id, state, lang}));
-      sess.set('sfx-pick', sv.tile);
-      location.href = C.href(PATHS.home[lang]) + '#poptavka';
-    }
-  });
-  render(true);
-}
-
 /* theme visuals */
 const sv = $('.sv');
 if(sv && !RM){

@@ -3,7 +3,7 @@ export const I18N = {
 cs: {
   'skip':'Přeskočit na obsah','intro.skip':'Přeskočit',
   'nav.cta':'Poptávka','nav.menu':'Otevřít menu','nav.lang':'Jazyk',
-  'm.sluzby':'Služby','m.proces':'Jak pracujeme','m.blog':'Blog','m.ref':'Reference','m.onas':'O nás','m.partneri':'Partneři','m.poptavka':'Poptávka','m.kalk':'Ceník',
+  'm.sluzby':'Služby','m.proces':'Jak pracujeme','m.blog':'Blog','m.ref':'Reference','m.onas':'O nás','m.partneri':'Partneři','m.poptavka':'Poptávka',
   'm.pravni':'Právní informace','m.gdpr':'Ochrana osobních údajů','m.cookies':'Cookies',
   'hero.kicker':'Videoprodukce · fotografie · dron · 3D',
   'hero.h1':'Obraz,<br>který zůstane.',
@@ -14,8 +14,8 @@ cs: {
   'hud.focal':'ohnisko','hud.ap':'clona',
   'reel.h':'Showreel','reel.p':'Minuta toho nejlepšího z natáčení, focení a postprodukce.','reel.play':'Přehrát showreel','reel.close':'Zavřít',
   'reel.note':'Ukázkový sestřih z ilustračních záběrů. Nahradíme skutečným showreelem.',
-  'svc.h':'Služby','svc.p':'Osm oborů pod jednou střechou. Vyberte službu a podívejte se, co pro vás umíme udělat.','svc.more':'Detail služby','svc.from':'od','svc.all':'Všechny služby',
-  'svc.calc':'Spočítat cenu',
+  'svc.h':'Služby','svc.p':'Osm oborů pod jednou střechou. Vyberte službu a podívejte se, co pro vás umíme udělat.','svc.more':'Detail služby','svc.all':'Všechny služby',
+  
   'why.h':'Proč SFX production','why.p':'Spolupráce, která šetří čas vám i vašemu týmu.',
   'proc.h':'Jak pracujeme','proc.p':'Od prvního telefonátu po hotové soubory. Víte, co se v každém kroku děje a co z něj dostanete.','proc.out':'Výstup',
   'p1.t':'Konzultace','p1.d':'Probereme cíl, publikum a rozpočet. Navrhneme formát a rozsah, který dává smysl.','p1.o':'Návrh řešení a nabídka na míru',
@@ -55,10 +55,10 @@ cs: {
   'f.doneT':'Klapka! Poptávka je u nás.','f.doneD':'Díky. Máme vše potřebné a brzy se vám ozveme. Co bude dál:',
   'f.done1':'Projdeme zadání a případně se doptáme.','f.done2':'Navrhneme řešení a termín.','f.done3':'Pošleme nabídku na váš e-mail.',
   'f.refL':'Číslo poptávky','f.mailto':'Poslat i e-mailem','f.again':'Nová poptávka',
-  'f.calcNote':'Z kalkulačky','f.calcRm':'Odebrat',
+  
   'sum.h':'Vaše poptávka','sum.empty':'Začněte výběrem služby.','sum.step':'Záběr','sum.of':'z',
   'sum.prod':'Produkce','sum.scene':'Scéna','sum.take':'Záběr','sum.dir':'Klient',
-  'sum.svc':'Služby','sum.det':'Upřesnění','sum.when':'Termín','sum.where':'Lokalita','sum.budget':'Rozpočet','sum.contact':'Kontakt','sum.calc':'Odhad',
+  'sum.svc':'Služby','sum.det':'Upřesnění','sum.when':'Termín','sum.where':'Lokalita','sum.budget':'Rozpočet','sum.contact':'Kontakt',
   'sum.t1':'Nezávazná a zdarma','sum.t2':'Údaje použijeme jen k vyřízení poptávky','sum.t3':'Odpovídá přímo projektový manažer',
   'tiles':{video:'Video produkce',foto:'Fotografie',dron:'Dron',strih:'Střih a postprodukce',vr:'360° / Matterport','3d':'3D a Blender',viz:'Vizualizace',film:'Filmová produkce',unsure:'Zatím nevím, poraďte mi'},
   'tileSub':{video:'Reklama, firemní film, eventy',foto:'Produkty, architektura, portréty',dron:'Letecké video a foto',strih:'Střih, grading, zvuk',vr:'Virtuální prohlídky','3d':'Modely, rendery, animace',viz:'Exteriéry a interiéry',film:'Klipy, krátké filmy',unsure:''},
@@ -66,15 +66,9 @@ cs: {
   /* service pages */
   'pg.home':'Úvod','pg.who':'Pro koho','pg.get':'Co dostanete','pg.inc':'Co obsahuje','pg.equip':'Technika a software','pg.how':'Jak to probíhá','pg.faq':'Časté dotazy',
   'pg.cta':'Poptat tuto službu','pg.ctaH':'Máte projekt?','pg.ctaP':'Popište nám ho ve čtyřech krocích. Nabídku pošleme e-mailem.','pg.other':'Další služby',
-  'pg.price':'Orientační cena','pg.priceFrom':'Cena od','pg.priceNote':'Ceny jsou orientační. Přesnou cenu potvrdíme v nabídce na míru.',
+  
   'pg.time':'Typické dodání','pg.illu':'Ilustrační obrázky, nahradíme fotkami z realizace.','pg.related':'Související články',
   'mp.h':'Vyzkoušejte si to','mp.p':'Živá ukázka virtuální prohlídky. Klikněte a projděte si prostor myší nebo prstem.','mp.load':'Spustit prohlídku','mp.note':'Po spuštění se načte obsah ze serveru Matterport.',
-  /* calculator */
-  'calc.h':'Kalkulačka ceny','calc.p':'Naklikejte si rozsah a hned uvidíte orientační cenu. Kalkulaci pak můžete jedním klikem poslat jako poptávku.',
-  'calc.result':'Orientační cena','calc.range':'Cenové rozpětí','calc.breakdown':'Z čeho se cena skládá','calc.base':'Základ',
-  'calc.extras':'Doplňky','calc.send':'Poslat kalkulaci jako poptávku','calc.reset':'Začít znovu','calc.note':'Odhad bez závazku. Konečnou cenu potvrdíme v nabídce po krátké konzultaci.',
-  'calc.days':'Dodání obvykle','calc.wd':'pracovních dní','calc.copy':'Zkopírovat odkaz na kalkulaci','calc.copied':'Odkaz zkopírován','calc.per':'za kus',
-  'calc.summary':'Kalkulace',
   /* hub + blog index */
   'hub.h':'Služby','hub.lead':'Video, fotografie, dron, střih, 360° prohlídky, 3D a vizualizace. Vyberte, co potřebujete, nebo služby zkombinujte.',
   'hub.title':'Služby – video, foto, dron, 3D a vizualizace',
@@ -85,7 +79,7 @@ cs: {
 en: {
   'skip':'Skip to content','intro.skip':'Skip',
   'nav.cta':'Get a quote','nav.menu':'Open menu','nav.lang':'Language',
-  'm.sluzby':'Services','m.proces':'How we work','m.blog':'Blog','m.ref':'References','m.onas':'About','m.partneri':'Partners','m.poptavka':'Get a quote','m.kalk':'Pricing',
+  'm.sluzby':'Services','m.proces':'How we work','m.blog':'Blog','m.ref':'References','m.onas':'About','m.partneri':'Partners','m.poptavka':'Get a quote',
   'm.pravni':'Legal information','m.gdpr':'Privacy policy','m.cookies':'Cookies',
   'hero.kicker':'Video production · photography · drone · 3D',
   'hero.h1':'Images<br>that stay.',
@@ -96,8 +90,8 @@ en: {
   'hud.focal':'focal','hud.ap':'aperture',
   'reel.h':'Showreel','reel.p':'A minute of the best from our shoots, photography and post-production.','reel.play':'Play showreel','reel.close':'Close',
   'reel.note':'Sample cut from illustrative footage, to be replaced with the real showreel.',
-  'svc.h':'Services','svc.p':'Eight disciplines under one roof. Pick a service to see what we can do for you.','svc.more':'Service details','svc.from':'from','svc.all':'All services',
-  'svc.calc':'Estimate the price',
+  'svc.h':'Services','svc.p':'Eight disciplines under one roof. Pick a service to see what we can do for you.','svc.more':'Service details','svc.all':'All services',
+  
   'why.h':'Why SFX production','why.p':'A way of working that saves time for you and your team.',
   'proc.h':'How we work','proc.p':'From the first call to finished files. You know what happens at each step and what you get from it.','proc.out':'Output',
   'p1.t':'Consultation','p1.d':'We talk through the goal, audience and budget, then propose a format and scope that makes sense.','p1.o':'A proposal and tailored quote',
@@ -136,24 +130,19 @@ en: {
   'f.doneT':'That’s a wrap! We have your enquiry.','f.doneD':'Thanks. We have everything we need and will be in touch soon. What happens next:',
   'f.done1':'We review the brief and ask if anything’s unclear.','f.done2':'We suggest an approach and a date.','f.done3':'We email you a quote.',
   'f.refL':'Enquiry number','f.mailto':'Also send by email','f.again':'New enquiry',
-  'f.calcNote':'From the calculator','f.calcRm':'Remove',
+  
   'sum.h':'Your enquiry','sum.empty':'Start by picking a service.','sum.step':'Take','sum.of':'of',
   'sum.prod':'Production','sum.scene':'Scene','sum.take':'Take','sum.dir':'Client',
-  'sum.svc':'Services','sum.det':'Details','sum.when':'Date','sum.where':'Location','sum.budget':'Budget','sum.contact':'Contact','sum.calc':'Estimate',
+  'sum.svc':'Services','sum.det':'Details','sum.when':'Date','sum.where':'Location','sum.budget':'Budget','sum.contact':'Contact',
   'sum.t1':'Free and non-binding','sum.t2':'Your data is used only to handle the enquiry','sum.t3':'The project manager replies personally',
   'tiles':{video:'Video production',foto:'Photography',dron:'Drone',strih:'Editing and post',vr:'360° / Matterport','3d':'3D and Blender',viz:'Visualisation',film:'Film production',unsure:'Not sure yet, advise me'},
   'tileSub':{video:'Ads, corporate, events',foto:'Products, architecture, portraits',dron:'Aerial video and photo',strih:'Edit, grade, sound',vr:'Virtual tours','3d':'Models, renders, animation',viz:'Exteriors and interiors',film:'Music videos, short films',unsure:''},
   'budgets':['under €800','€800–2,000','€2,000–4,000','€4,000+','Not sure yet'],
   'pg.home':'Home','pg.who':'Who it’s for','pg.get':'What you get','pg.inc':'What’s included','pg.equip':'Equipment and software','pg.how':'How it works','pg.faq':'FAQ',
   'pg.cta':'Request this service','pg.ctaH':'Got a project?','pg.ctaP':'Describe it in four steps. We’ll email you a quote.','pg.other':'Other services',
-  'pg.price':'Guide price','pg.priceFrom':'Price from','pg.priceNote':'Prices are a guide. We confirm the exact price in a tailored quote.',
+  
   'pg.time':'Typical delivery','pg.illu':'Illustrative images, to be replaced with photos from the project.','pg.related':'Related articles',
   'mp.h':'Try it yourself','mp.p':'A live virtual tour demo. Click and walk through the space with your mouse or finger.','mp.load':'Start the tour','mp.note':'Starting the tour loads content from Matterport’s servers.',
-  'calc.h':'Price calculator','calc.p':'Click through the scope and see a guide price right away. Then send the estimate as an enquiry in one click.',
-  'calc.result':'Guide price','calc.range':'Price range','calc.breakdown':'What makes up the price','calc.base':'Base',
-  'calc.extras':'Extras','calc.send':'Send this estimate as an enquiry','calc.reset':'Start over','calc.note':'A non-binding estimate. We confirm the final price in a quote after a short call.',
-  'calc.days':'Usually delivered in','calc.wd':'working days','calc.copy':'Copy a link to this estimate','calc.copied':'Link copied','calc.per':'each',
-  'calc.summary':'Estimate',
   'hub.h':'Services','hub.lead':'Video, photography, drone, editing, 360° tours, 3D and visualisation. Pick what you need, or combine services.',
   'hub.title':'Services – video, photo, drone, 3D and visualisation',
   'bi.lead':'Guides and tips on video, photography, drone flights, Matterport virtual tours and 3D renders. What things cost and how to prepare. Written from practice.',
@@ -184,11 +173,11 @@ export const FQ = {
 export const WHY = {
  cs:[['Jeden kontakt','Po celou dobu projektu komunikujete s jedním člověkem, který zná všechny detaily.','user'],
      ['Vše pod jednou střechou','Natáčení, focení, dron, 3D i postprodukce bez shánění dalších dodavatelů.','layers'],
-     ['Jasná nabídka předem','Rozsah, termín a cenu znáte dřív, než začneme. Orientační cenu si spočítáte sami v kalkulačce.','doc'],
+     ['Jasná nabídka předem','Rozsah, termín a cenu znáte dřív, než začneme. Bez překvapení na faktuře.','doc'],
      ['Výstupy pro každý kanál','Z jednoho natáčení verze pro web, sociální sítě, tisk i velké plátno.','grid']],
  en:[['One contact','You deal with one person who knows every detail, from start to finish.','user'],
      ['Everything under one roof','Filming, photography, drone, 3D and post, without chasing other suppliers.','layers'],
-     ['A clear quote up front','Scope, date and price are agreed before we start. Get a guide price yourself in the calculator.','doc'],
+     ['A clear quote up front','Scope, date and price are agreed before we start. No surprises on the invoice.','doc'],
      ['Outputs for every channel','One shoot gives you versions for web, social, print and the big screen.','grid']]
 };
 

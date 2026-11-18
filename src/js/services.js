@@ -1,29 +1,15 @@
 /* =====================================================================
-   Services: page content, SEO texts and price calculators.
-
-   CENY: všechny částky jsou orientační (Kč) a slouží jen pro kalkulačku.
-   Upravte je podle skutečného ceníku. Formát [od, do].
+   Services: page content and SEO texts.
    TECHNIKA (equip): ověřte a případně doplňte přesné modely.
    ===================================================================== */
 
-/* Calculator field kinds
-   choice : pick one option. Option may have add:[min,max] and/or mult:n
-   range  : slider. price:[min,max] per unit above `free` units. byType = per option of field `type`
-   extras : checkboxes. add:[min,max], mult:n, per:'fieldId' (multiplies add by that field's value)
-*/
-const TRAVEL = {id:'travel', kind:'choice', label:{cs:'Lokalita natáčení',en:'Location'}, opts:[
-  {id:'reg', label:{cs:'V našem regionu',en:'In our region'}, add:[0,0]},
-  {id:'100', label:{cs:'Do 100 km',en:'Up to 100 km'}, add:[1000,2000]},
-  {id:'250', label:{cs:'100–250 km',en:'100–250 km'}, add:[2500,4000]},
-  {id:'cz',  label:{cs:'Kdekoli v ČR',en:'Anywhere in Czechia'}, add:[4000,6000]}]};
-
 export const SERVICES = [
 /* ------------------------------------------------------------------ VIDEO */
-{ id:'video', tile:'video', icon:'video', img:'festival', theme:'video', from:9000,
+{ id:'video', tags:{cs:['Reklama', 'Firemní film', 'Eventy', 'Sítě'],en:['Ads', 'Corporate', 'Events', 'Social']}, tile:'video', icon:'video', img:'festival', theme:'video',
   slug:{cs:'video-produkce', en:'video-production'},
   cs:{ t:'Video produkce', s:'Reklamy, firemní filmy, eventy a obsah pro sociální sítě.',
     h1:'Video produkce a natáčení videí',
-    seo:{title:'Video produkce a natáčení firemních videí', desc:'Natáčení reklamních spotů, firemních filmů, eventů a videí pro sociální sítě. Scénář, kamera, zvuk i střih od jednoho týmu. Spočítejte si orientační cenu online.'},
+    seo:{title:'Video produkce a natáčení firemních videí', desc:'Natáčení reklamních spotů, firemních filmů, eventů a videí pro sociální sítě. Scénář, kamera, zvuk i střih od jednoho týmu. Pošlete nezávaznou poptávku.'},
     lead:'Video, které má jasný cíl. Od scénáře přes natáčení až po finální verze pro web, sociální sítě i televizi.',
     intro:['Natáčíme reklamní spoty, firemní a náborová videa, záznamy eventů i pravidelný obsah pro Instagram, TikTok a YouTube. Než zapneme kameru, ujasníme si, komu je video určené a co má divák udělat, až dokouká.',
       'Celou výrobu máte pod jednou střechou: námět a scénář, natáčecí den s kamerou, světly a zvukem, střih, color grading, titulky i hudbu. Z jednoho natáčení připravíme verze pro všechny kanály, kde video použijete.'],
@@ -33,13 +19,13 @@ export const SERVICES = [
     equip:[['Kamery','Full-frame a kino kamery se záznamem 4K v 10bitovém profilu pro přesné barevné ladění'],['Objektivy','Světelná pevná skla pro filmový vzhled a zoomy pro eventy'],['Stabilizace','Gimbal, slider a stativy s fluidní hlavou pro plynulé záběry'],['Zvuk','Bezdrátové klopové mikrofony a směrový mikrofon na tyči'],['Světla','LED panely a COB světla s regulací barevné teploty'],['Postprodukce','DaVinci Resolve, Adobe Premiere Pro a After Effects']],
     time:'7–20 pracovních dní podle rozsahu',
     faq:[['Jak dlouho trvá výroba videa?','Krátké video na sociální sítě bývá hotové do týdne od natáčení. Firemní film nebo reklama potřebuje 2–4 týdny včetně přípravy. Přesný termín potvrdíme v nabídce.'],
-      ['Kolik stojí firemní video?','Krátká videa na sociální sítě začínají kolem 9 000 Kč, firemní video obvykle stojí 25 000–60 000 Kč a reklamní spot od 40 000 Kč. Cenu ovlivní počet natáčecích dní, velikost štábu a rozsah postprodukce. Orientační cenu si spočítáte v kalkulačce výše.'],
+      ['Kolik stojí firemní video?','Cena závisí na rozsahu, termínu a náročnosti projektu. Po krátké konzultaci vám pošleme nabídku na míru, zdarma a nezávazně.'],
       ['Můžeme dodat vlastní hudbu a logo?','Ano. Použijeme vaše podklady, nebo zajistíme licencovanou hudbu a animaci loga.'],
       ['Natáčíte i videa na výšku pro Reels a TikTok?','Ano. Natáčíme tak, aby šlo ze stejného materiálu udělat verzi na šířku i na výšku.'],
       ['Kdo napíše scénář?','Scénář a storyboard připravíme my podle vašeho cíle. Pokud máte vlastní, rádi s ním pracujeme.']]},
   en:{ t:'Video production', s:'Commercials, corporate films, events and social content.',
     h1:'Video production and filming',
-    seo:{title:'Video production and corporate video filming', desc:'Commercials, corporate films, event coverage and social media videos. Script, camera, sound and editing from one team. Get a guide price online.'},
+    seo:{title:'Video production and corporate video filming', desc:'Commercials, corporate films, event coverage and social media videos. Script, camera, sound and editing from one team. Send a free enquiry.'},
     lead:'Video with a clear goal. From script and shoot to final versions for web, social and TV.',
     intro:['We film commercials, corporate and recruitment videos, event coverage and regular content for Instagram, TikTok and YouTube. Before the camera rolls we agree who the video is for and what the viewer should do when it ends.',
       'The whole production is under one roof: concept and script, a shoot day with camera, lighting and sound, editing, colour grading, subtitles and music. One shoot gives you versions for every channel you use.'],
@@ -49,37 +35,17 @@ export const SERVICES = [
     equip:[['Cameras','Full-frame and cinema cameras recording 4K in a 10-bit profile for precise grading'],['Lenses','Fast primes for a cinematic look and zooms for events'],['Stabilisation','Gimbal, slider and fluid-head tripods for smooth shots'],['Sound','Wireless lavalier mics and a boom shotgun mic'],['Lighting','LED panels and COB lights with adjustable colour temperature'],['Post','DaVinci Resolve, Adobe Premiere Pro and After Effects']],
     time:'7–20 working days depending on scope',
     faq:[['How long does a video take?','A short social video is usually ready within a week of the shoot. A corporate film or commercial takes 2–4 weeks including prep. We confirm the timeline in the quote.'],
-      ['How much does a corporate video cost?','Short social videos start around €360, a corporate video is typically €1,000–2,400 and a commercial from €1,600. Shoot days, crew size and post-production drive the price. Get a guide price in the calculator above.'],
+      ['How much does a corporate video cost?','It depends on scope, timing and complexity. After a short call we send you a tailored quote, free and non-binding.'],
       ['Can we supply our own music and logo?','Yes. We use your assets, or source licensed music and animate your logo.'],
       ['Do you shoot vertical video for Reels and TikTok?','Yes. We frame shots so the same footage works in landscape and vertical.'],
-      ['Who writes the script?','We prepare the script and storyboard around your goal. If you have your own, we’re happy to work with it.']]},
-  calc:{ days:[7,20], fields:[
-    {id:'type', kind:'choice', label:{cs:'Typ videa',en:'Type of video'}, opts:[
-      {id:'social', label:{cs:'Sociální sítě',en:'Social media'}, hint:{cs:'krátká videa do 60 s',en:'short videos up to 60 s'}, add:[9000,15000]},
-      {id:'corp', label:{cs:'Firemní video',en:'Corporate video'}, hint:{cs:'prezentace, nábor, produkt',en:'company, recruitment, product'}, add:[25000,45000]},
-      {id:'ad', label:{cs:'Reklamní spot',en:'Commercial'}, hint:{cs:'TV, online kampaň',en:'TV, online campaign'}, add:[40000,90000]},
-      {id:'event', label:{cs:'Event / aftermovie',en:'Event / aftermovie'}, hint:{cs:'konference, festival',en:'conference, festival'}, add:[15000,30000]}]},
-    {id:'days', kind:'range', label:{cs:'Natáčecí dny',en:'Shoot days'}, min:1, max:5, step:1, def:1, free:1, price:[12000,18000], unit:{cs:['den','dny','dní'],en:['day','days']}},
-    {id:'len', kind:'choice', label:{cs:'Délka hlavního videa',en:'Main video length'}, opts:[
-      {id:'1', label:{cs:'Do 1 minuty',en:'Up to 1 min'}, mult:1},
-      {id:'3', label:{cs:'1–3 minuty',en:'1–3 min'}, mult:1.2},
-      {id:'10', label:{cs:'3–10 minut',en:'3–10 min'}, mult:1.5}]},
-    TRAVEL,
-    {id:'ex', kind:'extras', label:{cs:'Doplňky',en:'Extras'}, opts:[
-      {id:'cam2', label:{cs:'Druhý kameraman',en:'Second camera operator'}, add:[6000,9000], per:'days'},
-      {id:'drone', label:{cs:'Letecké záběry dronem',en:'Aerial drone shots'}, add:[4000,7000]},
-      {id:'vo', label:{cs:'Profesionální voiceover',en:'Professional voiceover'}, add:[3000,6000]},
-      {id:'motion', label:{cs:'Motion grafika a animované logo',en:'Motion graphics and animated logo'}, add:[5000,12000]},
-      {id:'vert', label:{cs:'3 krátké verze na výšku',en:'3 vertical cut-downs'}, add:[3000,6000]},
-      {id:'subs', label:{cs:'Titulky CZ / EN',en:'Subtitles CZ / EN'}, add:[1500,3000]},
-      {id:'express', label:{cs:'Expresní dodání',en:'Express delivery'}, mult:1.25}]}]}
+      ['Who writes the script?','We prepare the script and storyboard around your goal. If you have your own, we’re happy to work with it.']]}
 },
 /* ------------------------------------------------------------------ FOTO */
-{ id:'foto', tile:'foto', icon:'foto', img:'product', theme:'foto', from:3500,
+{ id:'foto', tags:{cs:['Produkty', 'Architektura', 'Portréty'],en:['Products', 'Architecture', 'Portraits']}, tile:'foto', icon:'foto', img:'product', theme:'foto',
   slug:{cs:'fotografie', en:'photography'},
   cs:{ t:'Fotografie', s:'Produkty, architektura, portréty a reportáže.',
     h1:'Produktová, architektonická a firemní fotografie',
-    seo:{title:'Fotograf – produkty, architektura a portréty', desc:'Produktové fotky pro e-shop, fotografie architektury a interiérů, firemní portréty a reportáže z akcí. Retuš v ceně. Spočítejte si cenu focení online.'},
+    seo:{title:'Fotograf – produkty, architektura a portréty', desc:'Produktové fotky pro e-shop, fotografie architektury a interiérů, firemní portréty a reportáže z akcí. Retuš v ceně. Pošlete nezávaznou poptávku.'},
     lead:'Fotky, které prodávají a dobře vypadají všude, kde je použijete: na webu, v katalogu i na billboardu.',
     intro:['Fotíme produkty pro e-shopy a katalogy, architekturu a interiéry pro developery a realitní kanceláře, portréty týmu i reportáže z firemních akcí. Každé focení začíná krátkým plánem: kde se fotky použijí, v jakém poměru stran a jak mají působit.',
       'V ceně je výběr nejlepších snímků, retuš a barevné sjednocení celé série. Dostanete hotové fotky připravené pro web i tisk, ne neupravená data z karty.'],
@@ -89,13 +55,13 @@ export const SERVICES = [
     equip:[['Fotoaparáty','Full-frame bezzrcadlovky s vysokým rozlišením'],['Objektivy','Širokoúhlé objektivy pro architekturu, portrétní a makro objektivy pro detaily'],['Světlo','Zábleskové hlavy, softboxy a odrazné desky'],['Ateliér','Produktový stůl a čisté pozadí pro fotky na bílé'],['Postprodukce','Adobe Lightroom a Photoshop, kalibrovaný monitor']],
     time:'3–10 pracovních dní',
     faq:[['Kolik fotek dostaneme?','Počet domluvíme předem podle účelu. Dodáváme vybrané a upravené snímky, ne syrová data.'],
-      ['Kolik stojí produktové focení?','Záleží na počtu produktů a náročnosti. Orientačně počítejte se základem pro přípravu a 350–700 Kč za produkt. Cenu si spočítáte v kalkulačce.'],
+      ['Kolik stojí produktové focení?','Cena závisí na rozsahu, termínu a náročnosti projektu. Po krátké konzultaci vám pošleme nabídku na míru, zdarma a nezávazně.'],
       ['Fotíte i produkty na bílém pozadí?','Ano, produkty fotíme na čistém pozadí i v prostředí, kde se používají.'],
       ['Kdy budou fotky hotové?','Běžně do 3–10 pracovních dní. Pokud spěcháte, nabízíme expresní dodání.'],
       ['Můžeme fotky použít i v tisku a reklamě?','Ano. Licenci k užití pro vaši firmu dostanete spolu s fotkami.']]},
   en:{ t:'Photography', s:'Products, architecture, portraits and reportage.',
     h1:'Product, architecture and corporate photography',
-    seo:{title:'Photographer – products, architecture, portraits', desc:'Product photos for e-shops, architecture and interior photography, team portraits and event coverage. Retouching included. Get a guide price online.'},
+    seo:{title:'Photographer – products, architecture, portraits', desc:'Product photos for e-shops, architecture and interior photography, team portraits and event coverage. Retouching included. Send a free enquiry.'},
     lead:'Photos that sell and look good wherever you use them: web, catalogue or billboard.',
     intro:['We photograph products for e-shops and catalogues, architecture and interiors for developers and estate agents, team portraits and corporate events. Every shoot starts with a short plan: where the photos will be used, in which aspect ratio and how they should feel.',
       'Selecting the best frames, retouching and consistent colour across the set are included. You get finished photos ready for web and print, not raw files off the card.'],
@@ -105,34 +71,17 @@ export const SERVICES = [
     equip:[['Cameras','High-resolution full-frame mirrorless cameras'],['Lenses','Wide-angle lenses for architecture, portrait and macro lenses for detail'],['Lighting','Strobes, softboxes and reflectors'],['Studio','Product table and seamless background for white-background shots'],['Post','Adobe Lightroom and Photoshop on a calibrated monitor']],
     time:'3–10 working days',
     faq:[['How many photos do we get?','We agree the number up front based on purpose. You get selected, edited images, not raw files.'],
-      ['How much does product photography cost?','It depends on the number of products and complexity. As a guide, a setup fee plus €14–28 per product. Work it out in the calculator.'],
+      ['How much does product photography cost?','It depends on scope, timing and complexity. After a short call we send you a tailored quote, free and non-binding.'],
       ['Do you shoot products on white?','Yes, on clean backgrounds as well as in context.'],
       ['When will the photos be ready?','Usually within 3–10 working days. Express delivery is available.'],
-      ['Can we use the photos in print and ads?','Yes. A licence for your company’s use comes with the photos.']]},
-  calc:{ days:[3,10], fields:[
-    {id:'type', kind:'choice', label:{cs:'Co budeme fotit',en:'What we’re shooting'}, opts:[
-      {id:'prod', label:{cs:'Produkty',en:'Products'}, hint:{cs:'e-shop, katalog',en:'e-shop, catalogue'}, add:[2500,4000]},
-      {id:'arch', label:{cs:'Architektura / interiér',en:'Architecture / interior'}, hint:{cs:'reality, developeři',en:'property, developers'}, add:[3000,5000]},
-      {id:'port', label:{cs:'Portréty / tým',en:'Portraits / team'}, hint:{cs:'web, LinkedIn, PR',en:'website, LinkedIn, PR'}, add:[2500,4000]},
-      {id:'event', label:{cs:'Akce / reportáž',en:'Event / reportage'}, hint:{cs:'konference, večírky',en:'conferences, parties'}, add:[1000,1500]}]},
-    {id:'qty', kind:'range', byType:{
-      prod:{label:{cs:'Počet produktů',en:'Number of products'}, min:1, max:100, step:1, def:10, free:0, price:[350,700], unit:{cs:'ks',en:'pcs'}},
-      arch:{label:{cs:'Počet výsledných fotografií',en:'Number of final photos'}, min:5, max:60, step:1, def:15, free:0, price:[350,600], unit:{cs:['fotka','fotky','fotek'],en:['photo','photos']}},
-      port:{label:{cs:'Počet osob',en:'Number of people'}, min:1, max:40, step:1, def:5, free:0, price:[500,900], unit:{cs:['osoba','osoby','osob'],en:['person','people']}},
-      event:{label:{cs:'Délka focení',en:'Shoot length'}, min:1, max:10, step:1, def:3, free:0, price:[1800,2600], unit:{cs:'h',en:'h'}}}},
-    TRAVEL,
-    {id:'ex', kind:'extras', label:{cs:'Doplňky',en:'Extras'}, opts:[
-      {id:'studio', label:{cs:'Ateliér a produktové světlo',en:'Studio and product lighting'}, add:[2000,3500]},
-      {id:'drone', label:{cs:'Letecké fotky dronem',en:'Aerial drone photos'}, add:[3000,5000]},
-      {id:'retouch', label:{cs:'Pokročilá retuš (kompozity, beauty)',en:'Advanced retouching (composites, beauty)'}, mult:1.25},
-      {id:'express', label:{cs:'Expres do 48 hodin',en:'Express within 48 hours'}, mult:1.2}]}]}
+      ['Can we use the photos in print and ads?','Yes. A licence for your company’s use comes with the photos.']]}
 },
 /* ------------------------------------------------------------------ DRON */
-{ id:'dron', tile:'dron', icon:'dron', img:'aerial', theme:'dron', from:3500,
+{ id:'dron', tags:{cs:['Reality', 'Stavby', 'Krajina'],en:['Real estate', 'Construction', 'Landscape']}, tile:'dron', icon:'dron', img:'aerial', theme:'dron',
   slug:{cs:'letecke-zabery-dronem', en:'drone-aerial-filming'},
   cs:{ t:'Dron', s:'Letecké záběry a snímky pro reality, stavby a eventy.',
     h1:'Letecké záběry a fotky z dronu',
-    seo:{title:'Natáčení a focení dronem – letecké záběry', desc:'Letecké video a fotky z dronu pro reality, stavby, eventy a krajinu. Plán letu, povolení i střih. Létáme podle pravidel EASA. Spočítejte si cenu online.'},
+    seo:{title:'Natáčení a focení dronem – letecké záběry', desc:'Letecké video a fotky z dronu pro reality, stavby, eventy a krajinu. Plán letu, povolení i střih. Létáme podle pravidel EASA. Pošlete nezávaznou poptávku.'},
     lead:'Pohled z výšky ukáže to, co ze země nevidíte: celý pozemek, průběh stavby nebo atmosféru akce.',
     intro:['Letecké záběry prodávají nemovitosti, dokumentují stavby a dávají eventům velkorysost. Natáčíme video i fotky ve vysokém rozlišení, plynule a bez rozmazaných horizontů.',
       'Před každým letem zkontrolujeme vzdušný prostor a podmínky, v případě potřeby zajistíme povolení. Za špatného počasí nelétáme a náhradní termín domluvíme bez příplatku.'],
@@ -142,13 +91,13 @@ export const SERVICES = [
     equip:[['Dron','Dron s velkým snímačem, 4K video v 10bitovém profilu a fotkami v RAW'],['Filtry','ND filtry pro přirozený pohyb a správnou expozici'],['Provoz','Létáme podle pravidel EASA a Úřadu pro civilní letectví'],['Postprodukce','DaVinci Resolve a Adobe Lightroom']],
     time:'2–7 pracovních dní',
     faq:[['Můžete letět kdekoli?','Lety plánujeme podle pravidel pro bezpilotní letadla. Pokud je lokalita v omezeném prostoru, zajistíme potřebné povolení nebo navrhneme alternativu.'],
-      ['Kolik stojí letecké fotky nemovitosti?','Letecké fotky a krátké video jedné nemovitosti začínají kolem 3 500 Kč. Přesnou cenu podle rozsahu a lokality si spočítáte v kalkulačce.'],
+      ['Kolik stojí letecké fotky nemovitosti?','Cena závisí na rozsahu, termínu a náročnosti projektu. Po krátké konzultaci vám pošleme nabídku na míru, zdarma a nezávazně.'],
       ['Co když bude pršet?','Za špatného počasí nelétáme. Náhradní termín domluvíme bez poplatku navíc.'],
       ['Dá se dron spojit s focením ze země?','Ano, nejčastěji ho kombinujeme s fotkami interiéru nebo 360° prohlídkou.'],
       ['Děláte pravidelné lety nad stavbou?','Ano. Opakované lety ze stejných bodů dají časosběr průběhu stavby.']]},
   en:{ t:'Drone', s:'Aerial footage and stills for real estate, construction and events.',
     h1:'Drone aerial video and photography',
-    seo:{title:'Drone filming and aerial photography', desc:'Aerial video and drone photos for real estate, construction, events and landscape. Flight planning, permits and editing under EASA rules. Price online.'},
+    seo:{title:'Drone filming and aerial photography', desc:'Aerial video and drone photos for real estate, construction, events and landscape. Flight planning, permits and editing under EASA rules. Free enquiry.'},
     lead:'A view from above shows what you can’t see from the ground: the whole plot, construction progress or the feel of an event.',
     intro:['Aerial shots sell property, document construction and give events a sense of scale. We shoot high-resolution video and photos, smooth and with straight horizons.',
       'Before every flight we check airspace and conditions and arrange permits where needed. We don’t fly in bad weather and rebook at no extra cost.'],
@@ -158,35 +107,17 @@ export const SERVICES = [
     equip:[['Drone','Large-sensor drone with 10-bit 4K video and RAW photos'],['Filters','ND filters for natural motion and correct exposure'],['Operations','We fly under EASA and Czech Civil Aviation Authority rules'],['Post','DaVinci Resolve and Adobe Lightroom']],
     time:'2–7 working days',
     faq:[['Can you fly anywhere?','We plan flights according to drone regulations. In restricted areas we arrange permits or suggest an alternative.'],
-      ['How much do aerial property photos cost?','Aerial photos and a short video of one property start around €140. Work out the exact price for your scope and location in the calculator.'],
+      ['How much do aerial property photos cost?','It depends on scope, timing and complexity. After a short call we send you a tailored quote, free and non-binding.'],
       ['What if it rains?','We don’t fly in bad weather. We agree a new date at no extra cost.'],
       ['Can drone be combined with ground photos?','Yes, most often with interior photos or a 360° tour.'],
-      ['Do you do regular flights over a construction site?','Yes. Repeat flights from the same points make a time-lapse of the build.']]},
-  calc:{ days:[2,7], fields:[
-    {id:'type', kind:'choice', label:{cs:'Účel letu',en:'Purpose'}, opts:[
-      {id:'realty', label:{cs:'Nemovitost / pozemek',en:'Property / land'}, hint:{cs:'prodej, pronájem',en:'sale, rental'}, add:[3500,6000]},
-      {id:'build', label:{cs:'Průběh stavby',en:'Construction progress'}, hint:{cs:'opakované lety',en:'repeat flights'}, add:[0,0]},
-      {id:'event', label:{cs:'Akce / event',en:'Event'}, hint:{cs:'festival, sport',en:'festival, sport'}, add:[6000,12000]},
-      {id:'land', label:{cs:'Krajina / region',en:'Landscape / region'}, hint:{cs:'obce, turismus',en:'towns, tourism'}, add:[6000,12000]}]},
-    {id:'qty', kind:'range', byType:{
-      build:{label:{cs:'Počet letů',en:'Number of flights'}, min:1, max:24, step:1, def:4, free:0, price:[2800,4500], unit:{cs:['let','lety','letů'],en:['flight','flights']}}}},
-    {id:'out', kind:'choice', label:{cs:'Výstup',en:'Output'}, opts:[
-      {id:'photo', label:{cs:'Fotky',en:'Photos'}, mult:1},
-      {id:'video', label:{cs:'Video',en:'Video'}, mult:1.25},
-      {id:'both', label:{cs:'Fotky i video',en:'Photos and video'}, mult:1.45}]},
-    TRAVEL,
-    {id:'ex', kind:'extras', label:{cs:'Doplňky',en:'Extras'}, opts:[
-      {id:'edit', label:{cs:'Sestřih s hudbou',en:'Edit with music'}, add:[2500,5000]},
-      {id:'permit', label:{cs:'Povolení do řízeného prostoru',en:'Controlled airspace permit'}, add:[1500,4000]},
-      {id:'ground', label:{cs:'Doplňkové fotky ze země',en:'Extra ground-level photos'}, add:[2000,3500]},
-      {id:'express', label:{cs:'Expres do 48 hodin',en:'Express within 48 hours'}, mult:1.2}]}]}
+      ['Do you do regular flights over a construction site?','Yes. Repeat flights from the same points make a time-lapse of the build.']]}
 },
 /* ------------------------------------------------------------------ STRIH */
-{ id:'strih', tile:'strih', icon:'strih', img:'edit', theme:'strih', from:2000,
+{ id:'strih', tags:{cs:['Color grading', 'Zvuk', 'Titulky'],en:['Colour', 'Sound', 'Subtitles']}, tile:'strih', icon:'strih', img:'edit', theme:'strih',
   slug:{cs:'strih-a-postprodukce', en:'video-editing-post-production'},
   cs:{ t:'Střih a postprodukce', s:'Střih, color grading, zvuk, titulky a motion grafika.',
     h1:'Střih videa a postprodukce',
-    seo:{title:'Střih videa, color grading a postprodukce', desc:'Profesionální střih videa z vašeho materiálu, color grading, čištění a mix zvuku, titulky a motion grafika. Verze pro YouTube, Instagram i TikTok. Cena online.'},
+    seo:{title:'Střih videa, color grading a postprodukce', desc:'Střih videa z vašeho materiálu, color grading, čištění a mix zvuku, titulky a motion grafika. Verze pro YouTube, Instagram i TikTok. Nezávazná poptávka.'},
     lead:'Máte natočený materiál? Postaráme se o to, aby z něj vznikl příběh, který diváka udrží do konce.',
     intro:['Stříháme firemní videa, obsah pro YouTube a sociální sítě, svatby, eventy i delší dokumentární formáty. Pošlete nám materiál z kamery nebo telefonu a my z něj složíme video s rytmem, příběhem a čistým zvukem.',
       'Součástí postprodukce je color grading, který sjednotí záběry z různých kamer, čištění a mix zvuku, titulky a motion grafika. Z jednoho střihu připravíme verze na šířku i na výšku.'],
@@ -196,13 +127,13 @@ export const SERVICES = [
     equip:[['Střih','DaVinci Resolve Studio a Adobe Premiere Pro'],['Grafika','Adobe After Effects pro motion grafiku a animované titulky'],['Barvy','Kalibrovaný monitor a color grading v DaVinci Resolve'],['Zvuk','Čištění šumu, mix a mastering zvukové stopy']],
     time:'3–14 pracovních dní',
     faq:[['V jakém formátu máme poslat materiál?','Stačí originální soubory z kamery nebo telefonu. Převezmeme je přes úložiště nebo osobně.'],
-      ['Kolik stojí střih videa?','Krátké video na sociální sítě začíná kolem 2 000 Kč, střih firemního videa obvykle 6 000–15 000 Kč. Záleží na délce, množství materiálu a doplňcích. Spočítejte si to v kalkulačce.'],
+      ['Kolik stojí střih videa?','Cena závisí na rozsahu, termínu a náročnosti projektu. Po krátké konzultaci vám pošleme nabídku na míru, zdarma a nezávazně.'],
       ['Kolik kol úprav je v ceně?','Dvě kola připomínek. Další úpravy domluvíme podle rozsahu.'],
       ['Umíte i krátká videa na výšku?','Ano, z jednoho natáčení připravíme verze pro YouTube, Instagram i TikTok.'],
       ['Uděláte i titulky v angličtině?','Ano, titulky připravíme v češtině i angličtině.']]},
   en:{ t:'Editing and post', s:'Editing, colour grading, sound, subtitles and motion graphics.',
     h1:'Video editing and post-production',
-    seo:{title:'Video editing, colour grading and post-production', desc:'Editing of your footage, colour grading, sound clean-up and mix, subtitles and motion graphics. Versions for YouTube, Instagram and TikTok. Price online.'},
+    seo:{title:'Video editing, colour grading and post-production', desc:'Editing of your footage, colour grading, sound clean-up and mix, subtitles and motion graphics. Versions for YouTube, Instagram and TikTok. Free enquiry.'},
     lead:'Already have footage? We turn it into a story that keeps viewers watching to the end.',
     intro:['We edit corporate videos, YouTube and social content, weddings, events and longer documentary pieces. Send us footage from a camera or phone and we cut it into a video with rhythm, story and clean sound.',
       'Post-production includes colour grading to match shots from different cameras, sound clean-up and mixing, subtitles and motion graphics. One edit gives you landscape and vertical versions.'],
@@ -212,34 +143,17 @@ export const SERVICES = [
     equip:[['Editing','DaVinci Resolve Studio and Adobe Premiere Pro'],['Graphics','Adobe After Effects for motion graphics and animated titles'],['Colour','Calibrated monitor and grading in DaVinci Resolve'],['Sound','Noise reduction, mixing and mastering']],
     time:'3–14 working days',
     faq:[['What format should we send?','Original files from the camera or phone are fine. We take them via cloud storage or in person.'],
-      ['How much does video editing cost?','A short social video starts around €80, a corporate edit is usually €240–600. It depends on length, amount of footage and extras. Use the calculator.'],
+      ['How much does video editing cost?','It depends on scope, timing and complexity. After a short call we send you a tailored quote, free and non-binding.'],
       ['How many revision rounds are included?','Two rounds of feedback. Further changes are agreed by scope.'],
       ['Do you do vertical short videos?','Yes, one shoot can give you versions for YouTube, Instagram and TikTok.'],
-      ['Can you do English subtitles?','Yes, in Czech and English.']]},
-  calc:{ days:[3,14], fields:[
-    {id:'type', kind:'choice', label:{cs:'Typ výstupu',en:'Type of output'}, opts:[
-      {id:'social', label:{cs:'Krátké video na sítě',en:'Short social video'}, hint:{cs:'do 60 s',en:'up to 60 s'}, add:[2000,4000]},
-      {id:'yt', label:{cs:'Firemní / YouTube video',en:'Corporate / YouTube video'}, hint:{cs:'2–10 min',en:'2–10 min'}, add:[6000,15000]},
-      {id:'wed', label:{cs:'Svatba / event',en:'Wedding / event'}, hint:{cs:'10–30 min',en:'10–30 min'}, add:[10000,20000]},
-      {id:'long', label:{cs:'Dlouhý formát',en:'Long form'}, hint:{cs:'dokument, 30+ min',en:'documentary, 30+ min'}, add:[20000,45000]}]},
-    {id:'foot', kind:'choice', label:{cs:'Množství natočeného materiálu',en:'Amount of footage'}, opts:[
-      {id:'1', label:{cs:'Do 1 hodiny',en:'Under 1 hour'}, mult:1},
-      {id:'5', label:{cs:'1–5 hodin',en:'1–5 hours'}, mult:1.3},
-      {id:'9', label:{cs:'Více než 5 hodin',en:'More than 5 hours'}, mult:1.7}]},
-    {id:'ver', kind:'range', label:{cs:'Počet výstupních verzí',en:'Number of output versions'}, min:1, max:10, step:1, def:1, free:1, price:[1000,2500], unit:{cs:['verze','verze','verzí'],en:['version','versions']}},
-    {id:'ex', kind:'extras', label:{cs:'Doplňky',en:'Extras'}, opts:[
-      {id:'grade', label:{cs:'Color grading',en:'Colour grading'}, add:[2000,6000]},
-      {id:'sound', label:{cs:'Čištění a mix zvuku',en:'Sound clean-up and mix'}, add:[1500,4000]},
-      {id:'subs', label:{cs:'Titulky',en:'Subtitles'}, add:[1000,3000]},
-      {id:'motion', label:{cs:'Motion grafika',en:'Motion graphics'}, add:[3000,10000]},
-      {id:'express', label:{cs:'Expresní dodání',en:'Express delivery'}, mult:1.3}]}]}
+      ['Can you do English subtitles?','Yes, in Czech and English.']]}
 },
 /* ------------------------------------------------------------------ 360 */
-{ id:'360', tile:'vr', icon:'360', img:'interior', theme:'vr', from:3500,
+{ id:'360', tags:{cs:['Reality', 'Showroomy', 'Hotely'],en:['Real estate', 'Showrooms', 'Hotels']}, tile:'vr', icon:'360', img:'interior', theme:'vr',
   slug:{cs:'virtualni-prohlidky-matterport', en:'matterport-virtual-tours'},
   cs:{ t:'360° / Matterport', s:'Virtuální prohlídky prostor přímo v prohlížeči.',
     h1:'Virtuální prohlídky Matterport 360°',
-    seo:{title:'Virtuální prohlídky Matterport 360° pro reality', desc:'3D virtuální prohlídky Matterport pro prodej nemovitostí, showroomy, hotely a dokumentaci budov. Půdorys, body zájmu a vložení na web. Cena online.'},
+    seo:{title:'Virtuální prohlídky Matterport 360° pro reality', desc:'3D virtuální prohlídky Matterport pro prodej nemovitostí, showroomy, hotely a dokumentaci budov. Půdorys, body zájmu a vložení na web. Nezávazná poptávka.'},
     lead:'Klient si projde prostor, jako by v něm stál. Kdykoli a odkudkoli, bez nutnosti prohlídky na místě.',
     intro:['Virtuální prohlídka Matterport je 3D model prostoru, kterým se návštěvník volně pohybuje v prohlížeči na počítači i mobilu. Vidí dispozici, rozměry a návaznost místností lépe než na fotkách.',
       'Prostor naskenujeme během jedné návštěvy, doplníme půdorys, popisky a body zájmu a předáme odkaz i kód pro vložení na web nebo do inzerátu. Prohlídka šetří prohlídky naprázdno a přivede zájemce, kteří už jsou rozhodnutí.'],
@@ -249,13 +163,13 @@ export const SERVICES = [
     equip:[['Skener','Matterport 3D kamera s přesným měřením hloubky'],['Platforma','Matterport cloud a prohlížeč Showcase'],['Doplňky','Stativ, nivelace a příprava světla pro čisté snímky']],
     time:'1–3 pracovní dny',
     faq:[['Jak dlouho skenování trvá?','Záleží na velikosti prostoru. Byt zvládneme během jedné návštěvy.'],
-      ['Kolik stojí virtuální prohlídka Matterport?','Prohlídka bytu začíná kolem 3 500 Kč. Větší prostory se počítají podle plochy. Orientační cenu si spočítáte v kalkulačce.'],
+      ['Kolik stojí virtuální prohlídka Matterport?','Cena závisí na rozsahu, termínu a náročnosti projektu. Po krátké konzultaci vám pošleme nabídku na míru, zdarma a nezávazně.'],
       ['Kde prohlídka poběží?','V prohlížeči na počítači i mobilu. Vložíte ji na web nebo pošlete odkazem.'],
       ['Musí být prostor prázdný?','Nemusí, jen uklizený. Prohlídka ukáže prostor tak, jak ho klient uvidí.'],
       ['Jak dlouho bude prohlídka online?','Hosting domluvíme podle potřeby, obvykle na dobu prodeje nebo pronájmu.']]},
   en:{ t:'360° / Matterport', s:'Virtual tours your clients open in the browser.',
     h1:'Matterport 360° virtual tours',
-    seo:{title:'Matterport 360° virtual tours for property', desc:'Matterport 3D virtual tours for property sales, showrooms, hotels and building documentation. Floor plan, tags and website embed. Price online.'},
+    seo:{title:'Matterport 360° virtual tours for property', desc:'Matterport 3D virtual tours for property sales, showrooms, hotels and building documentation. Floor plan, tags and website embed. Free enquiry.'},
     lead:'Clients walk through the space as if they were there. Any time, from anywhere, without a site visit.',
     intro:['A Matterport virtual tour is a 3D model of a space that visitors move through freely in the browser on desktop and mobile. They understand layout, size and flow better than from photos.',
       'We scan the space in a single visit, add a floor plan, labels and points of interest, and hand over a link and embed code for your website or listing. Tours cut wasted viewings and bring buyers who have already decided.'],
@@ -265,31 +179,17 @@ export const SERVICES = [
     equip:[['Scanner','Matterport 3D camera with accurate depth capture'],['Platform','Matterport cloud and Showcase viewer'],['Kit','Tripod, levelling and light preparation for clean captures']],
     time:'1–3 working days',
     faq:[['How long does scanning take?','It depends on size. A flat takes a single visit.'],
-      ['How much does a Matterport tour cost?','A flat starts around €140. Larger spaces are priced by floor area. Get a guide price in the calculator.'],
+      ['How much does a Matterport tour cost?','It depends on scope, timing and complexity. After a short call we send you a tailored quote, free and non-binding.'],
       ['Where does the tour run?','In the browser on desktop and mobile. Embed it or share a link.'],
       ['Does the space need to be empty?','No, just tidy. The tour shows it as clients will see it.'],
-      ['How long will the tour stay online?','We agree hosting as needed, usually for the sale or rental period.']]},
-  calc:{ days:[1,3], fields:[
-    {id:'type', kind:'choice', label:{cs:'Typ prostoru',en:'Type of space'}, opts:[
-      {id:'flat', label:{cs:'Byt',en:'Flat'}, add:[3500,5000]},
-      {id:'house', label:{cs:'Rodinný dům',en:'House'}, add:[5000,7500]},
-      {id:'com', label:{cs:'Komerční prostor',en:'Commercial space'}, hint:{cs:'kancelář, showroom, hotel',en:'office, showroom, hotel'}, add:[6000,9000]}]},
-    {id:'area', kind:'range', label:{cs:'Plocha',en:'Floor area'}, min:20, max:2000, step:10, def:80, free:100, price:[12,20], unit:{cs:'m²',en:'m²'}},
-    TRAVEL,
-    {id:'ex', kind:'extras', label:{cs:'Doplňky',en:'Extras'}, opts:[
-      {id:'plan', label:{cs:'Půdorys s rozměry',en:'Floor plan with dimensions'}, add:[800,1500]},
-      {id:'tags', label:{cs:'Popisky a body zájmu',en:'Labels and points of interest'}, add:[500,1500]},
-      {id:'photos', label:{cs:'10 HD fotek ze skenu',en:'10 HD stills from the scan'}, add:[500,1000]},
-      {id:'drone', label:{cs:'Letecké záběry dronem',en:'Aerial drone shots'}, add:[3000,5000]},
-      {id:'host', label:{cs:'Hosting prohlídky na 12 měsíců',en:'Tour hosting for 12 months'}, add:[1500,3000]},
-      {id:'express', label:{cs:'Expres do 24 hodin',en:'Express within 24 hours'}, add:[1000,2000]}]}]}
+      ['How long will the tour stay online?','We agree hosting as needed, usually for the sale or rental period.']]}
 },
 /* ------------------------------------------------------------------ 3D */
-{ id:'3d', tile:'3d', icon:'3d', img:'product3d', theme:'3d', from:5000,
+{ id:'3d', tags:{cs:['Rendery', 'Animace', 'Varianty'],en:['Renders', 'Animation', 'Variants']}, tile:'3d', icon:'3d', img:'product3d', theme:'3d',
   slug:{cs:'3d-modelovani-a-rendery', en:'3d-modelling-and-renders'},
   cs:{ t:'3D a Blender', s:'Modelování, produktové rendery a animace.',
     h1:'3D modelování, produktové rendery a animace',
-    seo:{title:'3D modelování a produktové rendery v Blenderu', desc:'Fotorealistické 3D rendery a animace produktů z výkresů, CAD dat nebo fotek. Varianty barev a materiálů pro e-shop, tisk i reklamu. Spočítejte si cenu online.'},
+    seo:{title:'3D modelování a produktové rendery v Blenderu', desc:'Fotorealistické 3D rendery a animace produktů z výkresů, CAD dat nebo fotek. Varianty barev a materiálů pro e-shop, tisk i reklamu. Pošlete nezávaznou poptávku.'},
     lead:'Ukažte produkt dřív, než existuje. Nebo z úhlu, který fotoaparát nezachytí.',
     intro:['Postavíme 3D model produktu podle výkresů, CAD dat nebo fotek a rozměrů a vyrenderujeme ho ve fotorealistické kvalitě. Rendery použijete v e-shopu, katalogu, na billboardu i v reklamním spotu.',
       'Výhoda 3D je v opakovatelnosti: z jednoho modelu připravíte libovolné barevné varianty, nové úhly nebo animaci, aniž byste znovu fotili. Pracujeme v Blenderu a výstupy ladíme tak, aby šly vedle skutečných fotek.'],
@@ -299,13 +199,13 @@ export const SERVICES = [
     equip:[['Software','Blender (Cycles a EEVEE) pro modelování, materiály a render'],['Vstupní data','Import CAD a 3D formátů (STEP, OBJ, FBX, GLB)'],['Výkon','Renderovací stanice s výkonnými GPU'],['Postprodukce','Adobe Photoshop a After Effects']],
     time:'5–15 pracovních dní',
     faq:[['Co potřebujete jako podklad?','Ideálně výkresy nebo CAD data. Stačí ale i fotky a rozměry.'],
-      ['Kolik stojí 3D render produktu?','Jednoduchý produkt s několika rendery začíná kolem 5 000 Kč. Cenu ovlivní složitost modelu, počet renderů a animace. Spočítejte si to v kalkulačce.'],
+      ['Kolik stojí 3D render produktu?','Cena závisí na rozsahu, termínu a náročnosti projektu. Po krátké konzultaci vám pošleme nabídku na míru, zdarma a nezávazně.'],
       ['Dá se render použít v reklamě?','Ano, rendery a animace dodáváme v kvalitě pro web, tisk i video.'],
       ['Můžeme model později upravit?','Ano. Model zůstává a nové varianty z něj připravíme rychleji.'],
       ['Umíte model i pro web a rozšířenou realitu?','Ano, model připravíme ve formátech GLB a USDZ pro 3D prohlížeč na webu.']]},
   en:{ t:'3D and Blender', s:'Modelling, product renders and animation.',
     h1:'3D modelling, product renders and animation',
-    seo:{title:'3D modelling and product renders in Blender', desc:'Photorealistic 3D product renders and animation from drawings, CAD data or photos. Colour and material variants for e-shops, print and ads. Get a guide price online.'},
+    seo:{title:'3D modelling and product renders in Blender', desc:'Photorealistic 3D product renders and animation from drawings, CAD data or photos. Colour and material variants for e-shops, print and ads. Send a free enquiry.'},
     lead:'Show a product before it exists, or from an angle no camera can reach.',
     intro:['We build a 3D model of your product from drawings, CAD data or photos and dimensions, and render it photorealistically. Use the renders in your e-shop, catalogue, on billboards or in a TV spot.',
       'The beauty of 3D is repeatability: one model gives you any colour variant, new angle or animation without another shoot. We work in Blender and tune the output to sit next to real photos.'],
@@ -315,34 +215,17 @@ export const SERVICES = [
     equip:[['Software','Blender (Cycles and EEVEE) for modelling, materials and rendering'],['Input data','Import of CAD and 3D formats (STEP, OBJ, FBX, GLB)'],['Power','Rendering workstation with powerful GPUs'],['Post','Adobe Photoshop and After Effects']],
     time:'5–15 working days',
     faq:[['What do you need from us?','Ideally drawings or CAD data. Photos and dimensions also work.'],
-      ['How much does a 3D product render cost?','A simple product with a few renders starts around €200. Model complexity, number of renders and animation drive the price. Use the calculator.'],
+      ['How much does a 3D product render cost?','It depends on scope, timing and complexity. After a short call we send you a tailored quote, free and non-binding.'],
       ['Can renders be used in ads?','Yes, we deliver renders and animation at web, print and video quality.'],
       ['Can the model be changed later?','Yes. The model stays, so new variants are quicker.'],
-      ['Can you make a model for the web and AR?','Yes, we export GLB and USDZ for 3D viewers on websites.']]},
-  calc:{ days:[5,15], fields:[
-    {id:'type', kind:'choice', label:{cs:'Složitost modelu',en:'Model complexity'}, opts:[
-      {id:'simple', label:{cs:'Jednoduchý',en:'Simple'}, hint:{cs:'láhev, krabička',en:'bottle, box'}, add:[4000,7000]},
-      {id:'mid', label:{cs:'Střední',en:'Medium'}, hint:{cs:'spotřebič, nábytek',en:'appliance, furniture'}, add:[8000,15000]},
-      {id:'complex', label:{cs:'Složitý',en:'Complex'}, hint:{cs:'stroj, vozidlo',en:'machine, vehicle'}, add:[18000,40000]},
-      {id:'own', label:{cs:'Mám vlastní 3D model',en:'I have a 3D model'}, hint:{cs:'jen materiály a render',en:'materials and render only'}, add:[1500,3000]}]},
-    {id:'renders', kind:'range', label:{cs:'Počet renderů',en:'Number of renders'}, min:1, max:30, step:1, def:5, free:0, price:[700,1500], unit:{cs:'ks',en:'pcs'}},
-    {id:'var', kind:'range', label:{cs:'Barevné / materiálové varianty',en:'Colour / material variants'}, min:0, max:10, step:1, def:0, free:0, price:[500,1200], unit:{cs:'ks',en:'pcs'}},
-    {id:'anim', kind:'choice', label:{cs:'Animace',en:'Animation'}, opts:[
-      {id:'none', label:{cs:'Bez animace',en:'No animation'}, add:[0,0]},
-      {id:'spin', label:{cs:'Otočka 360° (10 s)',en:'360° turntable (10 s)'}, add:[4000,8000]},
-      {id:'prod', label:{cs:'Produktová animace 15–30 s',en:'Product animation 15–30 s'}, add:[10000,20000]},
-      {id:'ad', label:{cs:'Reklamní animace 30–60 s',en:'Ad animation 30–60 s'}, add:[20000,45000]}]},
-    {id:'ex', kind:'extras', label:{cs:'Doplňky',en:'Extras'}, opts:[
-      {id:'web', label:{cs:'Model pro web a AR (GLB / USDZ)',en:'Model for web and AR (GLB / USDZ)'}, add:[3000,6000]},
-      {id:'photos', label:{cs:'Podklady jen z fotek a rozměrů',en:'Input from photos and dimensions only'}, mult:1.15},
-      {id:'express', label:{cs:'Expresní dodání',en:'Express delivery'}, mult:1.3}]}]}
+      ['Can you make a model for the web and AR?','Yes, we export GLB and USDZ for 3D viewers on websites.']]}
 },
 /* ------------------------------------------------------------------ VIZUALIZACE */
-{ id:'vizualizace', tile:'viz', icon:'viz', img:'building', theme:'viz', from:4500,
+{ id:'vizualizace', tags:{cs:['Exteriéry', 'Interiéry', 'Průlety'],en:['Exteriors', 'Interiors', 'Fly-throughs']}, tile:'viz', icon:'viz', img:'building', theme:'viz',
   slug:{cs:'architektonicke-vizualizace', en:'architectural-visualisation'},
   cs:{ t:'Vizualizace', s:'Architektonické a interiérové vizualizace.',
     h1:'Architektonické a interiérové vizualizace',
-    seo:{title:'Architektonické vizualizace exteriérů a interiérů', desc:'Fotorealistické vizualizace novostaveb, bytů a interiérů pro developery a architekty. Průlety projektem i zasazení do okolí. Spočítejte si cenu online.'},
+    seo:{title:'Architektonické vizualizace exteriérů a interiérů', desc:'Fotorealistické vizualizace novostaveb, bytů a interiérů pro developery a architekty. Průlety projektem i zasazení do okolí. Pošlete nezávaznou poptávku.'},
     lead:'Prodávejte byty a domy dřív, než stojí. Vizualizace ukáže světlo, materiály i atmosféru prostoru.',
     intro:['Z výkresů a materiálových listů vytvoříme fotorealistické vizualizace exteriérů i interiérů. Kupující uvidí, jak bude dům vypadat při západu slunce, jak světlo padá do obývacího pokoje a jaké materiály architekt zvolil.',
       'Vizualizaci umíme zasadit do skutečné fotky nebo leteckého záběru pozemku, připravit varianty materiálů a denní doby i plynulý průlet celým projektem. Výstupy použijete na webu projektu, v brožuře i na billboardu.'],
@@ -352,13 +235,13 @@ export const SERVICES = [
     equip:[['Software','Blender pro modelování, světlo a render'],['Vstupní data','Výkresy v PDF a DWG, 3D data z ArchiCADu, Revitu nebo SketchUpu'],['Okolí','Zasazení do fotky nebo leteckého záběru z dronu'],['Postprodukce','Adobe Photoshop']],
     time:'7–20 pracovních dní',
     faq:[['Jaké podklady potřebujete?','Výkresy, řezy a materiálové listy. Pokud je máte v 3D, práce bude rychlejší.'],
-      ['Kolik stojí vizualizace?','Interiérový pohled začíná kolem 4 500 Kč, exteriérový kolem 6 000 Kč. Cena závisí na počtu pohledů, detailu a animaci. Spočítejte si to v kalkulačce.'],
+      ['Kolik stojí vizualizace?','Cena závisí na rozsahu, termínu a náročnosti projektu. Po krátké konzultaci vám pošleme nabídku na míru, zdarma a nezávazně.'],
       ['Kolik pohledů doporučujete?','Záleží na účelu. Pro prodej obvykle stačí několik klíčových exteriérů a interiérů.'],
       ['Umíte zapracovat reálné okolí?','Ano, vizualizaci můžeme zasadit do fotky nebo leteckého záběru skutečného místa.'],
       ['Jak rychle budou vizualizace hotové?','Běžně za 1–3 týdny podle počtu pohledů a připravenosti podkladů.']]},
   en:{ t:'Visualisation', s:'Architectural and interior visualisation.',
     h1:'Architectural and interior visualisation',
-    seo:{title:'Architectural and interior visualisation', desc:'Photorealistic visualisation of new builds, flats and interiors for developers and architects. Fly-throughs and real-site compositing. Price online.'},
+    seo:{title:'Architectural and interior visualisation', desc:'Photorealistic visualisation of new builds, flats and interiors for developers and architects. Fly-throughs and real-site compositing. Free enquiry.'},
     lead:'Sell flats and houses before they’re built. Visualisation shows light, materials and atmosphere.',
     intro:['From drawings and material specs we create photorealistic exterior and interior visualisations. Buyers see how the house looks at sunset, how light falls into the living room and which materials the architect chose.',
       'We can composite the visualisation into a real photo or aerial shot of the site, prepare material and time-of-day variants and a smooth fly-through of the whole project. Use the results on the project website, in brochures and on billboards.'],
@@ -368,29 +251,17 @@ export const SERVICES = [
     equip:[['Software','Blender for modelling, lighting and rendering'],['Input data','Drawings in PDF and DWG, 3D data from ArchiCAD, Revit or SketchUp'],['Surroundings','Compositing into a photo or drone aerial of the site'],['Post','Adobe Photoshop']],
     time:'7–20 working days',
     faq:[['What input do you need?','Drawings, sections and material lists. 3D data makes it faster.'],
-      ['How much does a visualisation cost?','An interior view starts around €180, an exterior around €240. Number of views, detail and animation drive the price. Use the calculator.'],
+      ['How much does a visualisation cost?','It depends on scope, timing and complexity. After a short call we send you a tailored quote, free and non-binding.'],
       ['How many views do you recommend?','It depends on the goal. For sales, a few key exteriors and interiors usually do.'],
       ['Can you place it in the real surroundings?','Yes, we can composite it into a photo or aerial shot of the actual site.'],
-      ['How fast will it be ready?','Usually 1–3 weeks depending on the number of views and the input data.']]},
-  calc:{ days:[7,20], fields:[
-    {id:'ext', kind:'range', label:{cs:'Exteriérové pohledy',en:'Exterior views'}, min:0, max:20, step:1, def:2, free:0, price:[6000,12000], unit:{cs:'ks',en:'pcs'}},
-    {id:'int', kind:'range', label:{cs:'Interiérové pohledy',en:'Interior views'}, min:0, max:20, step:1, def:3, free:0, price:[4500,9000], unit:{cs:'ks',en:'pcs'}},
-    {id:'anim', kind:'choice', label:{cs:'Průlet projektem',en:'Fly-through'}, opts:[
-      {id:'none', label:{cs:'Bez animace',en:'No animation'}, add:[0,0]},
-      {id:'30', label:{cs:'Průlet 30 s',en:'30 s fly-through'}, add:[25000,45000]},
-      {id:'60', label:{cs:'Průlet 60 s',en:'60 s fly-through'}, add:[40000,70000]}]},
-    {id:'ex', kind:'extras', label:{cs:'Doplňky',en:'Extras'}, opts:[
-      {id:'model', label:{cs:'3D model jen z 2D výkresů',en:'3D model from 2D drawings only'}, add:[5000,15000]},
-      {id:'site', label:{cs:'Zasazení do fotky nebo dronu',en:'Compositing into a photo or aerial'}, add:[3000,7000]},
-      {id:'night', label:{cs:'Večerní / noční varianty',en:'Evening / night variants'}, mult:1.15},
-      {id:'express', label:{cs:'Expresní dodání',en:'Express delivery'}, mult:1.3}]}]}
+      ['How fast will it be ready?','Usually 1–3 weeks depending on the number of views and the input data.']]}
 },
 /* ------------------------------------------------------------------ FILM */
-{ id:'film', tile:'film', icon:'film', img:'factory', theme:'film', from:30000,
+{ id:'film', tags:{cs:['Klipy', 'Krátké filmy', 'Dokumenty'],en:['Music videos', 'Short films', 'Docs']}, tile:'film', icon:'film', img:'factory', theme:'film',
   slug:{cs:'filmova-produkce', en:'film-production'},
   cs:{ t:'Filmová produkce', s:'Krátké filmy, klipy a větší natáčení.',
     h1:'Filmová produkce, hudební klipy a krátké filmy',
-    seo:{title:'Filmová produkce – klipy, krátké filmy a reklama', desc:'Produkce hudebních klipů, krátkých filmů, dokumentů a reklam s větším štábem. Rozpočet, štáb, lokace, natáčení i postprodukce. Spočítejte si cenu online.'},
+    seo:{title:'Filmová produkce – klipy, krátké filmy a reklama', desc:'Produkce hudebních klipů, krátkých filmů, dokumentů a reklam s větším štábem. Rozpočet, štáb, lokace, natáčení i postprodukce. Pošlete nezávaznou poptávku.'},
     lead:'Větší projekt vyžaduje víc než kameru. Zajistíme štáb, techniku, lokace a harmonogram, abyste se mohli soustředit na příběh.',
     intro:['Produkujeme hudební klipy, krátké filmy, dokumenty a reklamy s větším štábem. Postaráme se o rozpočet, sestavení štábu, lokace, povolení a řízení natáčecích dnů.',
       'S režisérem a kameramanem ladíme vizuální styl od moodboardu po finální color grading. Můžeme dodat celou produkci, nebo jen techniku a lidi, které váš projekt potřebuje.'],
@@ -400,13 +271,13 @@ export const SERVICES = [
     equip:[['Kamery','Kino kamery s RAW nebo 10bitovým záznamem'],['Objektivy','Sady kinematografických objektivů'],['Světlo a grip','Světelný park, stativy, slider a dolly'],['Zvuk','Záznam zvuku na place a postsynchrony'],['Postprodukce','DaVinci Resolve Studio, Adobe After Effects']],
     time:'3–8 týdnů podle rozsahu',
     faq:[['Pracujete i s externím režisérem?','Ano. Můžeme dodat celý štáb, nebo jen techniku a produkci.'],
-      ['Kolik stojí hudební klip?','Hudební klip obvykle začíná kolem 30 000 Kč. Cenu ovlivní počet natáčecích dní, velikost štábu a výprava. Spočítejte si orientační cenu v kalkulačce.'],
+      ['Kolik stojí hudební klip?','Cena závisí na rozsahu, termínu a náročnosti projektu. Po krátké konzultaci vám pošleme nabídku na míru, zdarma a nezávazně.'],
       ['Jak velký projekt zvládnete?','Záleží na termínu a rozpočtu. Na konzultaci zjistíme, co je reálné.'],
       ['Pomůžete se scénářem?','Ano, s námětem i scénářem pomůžeme.'],
       ['Zajistíte herce a lokace?','Ano, casting, lokace i potřebná povolení zajistíme.']]},
   en:{ t:'Film production', s:'Short films, music videos and larger shoots.',
     h1:'Film production, music videos and short films',
-    seo:{title:'Film production – music videos and short films', desc:'Production of music videos, short films, documentaries and commercials with a larger crew. Budget, crew, locations, shoot and post. Get a guide price online.'},
+    seo:{title:'Film production – music videos and short films', desc:'Production of music videos, short films, documentaries and commercials with a larger crew. Budget, crew, locations, shoot and post. Send a free enquiry.'},
     lead:'Bigger projects need more than a camera. We handle crew, gear, locations and schedule so you can focus on the story.',
     intro:['We produce music videos, short films, documentaries and commercials with a larger crew. We handle the budget, crew, locations, permits and running the shoot days.',
       'Together with the director and DoP we shape the look from moodboard to final grade. We can deliver the whole production, or just the gear and people your project needs.'],
@@ -416,27 +287,10 @@ export const SERVICES = [
     equip:[['Cameras','Cinema cameras recording RAW or 10-bit'],['Lenses','Cinema lens sets'],['Lighting and grip','Lighting kit, stands, slider and dolly'],['Sound','On-set sound recording and ADR'],['Post','DaVinci Resolve Studio, Adobe After Effects']],
     time:'3–8 weeks depending on scope',
     faq:[['Do you work with external directors?','Yes. We can supply the whole crew, or just gear and production.'],
-      ['How much does a music video cost?','A music video usually starts around €1,200. Shoot days, crew size and art direction drive the price. Get a guide price in the calculator.'],
+      ['How much does a music video cost?','It depends on scope, timing and complexity. After a short call we send you a tailored quote, free and non-binding.'],
       ['How big a project can you handle?','It depends on timeline and budget. We’ll work out what’s realistic on a call.'],
       ['Can you help with the script?','Yes, with the idea and the script.'],
-      ['Can you arrange actors and locations?','Yes, casting, locations and permits.']]},
-  calc:{ days:[15,40], fields:[
-    {id:'type', kind:'choice', label:{cs:'Typ projektu',en:'Type of project'}, opts:[
-      {id:'clip', label:{cs:'Hudební klip',en:'Music video'}, add:[30000,80000]},
-      {id:'short', label:{cs:'Krátký film',en:'Short film'}, add:[60000,200000]},
-      {id:'doc', label:{cs:'Dokument',en:'Documentary'}, add:[50000,150000]},
-      {id:'ad', label:{cs:'Reklama s větším štábem',en:'Commercial with a larger crew'}, add:[80000,250000]}]},
-    {id:'days', kind:'range', label:{cs:'Natáčecí dny',en:'Shoot days'}, min:1, max:10, step:1, def:2, free:1, price:[20000,40000], unit:{cs:['den','dny','dní'],en:['day','days']}},
-    {id:'crew', kind:'choice', label:{cs:'Velikost štábu',en:'Crew size'}, opts:[
-      {id:'s', label:{cs:'Malý (2–3 lidé)',en:'Small (2–3 people)'}, mult:1},
-      {id:'m', label:{cs:'Střední (4–8 lidí)',en:'Medium (4–8 people)'}, mult:1.5},
-      {id:'l', label:{cs:'Velký (9+ lidí)',en:'Large (9+ people)'}, mult:2.2}]},
-    {id:'ex', kind:'extras', label:{cs:'Doplňky',en:'Extras'}, opts:[
-      {id:'cast', label:{cs:'Casting a herci',en:'Casting and actors'}, add:[10000,40000]},
-      {id:'loc', label:{cs:'Lokace a povolení',en:'Locations and permits'}, add:[5000,20000]},
-      {id:'art', label:{cs:'Kostýmy, rekvizity, scénografie',en:'Costumes, props, set design'}, add:[5000,25000]},
-      {id:'drone', label:{cs:'Letecké záběry dronem',en:'Aerial drone shots'}, add:[6000,12000]},
-      {id:'music', label:{cs:'Hudba na míru',en:'Original music'}, add:[10000,30000]}]}]}
+      ['Can you arrange actors and locations?','Yes, casting, locations and permits.']]}
 }
 ];
 

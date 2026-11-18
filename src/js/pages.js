@@ -6,8 +6,7 @@ import { POSTS } from './posts.js';
 import { LEGAL } from './legal.js';
 import { ICON } from './icons.js';
 import { PATHS, svcPath, postPath } from './routes.js';
-import { ctx, esc, imgTag, svcPreview, postCard, blogGrid, blogChips, flow, tiles, budgetBtns, calculator, summary, fmtDate, readMin } from './ui.js';
-import { money } from './calc.js';
+import { ctx, esc, imgTag, svcPreview, postCard, blogGrid, blogChips, flow, tiles, budgetBtns, summary, fmtDate, readMin } from './ui.js';
 
 export const VERSION = { css:'', js:'' };   // filled by build (cache busting)
 const abs = p => SITE + p;
@@ -31,7 +30,7 @@ function orgLD(lang){
   if(COMPANY.founded) o.foundingDate = COMPANY.founded;
   if(COMPANY.person) o.founder = {'@type':'Person', name: COMPANY.person};
   if(local){ o.address = {'@type':'PostalAddress', streetAddress: COMPANY.street||undefined, addressLocality: COMPANY.city, postalCode: COMPANY.zip||undefined, addressRegion: COMPANY.region||undefined, addressCountry:'CZ'}; o.priceRange = '$$'; }
-  o.hasOfferCatalog = {'@type':'OfferCatalog', name: I18N[lang]['m.sluzby'], itemListElement: SERVICES.map(s=>({'@type':'Offer', itemOffered:{'@id': abs(svcPath(s,lang))+'#service'}, priceSpecification:{'@type':'PriceSpecification', minPrice:s.from, priceCurrency:'CZK'}}))};
+  o.hasOfferCatalog = {'@type':'OfferCatalog', name: I18N[lang]['m.sluzby'], itemListElement: SERVICES.map(s=>({'@type':'Offer', itemOffered:{'@id': abs(svcPath(s,lang))+'#service'}}))};
   return o;
 }
 const websiteLD = lang => ({'@type':'WebSite', '@id': SITE+'/#website', url: SITE+'/', name: COMPANY.name, inLanguage: ['cs-CZ','en'], publisher:{'@id': SITE+'/#org'}});
@@ -87,7 +86,6 @@ function navBar(c, p){
   const link = (id, label, target, spy) => `<a href="${target}"${spy?` data-t="${spy}"`:''}>${label}</a>`;
   const items = [
     ['m.sluzby', home ? '#sluzby' : c.href(PATHS.services[c.lang]), 'sluzby'],
-    ['m.kalk', c.href(PATHS.services[c.lang])+'#cenik', null],
     ['m.proces', home ? '#proces' : c.href(H)+'#proces', 'proces'],
     ['m.blog', home ? '#blog' : c.href(PATHS.blog[c.lang]), 'blog'],
     ['m.onas', home ? '#o-nas' : c.href(H)+'#o-nas', 'o-nas'],
@@ -125,7 +123,7 @@ function footer(c, p){
     <div class="foot-brand"><a href="${home?'#top':c.href(H)}" aria-label="${COMPANY.name}"><img src="${c.asset('img/logo.webp')}" alt="${COMPANY.name}" width="80" height="30" loading="lazy"></a><p>${c.t('ft.claim')}</p></div>
     <div><h2 class="fh">${c.t('ft.svc')}</h2><ul>${SERVICES.map(s=>`<li><a href="${c.href(svcPath(s,c.lang))}">${s[c.lang].t}</a></li>`).join('')}</ul></div>
     <div><h2 class="fh">${c.t('ft.web')}</h2><ul>
-      <li><a href="${c.href(PATHS.services[c.lang])}">${c.t('m.sluzby')}</a></li><li><a href="${c.href(PATHS.services[c.lang])}#cenik">${c.t('m.kalk')}</a></li>
+      <li><a href="${c.href(PATHS.services[c.lang])}">${c.t('m.sluzby')}</a></li>
       <li><a href="${sec('proces')}">${c.t('m.proces')}</a></li><li><a href="${c.href(PATHS.blog[c.lang])}">${c.t('m.blog')}</a></li>
       <li><a href="${sec('o-nas')}">${c.t('m.onas')}</a></li><li><a href="${sec('poptavka')}">${c.t('m.poptavka')}</a></li></ul></div>
     <div><h2 class="fh">${c.t('ft.contact')}</h2><ul>${contact}</ul></div>
@@ -159,8 +157,8 @@ export function homePage(lang){
   const p = {kind:'home', lang, path, alt:PATHS.home, og:'home', bodyClass:'',
     fullTitle: lang==='cs' ? `SFX production – video produkce, fotografie, dron a 3D vizualizace${cityLabel(lang)}` : `SFX production – video, photography, drone and 3D`,
     title:'SFX production',
-    desc: lang==='cs' ? 'Video produkce, fotografie, dron, 360° prohlídky Matterport, 3D rendery a vizualizace pod jednou střechou. Spočítejte si cenu online a pošlete poptávku.'
-                      : 'Video production, photography, drone, Matterport 360° tours, 3D renders and visualisation under one roof. Get a guide price online and send an enquiry.',
+    desc: lang==='cs' ? 'Video produkce, fotografie, dron, 360° prohlídky Matterport, 3D rendery a vizualizace pod jednou střechou. Od nápadu po hotový výstup, nezávazná poptávka zdarma.'
+                      : 'Video production, photography, drone, Matterport 360° tours, 3D renders and visualisation under one roof. From the first idea to the finished piece. Free enquiry.',
     preload:`<link rel="preload" as="image" href="${c.asset('img/camera-poster.webp')}" fetchpriority="high">`};
   p.ld = [orgLD(lang), websiteLD(lang), pageLD({...p, title:p.fullTitle}),
     {'@type':'ItemList', name:t('m.sluzby'), itemListElement: SERVICES.map((s,i)=>({'@type':'ListItem', position:i+1, url:abs(svcPath(s,lang)), name:s[lang].t}))}];
@@ -214,10 +212,10 @@ export function homePage(lang){
       <ol class="svc-list" id="svcList">${SERVICES.map((s,i)=>{ const d=s[lang]; return `<li><a href="${c.href(svcPath(s,lang))}" data-s="${s.id}">
         <span class="n">0${i+1}</span>${imgTag(c, s.img, d.t, 'th')}
         <span><span class="nm">${d.t}</span><span class="ds">${d.s}</span></span>
-        <span class="tg">${t('svc.from')} ${money(s.from, lang)}</span></a></li>`; }).join('')}</ol>
+        <span class="tg">${s.tags[lang].join(', ')}</span></a></li>`; }).join('')}</ol>
       <aside class="svc-preview glass" id="svcPreview" aria-live="polite">${svcPreview(c, 'video')}</aside>
     </div>
-    <p class="sec-more"><a class="btn glass" href="${c.href(PATHS.services[lang])}#cenik">${ICON.calc}<span>${lang==='cs'?'Ceník a kalkulačky všech služeb':'Prices and calculators for all services'}</span></a></p>
+    <p class="sec-more"><a class="btn glass" href="${c.href(PATHS.services[lang])}">${t('svc.all')} ${ICON.arrow}</a></p>
   </section>
 
   <section class="sec" id="vyhody">
@@ -278,7 +276,6 @@ function enquiry(c){
           <ol class="steps-ind filmstrip">${[1,2,3,4].map(i=>`<li class="${i===1?'on cur':''}" data-go="${i}"><i></i><span><b>${i}</b> <em>${t('f.l'+i)}</em></span></li>`).join('')}</ol>
         </div>
         <p class="draft-note" id="draftNote" hidden>${t('f.draft')}</p>
-        <div class="calc-chip" id="calcChip" hidden></div>
 
         <div class="wstep on" data-step="1">
           <h3>${t('f.s1')}</h3><p class="hint">${t('f.s1h')}</p>
@@ -370,7 +367,6 @@ export function servicePage(s, lang){
   p.ld = [orgLD(lang), websiteLD(lang), {...pageLD(p), breadcrumb:{'@id':abs(path)+'#breadcrumb'}},
     {'@type':'Service', '@id':abs(path)+'#service', name:d.h1, serviceType:d.t, description:d.lead+' '+d.intro[0], url:abs(path), image:ogImg(s.id, lang),
       provider:{'@id':SITE+'/#org'}, areaServed:COMPANY.areaServed.map(n=>({'@type':'Country',name:n})), audience:{'@type':'Audience', audienceType:d.who.join(', ')},
-      offers:{'@type':'Offer', url:abs(path)+'#kalkulacka', priceCurrency:'CZK', priceSpecification:{'@type':'PriceSpecification', minPrice:s.from, priceCurrency:'CZK'}, availability:'https://schema.org/InStock'},
       hasOfferCatalog:{'@type':'OfferCatalog', name:d.t, itemListElement:d.inc.map(x=>({'@type':'Offer', itemOffered:{'@type':'Service', name:x}}))}},
     faqLD(d.faq), {...crumbLD(crumbsArr.map(([u,n],i)=>[n, u||path])), '@id':abs(path)+'#breadcrumb'}];
 
@@ -382,8 +378,8 @@ export function servicePage(s, lang){
       <p class="kicker">${d.t}</p>
       <h1>${d.h1}</h1>
       <p class="lead">${d.lead}</p>
-      <ul class="pg-chips"><li>${t('pg.priceFrom')} <b>${money(s.from, lang)}</b></li><li>${ICON.clock}<span>${d.time}</span></li></ul>
-      <div class="btns"><a class="btn primary" href="#kalkulacka">${ICON.calc}<span>${t('svc.calc')}</span></a><a class="btn glass" href="${c.href(PATHS.home[lang])}#poptavka" data-pick="${s.tile}">${t('pg.cta')}</a></div>
+      <ul class="pg-chips">${s.tags[lang].map(x=>`<li>${x}</li>`).join('')}<li>${ICON.clock}<span>${d.time}</span></li></ul>
+      <div class="btns"><a class="btn primary" href="${c.href(PATHS.home[lang])}#poptavka" data-pick="${s.tile}">${t('pg.cta')}</a><a class="btn glass" href="#faq">${t('pg.faq')}</a></div>
     </div>
     ${svcVisual(c, s)}
   </header>
@@ -402,13 +398,11 @@ export function servicePage(s, lang){
   <section class="pg-sec equip"><h2>${t('pg.equip')}</h2>
     <ul class="equip-grid">${d.equip.map(([n,x],i)=>`<li class="glass"><span class="eq-n">${String(i+1).padStart(2,'0')}</span><h3>${n}</h3><p>${x}</p></li>`).join('')}</ul></section>
 
-  ${calculator(c, s)}
-
   ${s.id==='360'?`<section class="pg-sec mp"><h2>${t('mp.h')}</h2><p class="mp-p">${t('mp.p')}</p>
     <div class="mp-frame" id="mpFrame">${imgTag(c,'interior','')}<button class="btn primary" type="button" id="mpLoad">${t('mp.load')}</button><small>${t('mp.note')}</small></div></section>`:''}
 
   <section class="pg-sec"><h2>${t('pg.how')}</h2>${flow(c)}</section>
-  <section class="pg-sec"><h2>${t('pg.faq')}</h2>${faqHTML(d.faq)}</section>
+  <section class="pg-sec" id="faq"><h2>${t('pg.faq')}</h2>${faqHTML(d.faq)}</section>
   ${related.length?`<section class="pg-sec"><h2>${t('pg.related')}</h2><div class="blog-grid flat more">${related.map(x=>postCard2(c,x)).join('')}</div></section>`:''}
   <section class="cta-box glass"><div><h2>${t('pg.ctaH')}</h2><p>${t('pg.ctaP')}</p></div><a class="btn primary" href="${c.href(PATHS.home[lang])}#poptavka" data-pick="${s.tile}">${t('pg.cta')}</a></section>
   <section class="pg-sec"><h2>${t('pg.other')}</h2><div class="other">${SERVICES.filter(x=>x.id!==s.id).map(x=>`<a href="${c.href(svcPath(x,lang))}">${ICON[x.icon]}${x[lang].t}</a>`).join('')}</div></section>
@@ -418,12 +412,12 @@ export function servicePage(s, lang){
 }
 function postCard2(c, x){ return postCard(c, x, 'row'); }
 
-/* ================================================================ SERVICES HUB + PRICE LIST */
+/* ================================================================ SERVICES HUB */
 export function hubPage(lang){
   const path = PATHS.services[lang], c = ctx(lang, path), t = c.t;
   const p = {kind:'hub', lang, path, alt:PATHS.services, og:'home', title: t('hub.title') + cityLabel(lang),
-    desc: lang==='cs' ? 'Služby a orientační ceník: video, fotografie, dron, střih, Matterport, 3D rendery, vizualizace a filmová produkce. U každé služby kalkulačka ceny.'
-                      : 'Services and guide prices: video, photography, drone, editing, Matterport, 3D renders, visualisation and film production. A price calculator for each.'};
+    desc: lang==='cs' ? 'Přehled služeb SFX production: video produkce, fotografie, dron, střih, virtuální prohlídky Matterport, 3D rendery, vizualizace a filmová produkce.'
+                      : 'SFX production services: video production, photography, drone, editing, Matterport virtual tours, 3D renders, visualisation and film production.'};
   const crumbsArr = [[PATHS.home[lang], t('pg.home')], [null, t('m.sluzby')]];
   p.ld = [orgLD(lang), websiteLD(lang), {...pageLD(p,'CollectionPage'), mainEntity:{'@type':'ItemList', itemListElement:SERVICES.map((s,i)=>({'@type':'ListItem', position:i+1, url:abs(svcPath(s,lang)), name:s[lang].t}))}},
     crumbLD(crumbsArr.map(([u,n])=>[n, u||path]))];
@@ -432,13 +426,7 @@ export function hubPage(lang){
   <header class="pg-hero hub-hero"><div><p class="kicker">${COMPANY.name}</p><h1>${t('hub.h')}</h1></div><div><p class="lead">${t('hub.lead')}</p></div></header>
   <ul class="hub-grid">${SERVICES.map((s,i)=>{ const d=s[lang]; return `<li><a class="hub-card glass" href="${c.href(svcPath(s,lang))}">
       <div class="hc-img">${imgTag(c,s.img,d.t)}<span class="ico">${ICON[s.icon]}</span><span class="hc-n">0${i+1}</span></div>
-      <div class="hc-b"><h2>${d.t}</h2><p>${d.s}</p><span class="hc-p">${t('svc.from')} <b>${money(s.from,lang)}</b></span><span class="more">${t('svc.more')} ${ICON.arrow}</span></div></a></li>`; }).join('')}</ul>
-  <section class="pg-sec" id="cenik"><h2>${lang==='cs'?'Orientační ceník':'Guide prices'}</h2>
-    <p class="mp-p">${t('pg.priceNote')} ${lang==='cs'?'U každé služby najdete kalkulačku, kde si cenu spočítáte přesněji.':'Every service has a calculator for a more precise estimate.'}</p>
-    <div class="price-table glass" role="table">
-      <div class="pt-row pt-h" role="row"><span role="columnheader">${lang==='cs'?'Služba':'Service'}</span><span role="columnheader">${lang==='cs'?'Cena od':'From'}</span><span role="columnheader">${t('pg.time')}</span><span role="columnheader"></span></div>
-      ${SERVICES.map(s=>`<div class="pt-row" role="row"><span role="cell"><span class="pt-ico">${ICON[s.icon]}</span><a href="${c.href(svcPath(s,lang))}">${s[lang].t}</a></span><span role="cell"><b>${money(s.from,lang)}</b></span><span role="cell">${s[lang].time}</span><span role="cell"><a class="pt-calc" href="${c.href(svcPath(s,lang))}#kalkulacka">${ICON.calc}<span>${t('svc.calc')}</span></a></span></div>`).join('')}
-    </div></section>
+      <div class="hc-b"><h2>${d.t}</h2><p>${d.s}</p><span class="more">${t('svc.more')} ${ICON.arrow}</span></div></a></li>`; }).join('')}</ul>
   <section class="pg-sec"><h2>${t('pg.how')}</h2>${flow(c)}</section>
   <section class="cta-box glass"><div><h2>${t('pg.ctaH')}</h2><p>${t('pg.ctaP')}</p></div><a class="btn primary" href="${c.href(PATHS.home[lang])}#poptavka">${t('nav.cta')}</a></section>
 </main>`;
@@ -489,7 +477,7 @@ export function postPage(x, lang){
       <dt>${t('pg.svcs')}</dt><dd>${svcLinks}</dd>
       <dt>${t('pg.date')}</dt><dd>${fmtDate(x.date, lang)}</dd>
       <dt>${lang==='cs'?'Autor':'Author'}</dt><dd>${COMPANY.person}</dd></dl>
-      <a class="btn primary" href="${c.href(svcPath(SVC_BY[x.cat],lang))}#kalkulacka">${ICON.calc}<span>${t('svc.calc')}</span></a></aside>
+      <a class="btn primary" href="${c.href(svcPath(SVC_BY[x.cat],lang))}">${SVC_BY[x.cat][lang].t} ${ICON.arrow}</a></aside>
   </div>
   </article>
   <section class="cta-box glass"><div><h2>${t('pg.ctaH')}</h2><p>${t('pg.ctaP')}</p></div><a class="btn primary" href="${c.href(PATHS.home[lang])}#poptavka" data-pick="${x.svcs.map(k=>SVC_BY[k].tile).join(',')}">${t('nav.cta')}</a></section>

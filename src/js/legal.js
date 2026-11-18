@@ -17,7 +17,7 @@ export const LEGAL = {
    <h2>Autorská práva</h2>
    <p>Veškerý obsah tohoto webu, zejména fotografie, videa, vizualizace, texty a grafika, je chráněn autorským zákonem (zákon č. 121/2000 Sb.). Bez předchozího písemného souhlasu jej není dovoleno kopírovat, šířit ani jinak používat.</p>
    <h2>Odpovědnost</h2>
-   <p>Informace na webu mají informativní charakter a nejsou nabídkou k uzavření smlouvy. Ceny v kalkulačkách jsou orientační. Konkrétní podmínky spolupráce a cenu vždy uvádíme v nabídce.</p>`},
+   <p>Informace na webu mají informativní charakter a nejsou nabídkou k uzavření smlouvy. Konkrétní podmínky spolupráce a cenu vždy uvádíme v nabídce.</p>`},
   en:{t:'Legal information', d:'Website operator, copyright and liability.', body:()=>`
    <h2>Website operator</h2>
    <p>${COMPANY.owner||'<i>Company / name: to be added</i>'}<br>Company ID (IČO): ${COMPANY.ico||todo('en')}<br>Registered office: ${addr()||todo('en')}<br>${COMPANY.register||'<i>Register entry: to be added</i>'}</p>
@@ -25,14 +25,14 @@ export const LEGAL = {
    <h2>Copyright</h2>
    <p>All content on this website, including photos, videos, visualisations, text and graphics, is protected by the Czech Copyright Act (No. 121/2000 Coll.). It may not be copied, distributed or otherwise used without prior written consent.</p>
    <h2>Liability</h2>
-   <p>Information on this website is for general information and is not an offer to enter into a contract. Calculator prices are a guide. Specific terms and the price are always stated in our quote.</p>`}},
+   <p>Information on this website is for general information and is not an offer to enter into a contract. Specific terms and the price are always stated in our quote.</p>`}},
  privacy:{
   cs:{t:'Ochrana osobních údajů', d:'Jak SFX production nakládá s osobními údaji z poptávkového formuláře.', body:()=>`
    <p>Tyto zásady popisují, jak nakládáme s osobními údaji, které nám pošlete přes poptávkový formulář nebo e-mailem.</p>
    <h2>Správce</h2>
    <p>${COMPANY.owner||todo('cs')}, IČO ${COMPANY.ico||todo('cs')}, se sídlem ${addr()||todo('cs')}. Kontakt: ${mail()}.</p>
    <h2>Jaké údaje zpracováváme</h2>
-   <p>Jméno, e-mail, telefon (pokud ho uvedete), firmu a informace o projektu, které vyplníte do formuláře nebo kalkulačky.</p>
+   <p>Jméno, e-mail, telefon (pokud ho uvedete), firmu a informace o projektu, které vyplníte do formuláře.</p>
    <h2>Proč a na jakém základě</h2>
    <p>Údaje používáme jen k vyřízení vaší poptávky a přípravě nabídky. Právním základem je jednání o smlouvě na vaši žádost (čl. 6 odst. 1 písm. b) GDPR).</p>
    <h2>Jak dlouho</h2>
@@ -46,7 +46,7 @@ export const LEGAL = {
    <h2>Controller</h2>
    <p>${COMPANY.owner||todo('en')}, IČO ${COMPANY.ico||todo('en')}, registered at ${addr()||todo('en')}. Contact: ${mail()}.</p>
    <h2>What we process</h2>
-   <p>Your name, email, phone (if provided), company and the project details you enter in the form or calculator.</p>
+   <p>Your name, email, phone (if provided), company and the project details you enter in the form.</p>
    <h2>Why and on what basis</h2>
    <p>Only to handle your enquiry and prepare a quote. The legal basis is steps taken at your request before entering into a contract (Art. 6(1)(b) GDPR).</p>
    <h2>How long</h2>
@@ -59,14 +59,14 @@ export const LEGAL = {
   cs:{t:'Cookies', d:'Web SFX production nepoužívá reklamní ani analytické cookies.', body:()=>`
    <p>Web nepoužívá reklamní ani analytické cookies.</p>
    <h2>Co ukládáme ve vašem prohlížeči</h2>
-   <p>Jen technicky nezbytné informace: rozpracovanou poptávku a kalkulaci, abyste o ně nepřišli při obnovení stránky. Tato data zůstávají ve vašem zařízení a odešlou se, jen když poptávku sami odešlete.</p>
+   <p>Jen technicky nezbytné informace: rozpracovanou poptávku, abyste o ni nepřišli při obnovení stránky. Tato data zůstávají ve vašem zařízení a odešlou se, jen když poptávku sami odešlete.</p>
    <h2>Jak je smazat</h2>
    <p>Kdykoli v nastavení prohlížeče vymazáním dat webu.</p>
    <p>Pokud v budoucnu přidáme měření návštěvnosti, požádáme vás předem o souhlas.</p>`},
   en:{t:'Cookie policy', d:'This website uses no advertising or analytics cookies.', body:()=>`
    <p>This website uses no advertising or analytics cookies.</p>
    <h2>What we store in your browser</h2>
-   <p>Only what’s technically necessary: an unfinished enquiry and estimate, so they aren’t lost if you reload. This stays on your device and is sent only when you submit the enquiry yourself.</p>
+   <p>Only what’s technically necessary: an unfinished enquiry, so it isn’t lost if you reload. This stays on your device and is sent only when you submit the enquiry yourself.</p>
    <h2>How to delete it</h2>
    <p>Any time, by clearing site data in your browser settings.</p>
    <p>If we add visitor analytics in the future, we will ask for your consent first.</p>`}}

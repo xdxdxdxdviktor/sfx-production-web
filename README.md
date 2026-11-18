@@ -21,7 +21,7 @@ Náhled pak běží na http://localhost:4173/. Příkaz `node build.mjs --og` zn
 | Co | Soubor |
 | --- | --- |
 | Údaje o firmě (IČO, adresa, telefon, profily) a doména | `src/js/config.js` |
-| Služby: texty, technika, FAQ, **ceny v kalkulačkách** | `src/js/services.js` |
+| Služby: texty, technika, FAQ | `src/js/services.js` |
 | Blogové články | `src/js/posts.js` |
 | Texty rozhraní, formulář, reference | `src/js/i18n.js` |
 | Právní stránky | `src/js/legal.js` |
@@ -31,9 +31,9 @@ Náhled pak běží na http://localhost:4173/. Příkaz `node build.mjs --og` zn
 ## Co web obsahuje
 
 - Úvodní stránku s 3D kamerou, showreelem a čtyřkrokovou poptávkou.
-- Samostatnou stránku pro každou službu s vlastním vizuálním motivem a kalkulačkou ceny. Kalkulaci jde poslat jako poptávku.
-- Stránku služeb s orientačním ceníkem, blog a právní stránky.
-- Pro vyhledávače: samostatné adresy pro CZ i EN, `hreflang`, kanonické URL, strukturovaná data schema.org (firma, služby s cenou, FAQ, články, drobečková navigace), `sitemap.xml`, `robots.txt`, `llms.txt` a náhledové obrázky pro sdílení.
+- Samostatnou stránku pro každou službu s vlastním vizuálním motivem.
+- Přehled služeb, blog a právní stránky.
+- Pro vyhledávače: samostatné adresy pro CZ i EN, `hreflang`, kanonické URL, strukturovaná data schema.org (firma, služby, FAQ, články, drobečková navigace), `sitemap.xml`, `robots.txt`, `llms.txt` a náhledové obrázky pro sdílení.
 
 ## Poptávkový formulář
 
