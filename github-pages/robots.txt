@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /blog/clanek/
+Disallow: /en/blog/article/
+
+Sitemap: https://www.sfxproduction.com/sitemap.xml

@@ -1,0 +1,10 @@
+{
+  "name": "sfx-production-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "build:og": "node build.mjs --og",
+    "serve": "node serve.mjs"
+  }
+}
