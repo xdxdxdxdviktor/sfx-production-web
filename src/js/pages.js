@@ -8,7 +8,8 @@ import { ICON } from './icons.js';
 import { PATHS, svcPath, postPath } from './routes.js';
 import { ctx, esc, imgTag, svcPreview, postCard, blogGrid, blogChips, flow, tiles, budgetBtns, summary, fmtDate, readMin } from './ui.js';
 
-export const VERSION = { css:'', js:'' };   // filled by build (cache busting)
+export const VERSION = { css:'', js:'' };
+export const ASSETS = { portrait:false };   // set by build when the portrait photo exists   // filled by build (cache busting)
 const abs = p => SITE + p;
 const ogImg = (k, lang='cs') => abs('/assets/og/' + (lang==='en'?'en-':'') + k + '.jpg');
 const cityLabel = lang => COMPANY.city ? (lang==='cs' ? ` – ${COMPANY.city}` : ` – ${COMPANY.city}`) : '';
@@ -28,7 +29,7 @@ function orgLD(lang){
   if(COMPANY.ico) o.taxID = COMPANY.ico;
   if(COMPANY.sameAs.length) o.sameAs = COMPANY.sameAs;
   if(COMPANY.founded) o.foundingDate = COMPANY.founded;
-  if(COMPANY.person) o.founder = {'@type':'Person', name: COMPANY.person};
+  if(COMPANY.person) o.founder = {'@type':'Person', '@id': SITE+'/#jiri', name: COMPANY.person, jobTitle: I18N[lang]['about.role'], ...(ASSETS.portrait ? {image: abs('/assets/img/jiri-hromadka.jpg')} : {})};
   if(local){ o.address = {'@type':'PostalAddress', streetAddress: COMPANY.street||undefined, addressLocality: COMPANY.city, postalCode: COMPANY.zip||undefined, addressRegion: COMPANY.region||undefined, addressCountry:'CZ'}; o.priceRange = '$$'; }
   o.hasOfferCatalog = {'@type':'OfferCatalog', name: I18N[lang]['m.sluzby'], itemListElement: SERVICES.map(s=>({'@type':'Offer', itemOffered:{'@id': abs(svcPath(s,lang))+'#service'}}))};
   return o;
@@ -88,7 +89,7 @@ function navBar(c, p){
     ['m.sluzby', home ? '#sluzby' : c.href(PATHS.services[c.lang]), 'sluzby'],
     ['m.proces', home ? '#proces' : c.href(H)+'#proces', 'proces'],
     ['m.blog', home ? '#blog' : c.href(PATHS.blog[c.lang]), 'blog'],
-    ['m.onas', home ? '#o-nas' : c.href(H)+'#o-nas', 'o-nas'],
+    ['m.onas', home ? '#o-mne' : c.href(H)+'#o-mne', 'o-mne'],
     ...(SHOW_REFS() ? [['m.ref', home ? '#reference' : c.href(H)+'#reference', 'reference']] : [])
   ];
   const cta = home ? '#poptavka' : c.href(H)+'#poptavka';
@@ -99,7 +100,7 @@ function navBar(c, p){
   return `<a class="skip" href="#main">${c.t('skip')}</a>
 <div class="bg" aria-hidden="true"></div>
 <header class="nav${home?'':' solid'}" id="nav">
-  <a class="nav-logo" href="${home?'#top':c.href(H)}" aria-label="${COMPANY.name} – ${c.t('pg.home')}"><img src="${c.asset('img/logo.webp')}" alt="${COMPANY.name}" width="70" height="26"></a>
+  <a class="nav-logo" href="${home?'#top':c.href(H)}" aria-label="${COMPANY.name} – ${c.t('pg.home')}"><img src="${c.asset('img/logo.webp')}" alt="${COMPANY.name}" width="77" height="40"></a>
   <nav class="nav-links" id="navLinks" aria-label="Menu"><span class="nav-pill" id="navPill" aria-hidden="true"></span>${items.map(([k,h,s])=>link(k,c.t(k),h,s)).join('')}</nav>
   <div class="nav-right">
     <div class="lang" role="group" aria-label="${c.t('nav.lang')}">${langLinks}</div>
@@ -120,12 +121,12 @@ function footer(c, p){
     ...COMPANY.sameAs.map(u=>`<li><a href="${u}" rel="me noopener" target="_blank">${esc(u.replace(/^https?:\/\/(www\.)?/,'').replace(/\/$/,''))}</a></li>`)].join('');
   return `<footer class="foot">
   <div class="foot-grid">
-    <div class="foot-brand"><a href="${home?'#top':c.href(H)}" aria-label="${COMPANY.name}"><img src="${c.asset('img/logo.webp')}" alt="${COMPANY.name}" width="80" height="30" loading="lazy"></a><p>${c.t('ft.claim')}</p></div>
+    <div class="foot-brand"><a href="${home?'#top':c.href(H)}" aria-label="${COMPANY.name}"><img src="${c.asset('img/logo.webp')}" alt="${COMPANY.name}" width="116" height="60" loading="lazy"></a><p>${c.t('ft.claim')}</p></div>
     <div><h2 class="fh">${c.t('ft.svc')}</h2><ul>${SERVICES.map(s=>`<li><a href="${c.href(svcPath(s,c.lang))}">${s[c.lang].t}</a></li>`).join('')}</ul></div>
     <div><h2 class="fh">${c.t('ft.web')}</h2><ul>
       <li><a href="${c.href(PATHS.services[c.lang])}">${c.t('m.sluzby')}</a></li>
       <li><a href="${sec('proces')}">${c.t('m.proces')}</a></li><li><a href="${c.href(PATHS.blog[c.lang])}">${c.t('m.blog')}</a></li>
-      <li><a href="${sec('o-nas')}">${c.t('m.onas')}</a></li><li><a href="${sec('poptavka')}">${c.t('m.poptavka')}</a></li></ul></div>
+      <li><a href="${sec('o-mne')}">${c.t('m.onas')}</a></li><li><a href="${sec('poptavka')}">${c.t('m.poptavka')}</a></li></ul></div>
     <div><h2 class="fh">${c.t('ft.contact')}</h2><ul>${contact}</ul></div>
   </div>
   <div class="copy">
@@ -236,17 +237,25 @@ export function homePage(lang){
     <p class="sec-more"><a class="btn glass" href="${c.href(PATHS.blog[lang])}">${t('blog.more')} ${ICON.arrow}</a></p>
   </section>
 ${refs}
-  <section class="sec" id="o-nas" data-sec>
+  <section class="sec" id="o-mne" data-sec>
     <div class="sec-head"><h2>${t('about.h')}</h2><p>${t('about.p')}</p></div>
-    <div class="about">
-      <div class="about-text">
-        <h3>${COMPANY.person}</h3><div class="role">${t('about.role')}</div>
+    <div class="me">
+      <figure class="me-photo">
+        <div class="me-frame">${ASSETS.portrait
+          ? `<img src="${c.asset('img/jiri-hromadka.jpg')}" alt="${COMPANY.person}, ${t('about.role')}" width="900" height="900" loading="lazy" decoding="async">`
+          : `<span class="me-ph" aria-hidden="true">JH</span>`}
+          <span class="vf-c tl"></span><span class="vf-c tr"></span><span class="vf-c bl"></span><span class="vf-c br"></span>
+          <span class="me-rec" aria-hidden="true">REC</span></div>
+        <figcaption><b>${COMPANY.person}</b><span>${t('about.role')}</span></figcaption>
+      </figure>
+      <div class="me-text">
+        <p class="kicker">${t('about.kicker')}</p>
+        <h3>${t('about.hi')}</h3>
         <p>${t('about.b1')}</p><p>${t('about.b2')}</p>
+        <blockquote class="me-quote">${t('about.q')}</blockquote>
         <div class="facts">${[1,2,3].map(i=>`<div class="glass"><b>${t('about.f'+i+'t')}</b><span>${t('about.f'+i+'d')}</span></div>`).join('')}</div>
+        <div class="me-cta"><a class="btn primary" href="#poptavka">${t('cc.write')}</a><a class="me-mail" href="mailto:${COMPANY.email}">${ICON.mail}<span>${COMPANY.email}</span></a>${COMPANY.phone?`<a class="me-mail" href="tel:${COMPANY.phone.replace(/\s/g,'')}">${ICON.tel}<span>${COMPANY.phone}</span></a>`:''}</div>
       </div>
-      <aside class="contact-card glass"><span class="cc-k">${t('cc.h')}</span><b class="cc-n">${COMPANY.person}</b><span class="cc-r">${t('about.role')}</span>
-        <ul class="cc-l"><li><span>${t('cc.mail')}</span><a href="mailto:${COMPANY.email}">${COMPANY.email}</a></li>${COMPANY.phone?`<li><span>${t('cc.tel')}</span><a href="tel:${COMPANY.phone.replace(/\s/g,'')}">${COMPANY.phone}</a></li>`:''}</ul>
-        <a class="btn primary" href="#poptavka">${t('cc.write')}</a></aside>
     </div>
   </section>
 ${partners}

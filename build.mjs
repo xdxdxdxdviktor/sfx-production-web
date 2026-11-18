@@ -32,6 +32,20 @@ fs.mkdirSync(OUT, {recursive:true});
 
 /* ---------- assets ---------- */
 for(const d of ['fonts','img','video']) copyDir(path.join(SRC,'assets',d), path.join(OUT,'assets',d));
+/* portrait for the "About me" section: drop a photo into brand/ as jiri-hromadka.jpg (or .jpeg/.png).
+   It is cropped to a 1:1 square around the face (PORTRAIT focus, fractions of the photo) and resized to 900×900. */
+const PORTRAIT = { x:.51, y:.335, size:.62 };
+const portraitSrc = ['jpg','jpeg','png','JPG','JPEG','PNG'].map(e=>path.join(ROOT,'brand','jiri-hromadka.'+e)).find(f=>fs.existsSync(f));
+if(portraitSrc){
+  const dim = k => Number(execFileSync('sips', ['-g',k, portraitSrc]).toString().match(/:\s*(\d+)/)[1]);
+  const W = dim('pixelWidth'), H = dim('pixelHeight');
+  const sz = Math.min(W, H, Math.round((W < H ? W : H) * PORTRAIT.size));
+  const ox = Math.max(0, Math.min(W-sz, Math.round(W*PORTRAIT.x - sz/2))), oy = Math.max(0, Math.min(H-sz, Math.round(H*PORTRAIT.y - sz/2)));
+  const out = path.join(OUT,'assets/img/jiri-hromadka.jpg');
+  execFileSync('sips', ['-s','format','jpeg','-s','formatOptions','84','-c',String(sz),String(sz),'--cropOffset',String(oy),String(ox), portraitSrc, '--out', out], {stdio:'ignore'});
+  execFileSync('sips', ['-Z','900', out], {stdio:'ignore'});
+  P.ASSETS.portrait = true;
+}
 const css = ['base.css','site.css'].map(f=>fs.readFileSync(path.join(SRC,'css',f),'utf8')).join('\n');
 write('assets/css/site.css', css);
 P.VERSION.css = hash(css);
@@ -39,16 +53,6 @@ let jsAll = '';
 for(const f of BROWSER_JS){ const s = fs.readFileSync(path.join(SRC,'js',f),'utf8'); jsAll += s; write('assets/js/'+f, s); }
 P.VERSION.js = hash(jsAll);
 
-/* icons from the brand logo */
-const sipsOK = (()=>{ try{ execFileSync('sips', ['--help'], {stdio:'ignore'}); return true; }catch(e){ return false; } })();
-if(sipsOK){
-  const logo = path.join(ROOT,'brand','sfx normal.jpg');
-  const sq = path.join(OUT,'assets/img/_sq.png');
-  execFileSync('sips', ['-s','format','png','-c','1600','1600', logo, '--out', sq], {stdio:'ignore'});
-  for(const [n,s] of [['icon-512.png',512],['icon-192.png',192],['apple-touch-icon.png',180]])
-    execFileSync('sips', ['-z',String(s),String(s), sq, '--out', path.join(OUT,'assets/img',n)], {stdio:'ignore'});
-  fs.rmSync(sq);
-}
 
 /* ---------- pages ---------- */
 const urls = [];   // for the sitemap: {loc:{cs,en}, lastmod, prio}
@@ -110,6 +114,7 @@ for(const lang of LANGS){
   for(const s of SERVICES) ogJobs.push({file:pre+s.id, img:s.img, kicker:s[lang].t, title:s[lang].h1, sub:s[lang].s});
   for(const x of POSTS) ogJobs.push({file:pre+'post-'+x.id, img:x.img, kicker:T['m.blog'], title:x[lang].t, sub:x[lang].lead});
 }
+const sipsOK = (()=>{ try{ execFileSync('sips', ['--help'], {stdio:'ignore'}); return true; }catch(e){ return false; } })();
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const wantOG = process.argv.includes('--og');
 const missing = ogJobs.filter(j=>!fs.existsSync(path.join(OUT,'assets/og',j.file+'.jpg')));
@@ -125,7 +130,7 @@ body{font-family:H,Helvetica,Arial,sans-serif;color:#f1ece4;position:relative}
 .im{position:absolute;right:0;top:0;width:760px;height:630px;object-fit:cover;filter:saturate(.85) brightness(.9);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 38%)}
 .g{position:absolute;inset:0;background:radial-gradient(60% 80% at 10% 30%,rgba(140,115,88,.35),transparent 70%)}
 .c{position:absolute;left:72px;top:64px;bottom:64px;width:640px;display:flex;flex-direction:column}
-.logo{height:46px;width:auto;align-self:flex-start}
+.logo{height:92px;width:auto;align-self:flex-start}
 .k{margin-top:auto;font-size:22px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#d8be92}
 h1{font-size:${j.title.length>48?50:60}px;line-height:1.04;font-weight:700;letter-spacing:-.025em;margin:16px 0 18px}
 p{font-size:25px;line-height:1.4;color:rgba(241,236,228,.78);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}

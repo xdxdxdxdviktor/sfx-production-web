@@ -131,7 +131,7 @@ function initHero(){
   else { ScrollTrigger.create({trigger:'#hero', start:'top top', end:'bottom bottom', onUpdate:s=>{ heroP=s.progress; cam && cam.setProgress(heroP); overlay(heroP); }}); overlay(0); }
   const loadThree = () => window.THREE ? Promise.resolve() : new Promise((res,rej)=>{ const s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'; s.async=true; s.onload=res; s.onerror=rej; document.head.appendChild(s); });
   const start = () => Promise.all([loadThree(), import('./camera3d.js')]).then(([,m])=>{
-    cam = m.initCamera3D($('#cam3d'), C.asset('img/logo.webp'), {frame, status});
+    cam = m.initCamera3D($('#cam3d'), C.asset('img/logo-mark.webp'), {frame, status});
     if(!cam){ $('#cam3d').style.display='none'; status(false); return; }
     if(RM || !hasGsap){ cam.snap(0); return; }
     cam.setProgress(heroP);
