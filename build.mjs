@@ -16,7 +16,7 @@ const OGCACHE = path.join(ROOT, '.og-cache');
 
 /* 1) content → generated JS modules (must run before the site modules are imported) */
 const gen = generate(ROOT);
-const { SITE, COMPANY, INDEXABLE, GITHUB } = await import('./src/js/config.js');
+const { SITE, COMPANY, INDEXABLE, GITHUB, CUSTOM_DOMAIN } = await import('./src/js/config.js');
 const { I18N } = await import('./src/js/i18n.js');
 const { SERVICES } = await import('./src/js/services.js');
 const { POSTS } = await import('./src/js/posts.js');
@@ -137,7 +137,7 @@ const escH = s => String(s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;'
 let ogMade = 0, ogMissing = 0;
 const logoHash = hash(fs.readFileSync(path.join(OUT,'assets/img/logo.webp')));
 for(const j of ogJobs){
-  const key = hash(JSON.stringify(j) + logoHash + (fs.existsSync(j.img) ? fs.statSync(j.img).size : 0));
+  const key = hash(JSON.stringify(j) + logoHash + SITE + (fs.existsSync(j.img) ? fs.statSync(j.img).size : 0));
   const cached = path.join(OGCACHE, `${j.file}-${key}.jpg`);
   if(!fs.existsSync(cached) || process.argv.includes('--og')){
     if(!CHROME){ ogMissing++; continue; }
@@ -159,7 +159,7 @@ p{font-size:25px;line-height:1.4;color:rgba(241,236,228,.78);display:-webkit-box
 .d{position:absolute;right:56px;bottom:46px;font-size:20px;letter-spacing:.08em;color:rgba(241,236,228,.7)}
 </style></head><body><img class="im" src="file://${j.img}"><div class="g"></div>
 <div class="c"><img class="logo" src="file://${path.join(OUT,'assets/img/logo.webp')}"><div class="k">${escH(j.kicker)}</div><h1>${escH(j.title)}</h1><p>${escH(j.sub)}</p><div class="bar"></div></div>
-<div class="d">${SITE.replace(/^https?:\/\/(www\.)?/,'')}</div></body></html>`;
+${CUSTOM_DOMAIN ? `<div class="d">${SITE.replace(/^https?:\/\/(www\.)?/,'')}</div>` : ''}</body></html>`;
     const hf = path.join(tmp,'og.html'), png = path.join(tmp,'og.png');
     fs.writeFileSync(hf, html);
     try{

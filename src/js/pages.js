@@ -506,7 +506,7 @@ export function notFoundPage(){
   let html = doc(c, p, `<main id="main" class="page"><section class="nf"><div class="nf-code" aria-hidden="true">404</div><h1>${c.t('nf.t')}</h1><p>${c.t('nf.p')}</p>
     <p lang="en" class="nf-en">${I18N.en['nf.t']} ${I18N.en['nf.p']}</p>
     <div class="btns"><a class="btn primary" href="./">${c.t('nf.home')}</a><a class="btn glass" href="sluzby/">${c.t('nf.svc')}</a><a class="btn glass" href="en/" lang="en">English</a></div></section></main>`);
-  return html.replace('<head>', '<head>\n<base href="/">');
+  return html.replace('<head>', `<head>\n<base href="${new URL(SITE).pathname.replace(/\/?$/, '/')}">`);
 }
 
 export { strip };

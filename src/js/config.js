@@ -5,7 +5,10 @@
    ===================================================================== */
 import { SETTINGS } from './site-content.js';
 
-export const SITE = 'https://www.sfxproduction.com';   // final domain, used for canonical URLs, sitemap and Open Graph
+/* Main address of the site (canonical URLs, sitemap, Open Graph). No trailing slash.
+   After buying a domain: set it here (e.g. 'https://www.sfxproduction.cz') and add it in GitHub → Settings → Pages → Custom domain. */
+export const SITE = 'https://xdxdxdxdviktor.github.io/sfx-production-web';
+export const CUSTOM_DOMAIN = !/\.github\.io/.test(SITE);
 
 /* Search engines: true = the site may be indexed (production). */
 export const INDEXABLE = true;
