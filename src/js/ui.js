@@ -20,12 +20,31 @@ export const imgTag = (c, key, alt='', cls='', eager=false) =>
   `<img${cls?` class="${cls}"`:''} src="${c.asset('img/'+key+'.webp')}" alt="${esc(alt)}" width="1200" height="750"${eager?' fetchpriority="high"':' loading="lazy"'} decoding="async">`;
 
 export const fmtDate = (iso, lang) => { try{ return new Date(iso+'T12:00:00').toLocaleDateString(lang==='cs'?'cs-CZ':'en-GB', {day:'numeric', month: lang==='cs'?'long':'short', year:'numeric'}); }catch(e){ return iso; } };
-export const readMin = p => Math.max(2, Math.round(p.cs.body.join(' ').split(/\s+/).length / 180));
+export const readMin = p => Math.max(2, Math.round((p.cs.words || 300) / 180));
+
+/* media uploaded through the admin console live under /assets/uploads; built-in illustrations under /assets/img */
+export const media = (c, p) => /^(https?:|data:)/.test(p) ? p : c.href(p);
+export const svcImgSrc = (c, s) => s.hero ? media(c, s.hero) : c.asset('img/' + s.img + '.webp');
+export const svcVidSrc = (c, s) => s.video ? media(c, s.video) : (s.hero ? '' : c.asset('video/' + s.img + '.mp4'));
+export const srcTag = (src, alt='', cls='', eager=false) =>
+  `<img${cls?` class="${cls}"`:''} src="${src}" alt="${esc(alt)}" width="1200" height="750"${eager?' fetchpriority="high"':' loading="lazy"'} decoding="async">`;
+export const ytId = u => { const m = String(u||'').match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/); return m ? m[1] : (/^[\w-]{11}$/.test(u||'') ? u : ''); };
+/* video block: uploaded mp4 or click-to-load YouTube */
+export function videoBlock(c, {video, youtube, poster}){
+  const id = ytId(youtube);
+  if(id) return `<div class="vbox"><button type="button" class="yt" data-yt="${id}" style="background-image:url('https://i.ytimg.com/vi/${id}/hqdefault.jpg')" aria-label="YouTube"><span class="reel-play">${ICON.play}</span></button></div>`;
+  if(video) return `<div class="vbox"><video controls playsinline preload="metadata" src="${media(c, video)}"${poster?` poster="${poster}"`:''}></video></div>`;
+  return '';
+}
+export function gallery(c, items, alt=''){
+  if(!items || !items.length) return '';
+  return `<div class="pgal">${items.map((g,i)=>`<a class="pgal-i" href="${media(c, g.src)}" target="_blank" rel="noopener"><img src="${media(c, g.src)}" alt="${esc(g.alt || alt + ' ' + (i+1))}" loading="lazy" decoding="async"></a>`).join('')}</div>`;
+}
 
 /* ---------- home: services ---------- */
 export function svcPreview(c, id){
-  const sv = SVC_BY[id], d = sv[c.lang], k = sv.img;
-  return `<div class="pv-img">${imgTag(c, k, d.t)}<video muted loop playsinline preload="none" data-src="${c.asset('video/'+k+'.mp4')}" poster="${c.asset('img/'+k+'.webp')}"></video><span class="ico">${ICON[sv.icon]}</span></div>
+  const sv = SVC_BY[id], d = sv[c.lang], vid = svcVidSrc(c, sv);
+  return `<div class="pv-img">${srcTag(svcImgSrc(c, sv), d.t)}${vid?`<video muted loop playsinline preload="none" data-src="${vid}" poster="${svcImgSrc(c, sv)}"></video>`:''}<span class="ico">${ICON[sv.icon]}</span></div>
     <div class="pv-b"><h3>${d.t}</h3><p>${d.lead}</p>
     <ul class="tags">${sv.tags[c.lang].map(x=>`<li>${x}</li>`).join('')}</ul>
     <div class="btns"><a class="btn primary" href="${c.href(svcPath(sv,c.lang))}">${c.t('svc.more')}</a></div></div>`;
@@ -35,7 +54,7 @@ export function svcPreview(c, id){
 export function postCard(c, p, kind=''){
   const d = p[c.lang] || p;
   const url = p.url || c.href(postPath(p, c.lang));
-  const img = p.cover ? `<img src="${esc(p.cover)}" alt="${esc(d.t)}" loading="lazy" decoding="async">` : imgTag(c, p.img, d.t);
+  const img = p.cover ? srcTag(media(c, p.cover), d.t) : imgTag(c, p.img, d.t);
   return `<a class="bcard glass ${kind}" href="${url}">
     <div class="cover">${img}</div>
     <div class="body"><div class="meta"><span class="cat">${svcT(p.cat, c.lang).t}</span><span>${p.dateLabel || fmtDate(p.date, c.lang)}</span></div>
@@ -61,8 +80,8 @@ export const ORDER = [...MAIN, ...MORE];
 const TILE_IMG = {foto:'product', video:'festival', fotovideo:'edit'};
 export function tiles(c, sel, group='more'){
   const TL = c.t('tiles'), SUB = c.t('tileSub');
-  return (group==='main' ? MAIN : MORE).map(k=>{ const sv = SERVICES.find(s=>s.tile===k); const img = TILE_IMG[k] || (sv && sv.img);
-    return `<button type="button" class="tile${group==='main'?' big':''}" data-s="${k}" aria-pressed="${sel.has(k)}">${img?`<span class="tile-bg" style="background-image:url('${c.asset('img/'+img+'.webp')}')"></span>`:''}${ICON[k]||''}<span><b>${TL[k]}</b>${SUB[k]?`<small>${SUB[k]}</small>`:''}</span></button>`; }).join('');
+  return (group==='main' ? MAIN : MORE).map(k=>{ const sv = SERVICES.find(s=>s.tile===k); const img = TILE_IMG[k] ? c.asset('img/'+TILE_IMG[k]+'.webp') : (sv ? svcImgSrc(c, sv) : '');
+    return `<button type="button" class="tile${group==='main'?' big':''}" data-s="${k}" aria-pressed="${sel.has(k)}">${img?`<span class="tile-bg" style="background-image:url('${img}')"></span>`:''}${ICON[k]||''}<span><b>${TL[k]}</b>${SUB[k]?`<small>${SUB[k]}</small>`:''}</span></button>`; }).join('');
 }
 export const budgetBtns = (c, b) => c.t('budgets').map((x,i)=>`<button type="button" data-b="${i}" aria-pressed="${b===i}">${x}</button>`).join('');
 

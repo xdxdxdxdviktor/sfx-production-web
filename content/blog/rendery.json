@@ -1,0 +1,30 @@
+{
+  "id": "rendery",
+  "published": true,
+  "date": "2026-08-28",
+  "cat": "3d",
+  "svcs": [
+    "3d",
+    "foto",
+    "video"
+  ],
+  "img": "product3d",
+  "cover": "",
+  "video": "",
+  "youtube": "",
+  "gallery": [],
+  "slug": {
+    "cs": "produktove-rendery-v-blenderu",
+    "en": "product-renders-in-blender"
+  },
+  "cs": {
+    "t": "Produkt, který ještě nebyl vyroben",
+    "lead": "Jak vznikají produktové rendery v Blenderu: od CAD dat přes materiály a světlo až po obrázky do e-shopu a reklamní animaci.",
+    "body": "Potřebujete obrázky pro předprodej, ale první kusy budou hotové až za několik měsíců? Fotit není co, a tak produkt postavíme ve 3D.\n\n## Model\n\nZákladem jsou CAD data od výrobce. Model upravíme pro vizualizaci: zaoblené hrany, reálná tloušťka skla, hladina tekutiny. Pokud CAD data nejsou, stačí fotky a přesné rozměry.\n\n## Materiály a světlo\n\nMateriály ladíme podle fyzických vzorků. Světlo nastavíme stejně jako při produktovém focení, aby rendery šly vedle skutečných fotek a nikdo nepoznal rozdíl.\n\n## Co z toho vznikne\n\nSada produktových obrázků pro e-shop, varianty barev bez dalšího focení a krátká animace pro sociální sítě nebo úvodní záběr reklamy. Model zůstává, takže další varianty jsou rychlejší a levnější."
+  },
+  "en": {
+    "t": "A product that hasn’t been made yet",
+    "lead": "How product renders are made in Blender: from CAD data through materials and light to e-shop images and an ad animation.",
+    "body": "Need images for pre-sales but the first units are months away? There’s nothing to photograph, so we build the product in 3D.\n\n## The model\n\nWe start from the manufacturer’s CAD data and adapt it for visualisation: rounded edges, real glass thickness, liquid level. Without CAD data, photos and exact dimensions work too.\n\n## Materials and light\n\nMaterials are matched to physical samples. Lighting mirrors a product shoot so renders sit next to real photos and nobody can tell.\n\n## What comes out\n\nA set of e-shop images, colour variants without another shoot, and a short animation for social or the opening shot of an ad. The model stays, so further variants are faster and cheaper."
+  }
+}

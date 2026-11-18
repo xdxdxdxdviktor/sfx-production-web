@@ -1,10 +1,48 @@
 # SFX production – web
 
-Statický web v češtině a angličtině. Zdrojové soubory jsou ve složce `src/` a hotový web se generuje do složky `github-pages/`, která se nahrává na hosting.
+Statický web v češtině a angličtině s administrací na adrese **/admin/**. Obsah se upravuje v administraci a každé uložení vytvoří commit na GitHubu. GitHub Actions pak web automaticky sestaví a nasadí na GitHub Pages, obvykle do 2 minut.
 
-**Složku `github-pages/` neupravujte ručně.** Každé sestavení ji přepíše.
+## Administrace (/admin/)
 
-## Sestavení a náhled
+Co se v ní dá dělat:
+
+- **Blog:** psát a mazat články, nahrávat úvodní fotku, galerii a video (MP4 do 50 MB nebo odkaz na YouTube). Text se formátuje jednoduše: `## Mezititulek`, `- odrážka`, `**tučně**`.
+- **Služby:** upravovat texty, techniku, časté dotazy a štítky a nahrát hlavní fotku, video do záhlaví, ukázkové video a galerii „Ukázky práce“.
+- **Stránky a nastavení:**
+  - sekce „O mně“ (text a fotka),
+  - úvodní stránka (nadpis a showreel),
+  - kontakty a údaje o firmě: IČO, adresa, telefon, profily na sítích a ověřovací kódy pro Google a Seznam.
+
+Nahrané fotky se samy převedou na WebP s maximální šířkou 2400 px. Článek, který má vyplněnou jen češtinu, se zobrazí jen na české verzi webu.
+
+### Přihlášení
+
+1. Na GitHubu otevřete **Settings → Developer settings → Fine-grained tokens → Generate new token**.
+2. Vyberte jen tento repozitář a v Repository permissions nastavte **Contents: Read and write**.
+3. Na `/admin/` zvolte **Přihlásit se pomocí přístupového tokenu** a token vložte. Prohlížeč si ho zapamatuje.
+
+Bez GitHubu jde administrace používat i lokálně. V Chrome zvolte **Pracovat s lokálním repozitářem**, vyberte složku projektu a změny se uloží přímo do souborů. Výsledek uvidíte po `node build.mjs`.
+
+## Jak to funguje
+
+| Co | Kde |
+| --- | --- |
+| Obsah (texty, články, nastavení) | `content/*.json`, upravuje je administrace |
+| Nahrané fotky a videa | `src/assets/uploads/` |
+| Nastavení administrace | `src/admin/cms-config.mjs` |
+| Doména, repozitář pro administraci, formulář | `src/js/config.js` |
+| Šablony stránek | `src/js/pages.js`, `src/js/ui.js` |
+| Texty rozhraní (tlačítka, formulář) | `src/js/i18n.js` |
+| Vzhled | `src/css/base.css`, `src/css/site.css` |
+| Nasazení | `.github/workflows/deploy.yml` |
+
+Sestavení: `tools/content.mjs` převede `content/` na data pro web a `build.mjs` vygeneruje hotový web do `github-pages/`. Výstup se do gitu neukládá, sestavuje ho GitHub Actions.
+
+## Lokální náhled
+
+```bash
+npm install
+```
 
 ```bash
 node build.mjs
@@ -14,29 +52,12 @@ node build.mjs
 node serve.mjs
 ```
 
-Náhled pak běží na http://localhost:4173/. Příkaz `node build.mjs --og` znovu vygeneruje obrázky pro sdílení na sociálních sítích (potřebuje Google Chrome).
-
-## Kde co upravit
-
-| Co | Soubor |
-| --- | --- |
-| Údaje o firmě (IČO, adresa, telefon, profily) a doména | `src/js/config.js` |
-| Služby: texty, technika, FAQ | `src/js/services.js` |
-| Blogové články | `src/js/posts.js` |
-| Texty rozhraní, formulář, reference | `src/js/i18n.js` |
-| Právní stránky | `src/js/legal.js` |
-| Vzhled | `src/css/base.css` (původní styl), `src/css/site.css` (nové části) |
-| Obrázky a videa | `src/assets/` |
-
-## Co web obsahuje
-
-- Úvodní stránku s 3D kamerou, showreelem a čtyřkrokovou poptávkou.
-- Samostatnou stránku pro každou službu s vlastním vizuálním motivem.
-- Přehled služeb, blog a právní stránky.
-- Pro vyhledávače: samostatné adresy pro CZ i EN, `hreflang`, kanonické URL, strukturovaná data schema.org (firma, služby, FAQ, články, drobečková navigace), `sitemap.xml`, `robots.txt`, `llms.txt` a náhledové obrázky pro sdílení.
+Náhled pak běží na http://localhost:4173/.
 
 ## Poptávkový formulář
 
-Poptávky se odesílají přes službu FormSubmit na e-mail z `config.js`. **Při úplně první poptávce přijde na tento e-mail aktivační zpráva** a je potřeba v ní jednou kliknout na potvrzení. Do té doby formulář nabídne odeslání e-mailem.
+Poptávky se odesílají přes FormSubmit na e-mail z nastavení. **Při první poptávce přijde aktivační e-mail** a je potřeba v něm jednou kliknout na potvrzení.
 
-Volitelně jde napojit Supabase (databáze poptávek, administrace a blog). Stačí vyplnit `supabaseUrl` a `supabaseAnonKey` v `config.js`.
+## Fotka v sekci „O mně“
+
+Fotka nahraná v administraci má přednost. Bez ní se použije `brand/jiri-hromadka.jpg`: čtvercová fotka se vezme celá, jiný formát se ořízne na 1:1 kolem obličeje.

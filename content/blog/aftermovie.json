@@ -1,0 +1,30 @@
+{
+  "id": "aftermovie",
+  "published": true,
+  "date": "2026-09-24",
+  "cat": "dron",
+  "svcs": [
+    "dron",
+    "video",
+    "strih"
+  ],
+  "img": "festival",
+  "cover": "",
+  "video": "",
+  "youtube": "",
+  "gallery": [],
+  "slug": {
+    "cs": "jak-natocit-aftermovie",
+    "en": "how-to-shoot-an-aftermovie"
+  },
+  "cs": {
+    "t": "Jak natočit aftermovie, které lidé sdílejí",
+    "lead": "Tři dny akce, dvě minuty videa. Jak naplánovat natáčení festivalu nebo konference, aby výsledek fungoval na YouTube i na Instagramu.",
+    "body": "Dobré aftermovie není kronika celé akce, ale pocit: světla, dav, západ slunce nad areálem. Cílem je, aby ho lidé sdíleli a ti, kdo nepřijeli, litovali.\n\n## Příprava\n\nProjděte areál předem a naplánujte, kde budou kamery a kudy může letět dron. Nad lidmi se létat nesmí, takže trasy plánujte mimo dav. Nejlepší světlo je při západu slunce a během hlavních koncertů.\n\n## Natáčení\n\nNa zemi se vyplatí dvě kamery: jedna hlídá pódium, druhá chodí davem a točí detaily. Ruce nahoře, telefony, emoce v první řadě. Dron doplní celky, které ukážou velikost akce.\n\n## Střih a výstupy\n\nHlavní film by neměl být delší než dvě až tři minuty. Ze stejného materiálu připravte krátké verze na výšku pro Instagram a TikTok, každou na jinou hudbu. Pokud video vyjde do týdne po akci, má největší dosah."
+  },
+  "en": {
+    "t": "How to shoot an aftermovie people actually share",
+    "lead": "Three days of event, two minutes of video. How to plan filming a festival or conference so the result works on YouTube and Instagram.",
+    "body": "A good aftermovie isn’t a record of everything, it’s a feeling: lights, crowd, sunset over the site. The goal is that people share it and those who stayed home wish they hadn’t.\n\n## Preparation\n\nWalk the site in advance and plan camera positions and drone routes. Flying over crowds isn’t allowed, so plan paths away from people. The best light is at sunset and during the headline sets.\n\n## The shoot\n\nTwo ground cameras pay off: one on the stage, one moving through the crowd for details. Hands in the air, phones, front-row emotion. The drone adds wide shots that show the scale.\n\n## Edit and delivery\n\nThe main film shouldn’t run longer than two or three minutes. Cut vertical versions for Instagram and TikTok from the same footage, each on different music. Released within a week of the event, it reaches the most people."
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "id": "matterport",
+  "published": true,
+  "date": "2026-09-12",
+  "cat": "360",
+  "svcs": [
+    "360",
+    "foto"
+  ],
+  "img": "interior",
+  "cover": "",
+  "video": "",
+  "youtube": "",
+  "gallery": [],
+  "slug": {
+    "cs": "matterport-nebo-fotky",
+    "en": "matterport-or-photos"
+  },
+  "cs": {
+    "t": "Matterport, nebo klasické fotky?",
+    "lead": "Kdy se vyplatí virtuální prohlídka a kdy stačí dobrá sada fotografií. Praktické rozdíly při prodeji a pronájmu bytů.",
+    "body": "Virtuální prohlídka není náhrada fotek, ale jejich doplněk. Otázka nezní „buď, anebo“, ale kdy se prohlídka vyplatí.\n\n## Kdy dává prohlídka smysl\n\nU dražších nemovitostí, u zájemců z jiného města a tam, kde dispozice na fotkách nevynikne. Zájemce si byt projde sám a na osobní prohlídku přijde už rozhodnutý.\n\n## Kdy stačí fotky\n\nU menších bytů a rychlých prodejů. Důležité je světlo, uklizený prostor a správné úhly. Dobře nafocený byt s půdorysem často prodá sám sebe.\n\n## Co doporučujeme\n\nKombinaci: fotky do inzerátu, prohlídku jako odkaz pro vážné zájemce a letecký záběr, pokud má nemovitost pozemek nebo zajímavé okolí."
+  },
+  "en": {
+    "t": "Matterport or regular photos?",
+    "lead": "When a virtual tour pays off and when a good photo set is enough. Practical differences when selling and renting flats.",
+    "body": "A virtual tour doesn’t replace photos, it complements them. The question isn’t either-or, but when a tour is worth it.\n\n## When a tour makes sense\n\nFor higher-priced properties, buyers from out of town, and layouts that don’t read well in photos. Buyers walk through on their own and arrive at the viewing already decided.\n\n## When photos are enough\n\nFor smaller flats and quick sales. Light, a tidy space and the right angles matter most. A well-shot flat with a floor plan often sells itself.\n\n## What we recommend\n\nBoth: photos for the listing, the tour as a link for serious buyers, and an aerial shot if the property has land or interesting surroundings."
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "id": "firemni-film",
+  "published": true,
+  "date": "2026-08-10",
+  "cat": "video",
+  "svcs": [
+    "video",
+    "strih",
+    "film"
+  ],
+  "img": "factory",
+  "cover": "",
+  "video": "",
+  "youtube": "",
+  "gallery": [],
+  "slug": {
+    "cs": "jak-natocit-naborove-video",
+    "en": "how-to-shoot-a-recruitment-video"
+  },
+  "cs": {
+    "t": "Jak natočit náborové video, které baví i lidi mimo obor",
+    "lead": "Výroba, sklad nebo dílna. Jak ukázat práci tak, aby video přilákalo nové lidi, a jak natáčet v plném provozu bez zdržování.",
+    "body": "Cílem náborového videa je přilákat nové zaměstnance. Proto do popředí nedávejte stroje, ale lidi, kteří u nich pracují.\n\n## Plán natáčecího dne\n\nNatáčí se během běžného provozu. Harmonogram připravte se směnovými mistry, aby nikdo nečekal a přitom se zachytily nejzajímavější operace. Bezpečnost má přednost: štáb dostane školení a ochranné pomůcky jako každý návštěvník.\n\n## Rozhovory\n\nDva nebo tři zaměstnanci řeknou vlastními slovy, proč ve firmě pracují. Žádný naučený text, jen otázky a jejich odpovědi. Upřímnost je to, co diváka přesvědčí.\n\n## Výstupy\n\nNatočte rovnou dvě verze: delší na kariérní web a třicetivteřinovou pro inzerci na sociálních sítích. Krátká verze na výšku má na sítích nejlepší výsledky."
+  },
+  "en": {
+    "t": "How to shoot a recruitment video people outside the industry enjoy",
+    "lead": "Factory, warehouse or workshop. How to show the work so the video attracts new people, and how to film in full operation without holding anyone up.",
+    "body": "A recruitment video exists to attract new employees. So put the people who run the machines in front, not the machines.\n\n## Planning the day\n\nYou film during normal operation. Plan the schedule with shift leaders so nobody waits and the most interesting work is still captured. Safety comes first: the crew gets the same briefing and protective gear as any visitor.\n\n## Interviews\n\nTwo or three employees say in their own words why they work there. No script, just questions and their answers. Honesty is what convinces viewers.\n\n## Delivery\n\nShoot two versions straight away: a longer one for the careers site and a 30-second cut for social ads. A short vertical version performs best on social."
+  }
+}

@@ -1,0 +1,174 @@
+{
+  "id": "dron",
+  "order": 3,
+  "slug": {
+    "cs": "letecke-zabery-dronem",
+    "en": "drone-aerial-filming"
+  },
+  "tile": "dron",
+  "icon": "dron",
+  "theme": "dron",
+  "img": "aerial",
+  "hero_image": "",
+  "hero_video": "",
+  "youtube": "",
+  "gallery": [],
+  "cs": {
+    "t": "Dron",
+    "h1": "Letecké záběry a fotky z dronu",
+    "s": "Letecké záběry a snímky pro reality, stavby a eventy.",
+    "lead": "Pohled z výšky ukáže to, co ze země nevidíte: celý pozemek, průběh stavby nebo atmosféru akce.",
+    "seo": {
+      "title": "Natáčení a focení dronem – letecké záběry",
+      "desc": "Letecké video a fotky z dronu pro reality, stavby, eventy a krajinu. Plán letu, povolení i střih. Létáme podle pravidel EASA. Pošlete nezávaznou poptávku."
+    },
+    "intro": [
+      "Letecké záběry prodávají nemovitosti, dokumentují stavby a dávají eventům velkorysost. Natáčíme video i fotky ve vysokém rozlišení, plynule a bez rozmazaných horizontů.",
+      "Před každým letem zkontrolujeme vzdušný prostor a podmínky, v případě potřeby zajistíme povolení. Za špatného počasí nelétáme a náhradní termín domluvíme bez příplatku."
+    ],
+    "who": [
+      "Realitní kanceláře a developeři",
+      "Stavební firmy (dokumentace postupu stavby)",
+      "Obce, turismus a krajina",
+      "Eventy a festivaly"
+    ],
+    "inc": [
+      "Plán letu a kontrola vzdušného prostoru",
+      "Let s pilotem a obsluhou kamery",
+      "Letecké video ve 4K a fotky ve vysokém rozlišení",
+      "Barevné ladění",
+      "Zajištění povolení, pokud je potřeba",
+      "Náhradní termín při špatném počasí zdarma"
+    ],
+    "get": [
+      "Upravené letecké fotky",
+      "Letecké video (sestřih nebo surové klipy)",
+      "Verze pro web a sociální sítě"
+    ],
+    "time": "2–7 pracovních dní",
+    "equip": [
+      {
+        "n": "Dron",
+        "x": "Dron s velkým snímačem, 4K video v 10bitovém profilu a fotkami v RAW"
+      },
+      {
+        "n": "Filtry",
+        "x": "ND filtry pro přirozený pohyb a správnou expozici"
+      },
+      {
+        "n": "Provoz",
+        "x": "Létáme podle pravidel EASA a Úřadu pro civilní letectví"
+      },
+      {
+        "n": "Postprodukce",
+        "x": "DaVinci Resolve a Adobe Lightroom"
+      }
+    ],
+    "faq": [
+      {
+        "q": "Můžete letět kdekoli?",
+        "a": "Lety plánujeme podle pravidel pro bezpilotní letadla. Pokud je lokalita v omezeném prostoru, zajistíme potřebné povolení nebo navrhneme alternativu."
+      },
+      {
+        "q": "Kolik stojí letecké fotky nemovitosti?",
+        "a": "Cena závisí na rozsahu, termínu a náročnosti projektu. Po krátké konzultaci vám pošleme nabídku na míru, zdarma a nezávazně."
+      },
+      {
+        "q": "Co když bude pršet?",
+        "a": "Za špatného počasí nelétáme. Náhradní termín domluvíme bez poplatku navíc."
+      },
+      {
+        "q": "Dá se dron spojit s focením ze země?",
+        "a": "Ano, nejčastěji ho kombinujeme s fotkami interiéru nebo 360° prohlídkou."
+      },
+      {
+        "q": "Děláte pravidelné lety nad stavbou?",
+        "a": "Ano. Opakované lety ze stejných bodů dají časosběr průběhu stavby."
+      }
+    ],
+    "tags": [
+      "Reality",
+      "Stavby",
+      "Krajina"
+    ]
+  },
+  "en": {
+    "t": "Drone",
+    "h1": "Drone aerial video and photography",
+    "s": "Aerial footage and stills for real estate, construction and events.",
+    "lead": "A view from above shows what you can’t see from the ground: the whole plot, construction progress or the feel of an event.",
+    "seo": {
+      "title": "Drone filming and aerial photography",
+      "desc": "Aerial video and drone photos for real estate, construction, events and landscape. Flight planning, permits and editing under EASA rules. Free enquiry."
+    },
+    "intro": [
+      "Aerial shots sell property, document construction and give events a sense of scale. We shoot high-resolution video and photos, smooth and with straight horizons.",
+      "Before every flight we check airspace and conditions and arrange permits where needed. We don’t fly in bad weather and rebook at no extra cost."
+    ],
+    "who": [
+      "Estate agents and developers",
+      "Construction firms (progress documentation)",
+      "Municipalities, tourism and landscape",
+      "Events and festivals"
+    ],
+    "inc": [
+      "Flight plan and airspace check",
+      "Flight with pilot and camera operator",
+      "4K aerial video and high-resolution photos",
+      "Colour grading",
+      "Permits where required",
+      "Free rebooking in bad weather"
+    ],
+    "get": [
+      "Edited aerial photos",
+      "Aerial video (edit or raw clips)",
+      "Versions for web and social"
+    ],
+    "time": "2–7 working days",
+    "equip": [
+      {
+        "n": "Drone",
+        "x": "Large-sensor drone with 10-bit 4K video and RAW photos"
+      },
+      {
+        "n": "Filters",
+        "x": "ND filters for natural motion and correct exposure"
+      },
+      {
+        "n": "Operations",
+        "x": "We fly under EASA and Czech Civil Aviation Authority rules"
+      },
+      {
+        "n": "Post",
+        "x": "DaVinci Resolve and Adobe Lightroom"
+      }
+    ],
+    "faq": [
+      {
+        "q": "Can you fly anywhere?",
+        "a": "We plan flights according to drone regulations. In restricted areas we arrange permits or suggest an alternative."
+      },
+      {
+        "q": "How much do aerial property photos cost?",
+        "a": "It depends on scope, timing and complexity. After a short call we send you a tailored quote, free and non-binding."
+      },
+      {
+        "q": "What if it rains?",
+        "a": "We don’t fly in bad weather. We agree a new date at no extra cost."
+      },
+      {
+        "q": "Can drone be combined with ground photos?",
+        "a": "Yes, most often with interior photos or a 360° tour."
+      },
+      {
+        "q": "Do you do regular flights over a construction site?",
+        "a": "Yes. Repeat flights from the same points make a time-lapse of the build."
+      }
+    ],
+    "tags": [
+      "Real estate",
+      "Construction",
+      "Landscape"
+    ]
+  }
+}

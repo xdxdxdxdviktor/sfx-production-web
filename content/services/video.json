@@ -1,0 +1,196 @@
+{
+  "id": "video",
+  "order": 1,
+  "slug": {
+    "cs": "video-produkce",
+    "en": "video-production"
+  },
+  "tile": "video",
+  "icon": "video",
+  "theme": "video",
+  "img": "festival",
+  "hero_image": "",
+  "hero_video": "",
+  "youtube": "",
+  "gallery": [],
+  "cs": {
+    "t": "Video produkce",
+    "h1": "Video produkce a natáčení videí",
+    "s": "Reklamy, firemní filmy, eventy a obsah pro sociální sítě.",
+    "lead": "Video, které má jasný cíl. Od scénáře přes natáčení až po finální verze pro web, sociální sítě i televizi.",
+    "seo": {
+      "title": "Video produkce a natáčení firemních videí",
+      "desc": "Natáčení reklamních spotů, firemních filmů, eventů a videí pro sociální sítě. Scénář, kamera, zvuk i střih od jednoho týmu. Pošlete nezávaznou poptávku."
+    },
+    "intro": [
+      "Natáčíme reklamní spoty, firemní a náborová videa, záznamy eventů i pravidelný obsah pro Instagram, TikTok a YouTube. Než zapneme kameru, ujasníme si, komu je video určené a co má divák udělat, až dokouká.",
+      "Celou výrobu máte pod jednou střechou: námět a scénář, natáčecí den s kamerou, světly a zvukem, střih, color grading, titulky i hudbu. Z jednoho natáčení připravíme verze pro všechny kanály, kde video použijete."
+    ],
+    "who": [
+      "Firmy a značky, které chtějí představit produkt nebo tým",
+      "Pořadatelé eventů a konferencí",
+      "Marketing, který potřebuje pravidelný obsah na sociální sítě",
+      "Kulturní a neziskové projekty"
+    ],
+    "inc": [
+      "Úvodní konzultace a návrh konceptu",
+      "Scénář, storyboard a harmonogram natáčení",
+      "Natáčecí den s kameramanem, světly a zvukem",
+      "Střih, color grading a mix zvuku",
+      "Licencovaná hudba nebo práce s vaší",
+      "Dvě kola připomínek",
+      "Exporty 16:9, 9:16 a 1:1 pro web a sítě"
+    ],
+    "get": [
+      "Hotové video ve 4K",
+      "Krátké verze pro sociální sítě",
+      "Náhledový obrázek (thumbnail)",
+      "Titulky, pokud je potřebujete"
+    ],
+    "time": "7–20 pracovních dní podle rozsahu",
+    "equip": [
+      {
+        "n": "Kamery",
+        "x": "Full-frame a kino kamery se záznamem 4K v 10bitovém profilu pro přesné barevné ladění"
+      },
+      {
+        "n": "Objektivy",
+        "x": "Světelná pevná skla pro filmový vzhled a zoomy pro eventy"
+      },
+      {
+        "n": "Stabilizace",
+        "x": "Gimbal, slider a stativy s fluidní hlavou pro plynulé záběry"
+      },
+      {
+        "n": "Zvuk",
+        "x": "Bezdrátové klopové mikrofony a směrový mikrofon na tyči"
+      },
+      {
+        "n": "Světla",
+        "x": "LED panely a COB světla s regulací barevné teploty"
+      },
+      {
+        "n": "Postprodukce",
+        "x": "DaVinci Resolve, Adobe Premiere Pro a After Effects"
+      }
+    ],
+    "faq": [
+      {
+        "q": "Jak dlouho trvá výroba videa?",
+        "a": "Krátké video na sociální sítě bývá hotové do týdne od natáčení. Firemní film nebo reklama potřebuje 2–4 týdny včetně přípravy. Přesný termín potvrdíme v nabídce."
+      },
+      {
+        "q": "Kolik stojí firemní video?",
+        "a": "Cena závisí na rozsahu, termínu a náročnosti projektu. Po krátké konzultaci vám pošleme nabídku na míru, zdarma a nezávazně."
+      },
+      {
+        "q": "Můžeme dodat vlastní hudbu a logo?",
+        "a": "Ano. Použijeme vaše podklady, nebo zajistíme licencovanou hudbu a animaci loga."
+      },
+      {
+        "q": "Natáčíte i videa na výšku pro Reels a TikTok?",
+        "a": "Ano. Natáčíme tak, aby šlo ze stejného materiálu udělat verzi na šířku i na výšku."
+      },
+      {
+        "q": "Kdo napíše scénář?",
+        "a": "Scénář a storyboard připravíme my podle vašeho cíle. Pokud máte vlastní, rádi s ním pracujeme."
+      }
+    ],
+    "tags": [
+      "Reklama",
+      "Firemní film",
+      "Eventy",
+      "Sítě"
+    ]
+  },
+  "en": {
+    "t": "Video production",
+    "h1": "Video production and filming",
+    "s": "Commercials, corporate films, events and social content.",
+    "lead": "Video with a clear goal. From script and shoot to final versions for web, social and TV.",
+    "seo": {
+      "title": "Video production and corporate video filming",
+      "desc": "Commercials, corporate films, event coverage and social media videos. Script, camera, sound and editing from one team. Send a free enquiry."
+    },
+    "intro": [
+      "We film commercials, corporate and recruitment videos, event coverage and regular content for Instagram, TikTok and YouTube. Before the camera rolls we agree who the video is for and what the viewer should do when it ends.",
+      "The whole production is under one roof: concept and script, a shoot day with camera, lighting and sound, editing, colour grading, subtitles and music. One shoot gives you versions for every channel you use."
+    ],
+    "who": [
+      "Brands introducing a product or team",
+      "Event and conference organisers",
+      "Marketing teams needing regular social content",
+      "Cultural and non-profit projects"
+    ],
+    "inc": [
+      "Kick-off call and concept proposal",
+      "Script, storyboard and shoot schedule",
+      "Shoot day with camera operator, lighting and sound",
+      "Editing, colour grading and sound mix",
+      "Licensed music or your own",
+      "Two rounds of feedback",
+      "Exports in 16:9, 9:16 and 1:1"
+    ],
+    "get": [
+      "Finished video in 4K",
+      "Short cut-downs for social",
+      "Thumbnail image",
+      "Subtitles if you need them"
+    ],
+    "time": "7–20 working days depending on scope",
+    "equip": [
+      {
+        "n": "Cameras",
+        "x": "Full-frame and cinema cameras recording 4K in a 10-bit profile for precise grading"
+      },
+      {
+        "n": "Lenses",
+        "x": "Fast primes for a cinematic look and zooms for events"
+      },
+      {
+        "n": "Stabilisation",
+        "x": "Gimbal, slider and fluid-head tripods for smooth shots"
+      },
+      {
+        "n": "Sound",
+        "x": "Wireless lavalier mics and a boom shotgun mic"
+      },
+      {
+        "n": "Lighting",
+        "x": "LED panels and COB lights with adjustable colour temperature"
+      },
+      {
+        "n": "Post",
+        "x": "DaVinci Resolve, Adobe Premiere Pro and After Effects"
+      }
+    ],
+    "faq": [
+      {
+        "q": "How long does a video take?",
+        "a": "A short social video is usually ready within a week of the shoot. A corporate film or commercial takes 2–4 weeks including prep. We confirm the timeline in the quote."
+      },
+      {
+        "q": "How much does a corporate video cost?",
+        "a": "It depends on scope, timing and complexity. After a short call we send you a tailored quote, free and non-binding."
+      },
+      {
+        "q": "Can we supply our own music and logo?",
+        "a": "Yes. We use your assets, or source licensed music and animate your logo."
+      },
+      {
+        "q": "Do you shoot vertical video for Reels and TikTok?",
+        "a": "Yes. We frame shots so the same footage works in landscape and vertical."
+      },
+      {
+        "q": "Who writes the script?",
+        "a": "We prepare the script and storyboard around your goal. If you have your own, we’re happy to work with it."
+      }
+    ],
+    "tags": [
+      "Ads",
+      "Corporate",
+      "Events",
+      "Social"
+    ]
+  }
+}

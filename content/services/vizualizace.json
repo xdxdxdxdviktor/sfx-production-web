@@ -1,0 +1,174 @@
+{
+  "id": "vizualizace",
+  "order": 7,
+  "slug": {
+    "cs": "architektonicke-vizualizace",
+    "en": "architectural-visualisation"
+  },
+  "tile": "viz",
+  "icon": "viz",
+  "theme": "viz",
+  "img": "building",
+  "hero_image": "",
+  "hero_video": "",
+  "youtube": "",
+  "gallery": [],
+  "cs": {
+    "t": "Vizualizace",
+    "h1": "Architektonické a interiérové vizualizace",
+    "s": "Architektonické a interiérové vizualizace.",
+    "lead": "Prodávejte byty a domy dřív, než stojí. Vizualizace ukáže světlo, materiály i atmosféru prostoru.",
+    "seo": {
+      "title": "Architektonické vizualizace exteriérů a interiérů",
+      "desc": "Fotorealistické vizualizace novostaveb, bytů a interiérů pro developery a architekty. Průlety projektem i zasazení do okolí. Pošlete nezávaznou poptávku."
+    },
+    "intro": [
+      "Z výkresů a materiálových listů vytvoříme fotorealistické vizualizace exteriérů i interiérů. Kupující uvidí, jak bude dům vypadat při západu slunce, jak světlo padá do obývacího pokoje a jaké materiály architekt zvolil.",
+      "Vizualizaci umíme zasadit do skutečné fotky nebo leteckého záběru pozemku, připravit varianty materiálů a denní doby i plynulý průlet celým projektem. Výstupy použijete na webu projektu, v brožuře i na billboardu."
+    ],
+    "who": [
+      "Developeři a prodej projektů",
+      "Architekti a interiéroví designéři",
+      "Obce a veřejné soutěže",
+      "Soukromí investoři"
+    ],
+    "inc": [
+      "Převzetí výkresů a konzultace pohledů",
+      "3D model stavby nebo interiéru",
+      "Materiály, světlo a okolí",
+      "Fotorealistické rendery",
+      "Postprodukce a dokreslení detailů",
+      "Dvě kola připomínek"
+    ],
+    "get": [
+      "Vizualizace ve vysokém rozlišení pro web i tisk",
+      "Volitelně průlet ve 4K",
+      "Varianty materiálů a denní doby"
+    ],
+    "time": "7–20 pracovních dní",
+    "equip": [
+      {
+        "n": "Software",
+        "x": "Blender pro modelování, světlo a render"
+      },
+      {
+        "n": "Vstupní data",
+        "x": "Výkresy v PDF a DWG, 3D data z ArchiCADu, Revitu nebo SketchUpu"
+      },
+      {
+        "n": "Okolí",
+        "x": "Zasazení do fotky nebo leteckého záběru z dronu"
+      },
+      {
+        "n": "Postprodukce",
+        "x": "Adobe Photoshop"
+      }
+    ],
+    "faq": [
+      {
+        "q": "Jaké podklady potřebujete?",
+        "a": "Výkresy, řezy a materiálové listy. Pokud je máte v 3D, práce bude rychlejší."
+      },
+      {
+        "q": "Kolik stojí vizualizace?",
+        "a": "Cena závisí na rozsahu, termínu a náročnosti projektu. Po krátké konzultaci vám pošleme nabídku na míru, zdarma a nezávazně."
+      },
+      {
+        "q": "Kolik pohledů doporučujete?",
+        "a": "Záleží na účelu. Pro prodej obvykle stačí několik klíčových exteriérů a interiérů."
+      },
+      {
+        "q": "Umíte zapracovat reálné okolí?",
+        "a": "Ano, vizualizaci můžeme zasadit do fotky nebo leteckého záběru skutečného místa."
+      },
+      {
+        "q": "Jak rychle budou vizualizace hotové?",
+        "a": "Běžně za 1–3 týdny podle počtu pohledů a připravenosti podkladů."
+      }
+    ],
+    "tags": [
+      "Exteriéry",
+      "Interiéry",
+      "Průlety"
+    ]
+  },
+  "en": {
+    "t": "Visualisation",
+    "h1": "Architectural and interior visualisation",
+    "s": "Architectural and interior visualisation.",
+    "lead": "Sell flats and houses before they’re built. Visualisation shows light, materials and atmosphere.",
+    "seo": {
+      "title": "Architectural and interior visualisation",
+      "desc": "Photorealistic visualisation of new builds, flats and interiors for developers and architects. Fly-throughs and real-site compositing. Free enquiry."
+    },
+    "intro": [
+      "From drawings and material specs we create photorealistic exterior and interior visualisations. Buyers see how the house looks at sunset, how light falls into the living room and which materials the architect chose.",
+      "We can composite the visualisation into a real photo or aerial shot of the site, prepare material and time-of-day variants and a smooth fly-through of the whole project. Use the results on the project website, in brochures and on billboards."
+    ],
+    "who": [
+      "Developers selling projects",
+      "Architects and interior designers",
+      "Municipalities and competitions",
+      "Private investors"
+    ],
+    "inc": [
+      "Drawing hand-over and view planning",
+      "3D model of the building or interior",
+      "Materials, lighting and surroundings",
+      "Photorealistic renders",
+      "Post-production and detail work",
+      "Two rounds of feedback"
+    ],
+    "get": [
+      "High-resolution visualisations for web and print",
+      "Optional 4K fly-through",
+      "Material and time-of-day variants"
+    ],
+    "time": "7–20 working days",
+    "equip": [
+      {
+        "n": "Software",
+        "x": "Blender for modelling, lighting and rendering"
+      },
+      {
+        "n": "Input data",
+        "x": "Drawings in PDF and DWG, 3D data from ArchiCAD, Revit or SketchUp"
+      },
+      {
+        "n": "Surroundings",
+        "x": "Compositing into a photo or drone aerial of the site"
+      },
+      {
+        "n": "Post",
+        "x": "Adobe Photoshop"
+      }
+    ],
+    "faq": [
+      {
+        "q": "What input do you need?",
+        "a": "Drawings, sections and material lists. 3D data makes it faster."
+      },
+      {
+        "q": "How much does a visualisation cost?",
+        "a": "It depends on scope, timing and complexity. After a short call we send you a tailored quote, free and non-binding."
+      },
+      {
+        "q": "How many views do you recommend?",
+        "a": "It depends on the goal. For sales, a few key exteriors and interiors usually do."
+      },
+      {
+        "q": "Can you place it in the real surroundings?",
+        "a": "Yes, we can composite it into a photo or aerial shot of the actual site."
+      },
+      {
+        "q": "How fast will it be ready?",
+        "a": "Usually 1–3 weeks depending on the number of views and the input data."
+      }
+    ],
+    "tags": [
+      "Exteriors",
+      "Interiors",
+      "Fly-throughs"
+    ]
+  }
+}

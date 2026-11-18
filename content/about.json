@@ -1,0 +1,20 @@
+{
+  "photo": "/assets/img/jiri-hromadka.jpg",
+  "name": "Jiří Hromádka",
+  "cs": {
+    "h": "O mně",
+    "role": "Art director / project manager",
+    "hi": "Ahoj, jsem Jirka.",
+    "b1": "Natáčím, fotím a stříhám. Nejvíc mě baví hledat, jak věci ukázat jinak: světlem, pohybem kamery nebo pohledem z dronu. U každé zakázky jsem osobně od první schůzky až po finální export.",
+    "b2": "Když je projekt větší, přizvu lidi, se kterými se znám a kterým věřím: druhého kameramana, zvukaře nebo 3D grafika. Vy ale pořád řešíte všechno jen se mnou.",
+    "quote": "Dobrý záběr nevznikne náhodou. Vznikne z přípravy, světla a trpělivosti."
+  },
+  "en": {
+    "h": "About me",
+    "role": "Art director / project manager",
+    "hi": "Hi, I’m Jirka.",
+    "b1": "I film, photograph and edit. What I enjoy most is finding a different way to show things: with light, camera movement or a view from a drone. I’m personally on every job, from the first meeting to the final export.",
+    "b2": "For bigger projects I bring in people I know and trust: a second camera operator, a sound recordist or a 3D artist. But you still deal with just me.",
+    "quote": "A good shot doesn’t happen by accident. It comes from preparation, light and patience."
+  }
+}

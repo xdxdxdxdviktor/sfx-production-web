@@ -2,14 +2,14 @@
 import { SITE, COMPANY, INDEXABLE, VERIFY, RUNTIME, PARTNER_URLS } from './config.js';
 import { I18N, WHY, REFS, PARTNERS } from './i18n.js';
 import { SERVICES, SVC_BY } from './services.js';
-import { POSTS } from './posts.js';
+import { postsIn } from './posts.js';
 import { LEGAL } from './legal.js';
+import { ABOUT, HOME } from './site-content.js';
 import { ICON } from './icons.js';
 import { PATHS, svcPath, postPath } from './routes.js';
-import { ctx, esc, imgTag, svcPreview, postCard, blogGrid, blogChips, flow, tiles, budgetBtns, summary, fmtDate, readMin } from './ui.js';
+import { ctx, esc, imgTag, srcTag, media, svcImgSrc, svcVidSrc, videoBlock, gallery, svcPreview, postCard, blogGrid, blogChips, flow, tiles, budgetBtns, summary, fmtDate, readMin } from './ui.js';
 
 export const VERSION = { css:'', js:'' };
-export const ASSETS = { portrait:false };   // set by build when the portrait photo exists   // filled by build (cache busting)
 const abs = p => SITE + p;
 const ogImg = (k, lang='cs') => abs('/assets/og/' + (lang==='en'?'en-':'') + k + '.jpg');
 const cityLabel = lang => COMPANY.city ? (lang==='cs' ? ` – ${COMPANY.city}` : ` – ${COMPANY.city}`) : '';
@@ -22,14 +22,14 @@ function orgLD(lang){
   const local = !!COMPANY.city;
   const o = {'@type': local ? 'ProfessionalService' : 'Organization', '@id': SITE+'/#org', name: COMPANY.name, url: SITE+'/',
     logo: abs('/assets/img/icon-512.png'), image: ogImg('home', lang), email: COMPANY.email,
-    description: I18N[lang]['hero.sub'],
+    description: (HOME[lang]||HOME.cs).sub,
     knowsAbout: SERVICES.map(s=>s[lang].t),
     areaServed: COMPANY.areaServed.map(n=>({'@type':'Country', name:n}))};
   if(COMPANY.phone) o.telephone = COMPANY.phone;
   if(COMPANY.ico) o.taxID = COMPANY.ico;
   if(COMPANY.sameAs.length) o.sameAs = COMPANY.sameAs;
   if(COMPANY.founded) o.foundingDate = COMPANY.founded;
-  if(COMPANY.person) o.founder = {'@type':'Person', '@id': SITE+'/#jiri', name: COMPANY.person, jobTitle: I18N[lang]['about.role'], ...(ASSETS.portrait ? {image: abs('/assets/img/jiri-hromadka.jpg')} : {})};
+  if(COMPANY.person) o.founder = {'@type':'Person', '@id': SITE+'/#jiri', name: COMPANY.person, jobTitle: (ABOUT[lang]||ABOUT.cs).role, ...(ABOUT.photo ? {image: /^https?:/.test(ABOUT.photo) ? ABOUT.photo : abs(ABOUT.photo)} : {})};
   if(local){ o.address = {'@type':'PostalAddress', streetAddress: COMPANY.street||undefined, addressLocality: COMPANY.city, postalCode: COMPANY.zip||undefined, addressRegion: COMPANY.region||undefined, addressCountry:'CZ'}; o.priceRange = '$$'; }
   o.hasOfferCatalog = {'@type':'OfferCatalog', name: I18N[lang]['m.sluzby'], itemListElement: SERVICES.map(s=>({'@type':'Offer', itemOffered:{'@id': abs(svcPath(s,lang))+'#service'}}))};
   return o;
@@ -163,7 +163,9 @@ export function homePage(lang){
     preload:`<link rel="preload" as="image" href="${c.asset('img/camera-poster.webp')}" fetchpriority="high">`};
   p.ld = [orgLD(lang), websiteLD(lang), pageLD({...p, title:p.fullTitle}),
     {'@type':'ItemList', name:t('m.sluzby'), itemListElement: SERVICES.map((s,i)=>({'@type':'ListItem', position:i+1, url:abs(svcPath(s,lang)), name:s[lang].t}))}];
-  const posts = POSTS.slice(0,4);
+  const posts = postsIn(lang).slice(0,4);
+  const H = HOME[lang] || HOME.cs, A = ABOUT[lang] || ABOUT.cs;
+  const reelVideo = media(c, HOME.showreel_video || '/assets/video/showreel.mp4'), reelPoster = media(c, HOME.showreel_poster || '/assets/img/festival.webp');
   const refs = SHOW_REFS() ? `
   <section class="sec" id="reference" data-sec>
     <div class="sec-head"><h2>${t('ref.h')}</h2><p>${t('ref.p')}${RUNTIME.showSamples?`<small class="sample-note">${t('sample.note')}</small>`:''}</p></div>
@@ -185,9 +187,9 @@ export function homePage(lang){
       <img class="cam-poster" id="camPoster" src="${c.asset('img/camera-poster.webp')}" alt="" width="655" height="515" decoding="async" fetchpriority="high">
       <canvas id="cam3d" aria-hidden="true"></canvas>
       <div class="hero-copy" id="heroCopy">
-        <p class="kicker">${t('hero.kicker')}</p>
-        <h1>${t('hero.h1')}</h1>
-        <p class="hero-sub">${t('hero.sub')}</p>
+        <p class="kicker">${esc(H.kicker)}</p>
+        <h1>${esc(H.h1).replace(/\n/g,'<br>')}</h1>
+        <p class="hero-sub">${esc(H.sub)}</p>
         <div class="btns"><a class="btn primary" href="#poptavka">${t('hero.cta1')}</a><a class="btn glass" href="#sluzby">${t('hero.cta2')}</a></div>
       </div>
       <nav class="hero-strip" id="heroStrip" aria-label="${t('hero.strip')}">${SERVICES.map(s=>`<a href="${c.href(svcPath(s,lang))}">${ICON[s.icon]}<span>${s[lang].t}</span></a>`).join('')}</nav>
@@ -199,19 +201,19 @@ export function homePage(lang){
   </section>
 
   <section class="sec reel-sec" id="showreel" data-sec>
-    <div class="sec-head"><h2>${t('reel.h')}</h2><p>${t('reel.p')}</p></div>
+    <div class="sec-head"><h2>${esc(H.reel_h)}</h2><p>${esc(H.reel_p)}</p></div>
     <button class="reel-card" id="reelOpen" type="button" aria-label="${t('reel.play')}">
-      <video class="reel-bg" id="reelBg" muted loop playsinline preload="none" poster="${c.asset('img/festival.webp')}" data-src="${c.asset('video/showreel.mp4')}"></video>
+      <video class="reel-bg" id="reelBg" muted loop playsinline preload="none" poster="${reelPoster}" data-src="${reelVideo}"></video>
       <span class="reel-play">${ICON.play}</span><span class="reel-label">${t('reel.play')}</span>
     </button>
-    <p class="note reel-note">${t('reel.note')}</p>
+    ${HOME.showreel_note && H.reel_note ? `<p class="note reel-note">${esc(H.reel_note)}</p>` : ''}
   </section>
 
   <section class="sec" id="sluzby" data-sec>
     <div class="sec-head"><h2>${t('svc.h')}</h2><p>${t('svc.p')}</p></div>
     <div class="svc-index">
       <ol class="svc-list" id="svcList">${SERVICES.map((s,i)=>{ const d=s[lang]; return `<li><a href="${c.href(svcPath(s,lang))}" data-s="${s.id}">
-        <span class="n">0${i+1}</span>${imgTag(c, s.img, d.t, 'th')}
+        <span class="n">0${i+1}</span>${srcTag(svcImgSrc(c, s), d.t, 'th')}
         <span><span class="nm">${d.t}</span><span class="ds">${d.s}</span></span>
         <span class="tg">${s.tags[lang].join(', ')}</span></a></li>`; }).join('')}</ol>
       <aside class="svc-preview glass" id="svcPreview" aria-live="polite">${svcPreview(c, 'video')}</aside>
@@ -238,21 +240,21 @@ export function homePage(lang){
   </section>
 ${refs}
   <section class="sec" id="o-mne" data-sec>
-    <div class="sec-head"><h2>${t('about.h')}</h2></div>
+    <div class="sec-head"><h2>${esc(A.h)}</h2></div>
     <div class="me">
       <figure class="me-photo">
-        <div class="me-frame">${ASSETS.portrait
-          ? `<img src="${c.asset('img/jiri-hromadka.jpg')}" alt="${COMPANY.person}, ${t('about.role')}" width="900" height="900" loading="lazy" decoding="async">`
+        <div class="me-frame">${ABOUT.photo
+          ? `<img src="${media(c, ABOUT.photo)}" alt="${esc(ABOUT.name || COMPANY.person)}, ${esc(A.role)}" width="900" height="900" loading="lazy" decoding="async">`
           : `<span class="me-ph" aria-hidden="true">JH</span>`}
           <span class="vf-c tl"></span><span class="vf-c tr"></span><span class="vf-c bl"></span><span class="vf-c br"></span>
           <span class="me-rec" aria-hidden="true">REC</span></div>
       </figure>
       <div class="me-text">
-        <h3>${COMPANY.person}</h3>
-        <p class="me-role">${t('about.role')}</p>
-        <p class="me-hi">${t('about.hi')}</p>
-        <p>${t('about.b1')}</p><p>${t('about.b2')}</p>
-        <blockquote class="me-quote">${t('about.q')}</blockquote>
+        <h3>${esc(ABOUT.name || COMPANY.person)}</h3>
+        ${A.role?`<p class="me-role">${esc(A.role)}</p>`:''}
+        ${A.hi?`<p class="me-hi">${esc(A.hi)}</p>`:''}
+        ${[A.b1, A.b2].filter(Boolean).map(x=>`<p>${esc(x)}</p>`).join('')}
+        ${A.quote?`<blockquote class="me-quote">${esc(A.quote)}</blockquote>`:''}
         <div class="me-cta"><a class="btn primary" href="#poptavka">${t('cc.write')}</a><a class="me-mail" href="mailto:${COMPANY.email}">${ICON.mail}<span>${COMPANY.email}</span></a>${COMPANY.phone?`<a class="me-mail" href="tel:${COMPANY.phone.replace(/\s/g,'')}">${ICON.tel}<span>${COMPANY.phone}</span></a>`:''}</div>
       </div>
     </div>
@@ -262,9 +264,9 @@ ${partners}
 </main>
 <dialog class="reel-modal" id="reelModal" aria-label="Showreel">
   <button class="reel-x" id="reelClose" type="button" aria-label="${t('reel.close')}">${ICON.x}</button>
-  <video id="reelVid" controls playsinline preload="none" data-src="${c.asset('video/showreel.mp4')}" poster="${c.asset('img/festival.webp')}"></video>
+  <video id="reelVid" controls playsinline preload="none" data-src="${reelVideo}" poster="${reelPoster}"></video>
 </dialog>
-<div class="admin" id="admin" hidden></div>`;
+`;
   const tail = `<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>`;
   return doc(c, p, main, tail);
@@ -334,7 +336,7 @@ function enquiry(c){
       </form>
       <aside class="inq-aside">
         <div class="sum glass" id="liveSum" aria-live="polite">${summary(c, {sel:[], step:1, who:'', when:'', where:'', budget:'', contact:''})}</div>
-        <div class="inq-person glass"><span class="av">JH</span><span><b>${COMPANY.person}</b><small>${t('about.role')}</small></span><a href="mailto:${COMPANY.email}">${COMPANY.email}</a>${COMPANY.phone?`<a href="tel:${COMPANY.phone.replace(/\s/g,'')}">${COMPANY.phone}</a>`:''}</div>
+        <div class="inq-person glass"><span class="av">JH</span><span><b>${esc(ABOUT.name || COMPANY.person)}</b><small>${esc((ABOUT[lang]||ABOUT.cs).role)}</small></span><a href="mailto:${COMPANY.email}">${COMPANY.email}</a>${COMPANY.phone?`<a href="tel:${COMPANY.phone.replace(/\s/g,'')}">${COMPANY.phone}</a>`:''}</div>
       </aside>
     </div>
   </section>`;
@@ -352,21 +354,21 @@ const THEME_HUD = {
   film: lang => `<span class="lb top"></span><span class="lb bot"></span><div class="slate-mini"><span>SCENE <b>01</b></span><span>TAKE <b>03</b></span><span>2.39:1</span></div><span class="grain"></span>`
 };
 function svcVisual(c, s){
-  const d = s[c.lang], k = s.img, th = s.theme;
+  const d = s[c.lang], th = s.theme, src = svcImgSrc(c, s), vid = svcVidSrc(c, s);
   const media = (th==='3d'||th==='viz')
-    ? `<div class="wipe" style="--x:50%">${imgTag(c,k,d.t,'w-base',true)}${imgTag(c,k,'','w-top')}</div>`
-    : th==='vr' ? `<div class="pano" style="background-image:url('${c.asset('img/'+k+'.webp')}')" role="img" aria-label="${esc(d.t)}"></div>`
-    : `${imgTag(c,k,d.t,'',true)}<video muted loop playsinline preload="none" data-src="${c.asset('video/'+k+'.mp4')}" poster="${c.asset('img/'+k+'.webp')}"></video>`;
+    ? `<div class="wipe" style="--x:50%">${srcTag(src,d.t,'w-base',true)}${srcTag(src,'','w-top')}</div>`
+    : th==='vr' ? `<div class="pano" style="background-image:url('${src}')" role="img" aria-label="${esc(d.t)}"></div>`
+    : `${srcTag(src,d.t,'',true)}${vid?`<video muted loop playsinline preload="none" data-src="${vid}" poster="${src}"></video>`:''}`;
   return `<div class="sv sv-${th}">${media}${THEME_HUD[th](c.lang)}</div>`;
 }
 
 export function servicePage(s, lang){
   const path = svcPath(s, lang), c = ctx(lang, path), t = c.t, d = s[lang];
   const alt = {cs:svcPath(s,'cs'), en:svcPath(s,'en')};
-  const related = POSTS.filter(p=>p.svcs.includes(s.id)).slice(0,3);
+  const related = postsIn(lang).filter(p=>p.svcs.includes(s.id)).slice(0,3);
   const p = {kind:'service', lang, path, alt, og:s.id, theme:s.theme, bodyClass:'svc-page',
     title: d.seo.title + cityLabel(lang), desc: d.seo.desc, ogTitle: `${d.h1} | ${COMPANY.name}`,
-    preload:`<link rel="preload" as="image" href="${c.asset('img/'+s.img+'.webp')}" fetchpriority="high">`};
+    preload:`<link rel="preload" as="image" href="${svcImgSrc(c, s)}" fetchpriority="high">`};
   const crumbsArr = [[PATHS.home[lang], t('pg.home')], [PATHS.services[lang], t('m.sluzby')], [null, d.t]];
   p.ld = [orgLD(lang), websiteLD(lang), {...pageLD(p), breadcrumb:{'@id':abs(path)+'#breadcrumb'}},
     {'@type':'Service', '@id':abs(path)+'#service', name:d.h1, serviceType:d.t, description:d.lead+' '+d.intro[0], url:abs(path), image:ogImg(s.id, lang),
@@ -405,6 +407,7 @@ export function servicePage(s, lang){
   ${s.id==='360'?`<section class="pg-sec mp"><h2>${t('mp.h')}</h2><p class="mp-p">${t('mp.p')}</p>
     <div class="mp-frame" id="mpFrame">${imgTag(c,'interior','')}<button class="btn primary" type="button" id="mpLoad">${t('mp.load')}</button><small>${t('mp.note')}</small></div></section>`:''}
 
+  ${s.gallery.length || s.youtube ? `<section class="pg-sec" id="ukazky"><h2>${t('pg.work')}</h2>${videoBlock(c, {youtube:s.youtube})}${gallery(c, s.gallery, d.t)}</section>` : ''}
   <section class="pg-sec"><h2>${t('pg.how')}</h2>${flow(c)}</section>
   <section class="pg-sec" id="faq"><h2>${t('pg.faq')}</h2>${faqHTML(d.faq)}</section>
   ${related.length?`<section class="pg-sec"><h2>${t('pg.related')}</h2><div class="blog-grid flat more">${related.map(x=>postCard2(c,x)).join('')}</div></section>`:''}
@@ -429,7 +432,7 @@ export function hubPage(lang){
   ${crumbs(c, crumbsArr)}
   <header class="pg-hero hub-hero"><div><p class="kicker">${COMPANY.name}</p><h1>${t('hub.h')}</h1></div><div><p class="lead">${t('hub.lead')}</p></div></header>
   <ul class="hub-grid">${SERVICES.map((s,i)=>{ const d=s[lang]; return `<li><a class="hub-card glass" href="${c.href(svcPath(s,lang))}">
-      <div class="hc-img">${imgTag(c,s.img,d.t)}<span class="ico">${ICON[s.icon]}</span><span class="hc-n">0${i+1}</span></div>
+      <div class="hc-img">${srcTag(svcImgSrc(c, s), d.t)}<span class="ico">${ICON[s.icon]}</span><span class="hc-n">0${i+1}</span></div>
       <div class="hc-b"><h2>${d.t}</h2><p>${d.s}</p><span class="more">${t('svc.more')} ${ICON.arrow}</span></div></a></li>`; }).join('')}</ul>
   <section class="pg-sec"><h2>${t('pg.how')}</h2>${flow(c)}</section>
   <section class="cta-box glass"><div><h2>${t('pg.ctaH')}</h2><p>${t('pg.ctaP')}</p></div><a class="btn primary" href="${c.href(PATHS.home[lang])}#poptavka">${t('nav.cta')}</a></section>
@@ -442,41 +445,37 @@ export function blogIndex(lang){
   const path = PATHS.blog[lang], c = ctx(lang, path), t = c.t;
   const p = {kind:'blog', lang, path, alt:PATHS.blog, og:'blog', title: t('blog.h'), desc: t('bi.lead')};
   const crumbsArr = [[PATHS.home[lang], t('pg.home')], [null, t('m.blog')]];
-  p.ld = [orgLD(lang), websiteLD(lang), {...pageLD(p,'CollectionPage'), mainEntity:{'@type':'Blog', name:t('blog.h'), blogPost:POSTS.map(x=>({'@type':'BlogPosting', headline:x[lang].t, url:abs(postPath(x,lang)), datePublished:x.date}))}},
+  p.ld = [orgLD(lang), websiteLD(lang), {...pageLD(p,'CollectionPage'), mainEntity:{'@type':'Blog', name:t('blog.h'), blogPost:postsIn(lang).map(x=>({'@type':'BlogPosting', headline:x[lang].t, url:abs(postPath(x,lang)), datePublished:x.date}))}},
     crumbLD(crumbsArr.map(([u,n])=>[n, u||path]))];
   const main = `<main id="main" class="page">
   ${crumbs(c, crumbsArr)}
   <header class="pg-hero hub-hero"><div><p class="kicker">${COMPANY.name}</p><h1>${t('blog.h')}</h1></div><div><p class="lead">${t('bi.lead')}</p></div></header>
-  <div class="chips" id="chips" role="group">${blogChips(c, POSTS)}</div>
-  <div class="blog-grid" id="blogGrid">${blogGrid(c, POSTS)}</div>
+  <div class="chips" id="chips" role="group">${blogChips(c, postsIn(lang))}</div>
+  <div class="blog-grid" id="blogGrid">${blogGrid(c, postsIn(lang))}</div>
 </main>`;
   return doc(c, p, main);
 }
 
 export function postPage(x, lang){
   const path = postPath(x, lang), c = ctx(lang, path), t = c.t, d = x[lang];
-  const alt = {cs:postPath(x,'cs'), en:postPath(x,'en')};
-  const more = POSTS.filter(y=>y.id!==x.id).slice(0,3);
+  const alt = x.langs.length > 1 ? {cs:postPath(x,'cs'), en:postPath(x,'en')} : null;
+  const more = postsIn(lang).filter(y=>y.id!==x.id).slice(0,3);
   const crumbsArr = [[PATHS.home[lang], t('pg.home')], [PATHS.blog[lang], t('m.blog')], [null, d.t]];
   const p = {kind:'post', lang, path, alt, og:'post-'+x.id, ogType:'article', article:x.date, title:d.t, desc:d.lead};
   p.ld = [orgLD(lang), websiteLD(lang), pageLD(p),
     {'@type':'BlogPosting', '@id':abs(path)+'#article', headline:d.t, description:d.lead, datePublished:x.date, dateModified:x.date, inLanguage:lang==='cs'?'cs-CZ':'en',
       image:ogImg('post-'+x.id, lang), author:{'@type':'Person', name:COMPANY.person, worksFor:{'@id':SITE+'/#org'}}, publisher:{'@id':SITE+'/#org'}, mainEntityOfPage:{'@id':abs(path)+'#webpage'},
-      about:x.svcs.map(k=>({'@id':abs(svcPath(SVC_BY[k],lang))+'#service'})), wordCount:d.body.join(' ').split(/\s+/).length},
+      about:x.svcs.map(k=>({'@id':abs(svcPath(SVC_BY[k],lang))+'#service'})), wordCount:d.words},
     crumbLD(crumbsArr.map(([u,n])=>[n, u||path]))];
-  const body = []; let ul = [];
-  const flush = () => { if(ul.length){ body.push(`<ul class="pg-list">${ul.map(i=>`<li>${i}</li>`).join('')}</ul>`); ul = []; } };
-  for(const b of d.body){ if(b.startsWith('- ')){ ul.push(b.slice(2)); continue; } flush(); body.push(b.startsWith('## ') ? `<h2>${b.slice(3)}</h2>` : `<p>${b}</p>`); }
-  flush();
   const svcLinks = x.svcs.map(k=>{ const s=SVC_BY[k]; return `<a href="${c.href(svcPath(s,lang))}">${s[lang].t}</a>`; }).join(', ');
   const main = `<main id="main" class="page">
   ${crumbs(c, crumbsArr)}
   <article>
   <header class="art"><div class="meta"><span class="cat">${SVC_BY[x.cat][lang].t}</span><time datetime="${x.date}">${fmtDate(x.date, lang)}</time><span>${readMin(x)} ${t('blog.min')}</span></div>
     <h1>${d.t}</h1><p class="lead">${d.lead}</p></header>
-  <div class="art-cover">${imgTag(c, x.img, d.t, '', true)}</div>
+  <div class="art-cover">${x.cover ? srcTag(media(c, x.cover), d.t, '', true) : imgTag(c, x.img, d.t, '', true)}</div>
   <div class="art-body">
-    <div class="text">${body.join('\n')}</div>
+    <div class="text">${d.html.replace(/src="\/assets\//g, `src="${c.href('/assets/')}`)}${videoBlock(c, {video:x.video, youtube:x.youtube})}${gallery(c, x.gallery, d.t)}</div>
     <aside class="art-aside glass"><dl>
       <dt>${t('pg.svcs')}</dt><dd>${svcLinks}</dd>
       <dt>${t('pg.date')}</dt><dd>${fmtDate(x.date, lang)}</dd>
@@ -490,13 +489,6 @@ export function postPage(x, lang){
   return doc(c, p, main);
 }
 
-/* client-rendered CMS article (only used when Supabase is connected) */
-export function articlePage(lang){
-  const path = PATHS.article[lang], c = ctx(lang, path), t = c.t;
-  const p = {kind:'article', lang, path, alt:PATHS.article, og:'blog', title:t('m.blog'), desc:t('bi.lead'), noindex:true};
-  p.ld = [websiteLD(lang)];
-  return doc(c, p, `<main id="main" class="page"><div id="dynPost"><p class="empty">…</p></div></main>`);
-}
 
 /* ================================================================ LEGAL, 404, ADMIN */
 export function legalPage(key, lang){
@@ -513,12 +505,6 @@ export function notFoundPage(){
     <p lang="en" class="nf-en">${I18N.en['nf.t']} ${I18N.en['nf.p']}</p>
     <div class="btns"><a class="btn primary" href="./">${c.t('nf.home')}</a><a class="btn glass" href="sluzby/">${c.t('nf.svc')}</a><a class="btn glass" href="en/" lang="en">English</a></div></section></main>`);
   return html.replace('<head>', '<head>\n<base href="/">');
-}
-export function adminPage(){
-  const lang = 'cs', path = PATHS.admin.cs, c = ctx(lang, path);
-  const p = {kind:'admin', lang, path, og:'home', title:'Administrace', desc:'Administrace', noindex:true};
-  p.ld = [websiteLD(lang)];
-  return doc(c, p, `<main id="main" class="page"><div class="admin" id="admin" hidden></div></main>`);
 }
 
 export { strip };

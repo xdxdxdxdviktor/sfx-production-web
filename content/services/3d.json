@@ -1,0 +1,174 @@
+{
+  "id": "3d",
+  "order": 6,
+  "slug": {
+    "cs": "3d-modelovani-a-rendery",
+    "en": "3d-modelling-and-renders"
+  },
+  "tile": "3d",
+  "icon": "3d",
+  "theme": "3d",
+  "img": "product3d",
+  "hero_image": "",
+  "hero_video": "",
+  "youtube": "",
+  "gallery": [],
+  "cs": {
+    "t": "3D a Blender",
+    "h1": "3D modelování, produktové rendery a animace",
+    "s": "Modelování, produktové rendery a animace.",
+    "lead": "Ukažte produkt dřív, než existuje. Nebo z úhlu, který fotoaparát nezachytí.",
+    "seo": {
+      "title": "3D modelování a produktové rendery v Blenderu",
+      "desc": "Fotorealistické 3D rendery a animace produktů z výkresů, CAD dat nebo fotek. Varianty barev a materiálů pro e-shop, tisk i reklamu. Pošlete nezávaznou poptávku."
+    },
+    "intro": [
+      "Postavíme 3D model produktu podle výkresů, CAD dat nebo fotek a rozměrů a vyrenderujeme ho ve fotorealistické kvalitě. Rendery použijete v e-shopu, katalogu, na billboardu i v reklamním spotu.",
+      "Výhoda 3D je v opakovatelnosti: z jednoho modelu připravíte libovolné barevné varianty, nové úhly nebo animaci, aniž byste znovu fotili. Pracujeme v Blenderu a výstupy ladíme tak, aby šly vedle skutečných fotek."
+    ],
+    "who": [
+      "Výrobci před uvedením produktu na trh",
+      "E-shopy, které chtějí jednotné produktové obrázky",
+      "Reklamní kampaně a animace",
+      "Prezentace technických řešení"
+    ],
+    "inc": [
+      "3D model podle výkresů, CAD dat nebo fotek",
+      "Materiály a textury podle vzorků",
+      "Studiové nebo kontextové osvětlení",
+      "Fotorealistické rendery",
+      "Postprodukce renderů",
+      "Dvě kola připomínek"
+    ],
+    "get": [
+      "Rendery ve vysokém rozlišení (PNG/JPG/WebP)",
+      "Volitelně animace ve 4K",
+      "3D model pro další použití"
+    ],
+    "time": "5–15 pracovních dní",
+    "equip": [
+      {
+        "n": "Software",
+        "x": "Blender (Cycles a EEVEE) pro modelování, materiály a render"
+      },
+      {
+        "n": "Vstupní data",
+        "x": "Import CAD a 3D formátů (STEP, OBJ, FBX, GLB)"
+      },
+      {
+        "n": "Výkon",
+        "x": "Renderovací stanice s výkonnými GPU"
+      },
+      {
+        "n": "Postprodukce",
+        "x": "Adobe Photoshop a After Effects"
+      }
+    ],
+    "faq": [
+      {
+        "q": "Co potřebujete jako podklad?",
+        "a": "Ideálně výkresy nebo CAD data. Stačí ale i fotky a rozměry."
+      },
+      {
+        "q": "Kolik stojí 3D render produktu?",
+        "a": "Cena závisí na rozsahu, termínu a náročnosti projektu. Po krátké konzultaci vám pošleme nabídku na míru, zdarma a nezávazně."
+      },
+      {
+        "q": "Dá se render použít v reklamě?",
+        "a": "Ano, rendery a animace dodáváme v kvalitě pro web, tisk i video."
+      },
+      {
+        "q": "Můžeme model později upravit?",
+        "a": "Ano. Model zůstává a nové varianty z něj připravíme rychleji."
+      },
+      {
+        "q": "Umíte model i pro web a rozšířenou realitu?",
+        "a": "Ano, model připravíme ve formátech GLB a USDZ pro 3D prohlížeč na webu."
+      }
+    ],
+    "tags": [
+      "Rendery",
+      "Animace",
+      "Varianty"
+    ]
+  },
+  "en": {
+    "t": "3D and Blender",
+    "h1": "3D modelling, product renders and animation",
+    "s": "Modelling, product renders and animation.",
+    "lead": "Show a product before it exists, or from an angle no camera can reach.",
+    "seo": {
+      "title": "3D modelling and product renders in Blender",
+      "desc": "Photorealistic 3D product renders and animation from drawings, CAD data or photos. Colour and material variants for e-shops, print and ads. Send a free enquiry."
+    },
+    "intro": [
+      "We build a 3D model of your product from drawings, CAD data or photos and dimensions, and render it photorealistically. Use the renders in your e-shop, catalogue, on billboards or in a TV spot.",
+      "The beauty of 3D is repeatability: one model gives you any colour variant, new angle or animation without another shoot. We work in Blender and tune the output to sit next to real photos."
+    ],
+    "who": [
+      "Manufacturers before launch",
+      "E-shops wanting consistent product images",
+      "Ad campaigns and animation",
+      "Technical presentations"
+    ],
+    "inc": [
+      "3D model from drawings, CAD data or photos",
+      "Materials and textures matched to samples",
+      "Studio or in-context lighting",
+      "Photorealistic renders",
+      "Render post-production",
+      "Two rounds of feedback"
+    ],
+    "get": [
+      "High-resolution renders (PNG/JPG/WebP)",
+      "Optional 4K animation",
+      "3D model for further use"
+    ],
+    "time": "5–15 working days",
+    "equip": [
+      {
+        "n": "Software",
+        "x": "Blender (Cycles and EEVEE) for modelling, materials and rendering"
+      },
+      {
+        "n": "Input data",
+        "x": "Import of CAD and 3D formats (STEP, OBJ, FBX, GLB)"
+      },
+      {
+        "n": "Power",
+        "x": "Rendering workstation with powerful GPUs"
+      },
+      {
+        "n": "Post",
+        "x": "Adobe Photoshop and After Effects"
+      }
+    ],
+    "faq": [
+      {
+        "q": "What do you need from us?",
+        "a": "Ideally drawings or CAD data. Photos and dimensions also work."
+      },
+      {
+        "q": "How much does a 3D product render cost?",
+        "a": "It depends on scope, timing and complexity. After a short call we send you a tailored quote, free and non-binding."
+      },
+      {
+        "q": "Can renders be used in ads?",
+        "a": "Yes, we deliver renders and animation at web, print and video quality."
+      },
+      {
+        "q": "Can the model be changed later?",
+        "a": "Yes. The model stays, so new variants are quicker."
+      },
+      {
+        "q": "Can you make a model for the web and AR?",
+        "a": "Yes, we export GLB and USDZ for 3D viewers on websites."
+      }
+    ],
+    "tags": [
+      "Renders",
+      "Animation",
+      "Variants"
+    ]
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "id": "360",
+  "order": 5,
+  "slug": {
+    "cs": "virtualni-prohlidky-matterport",
+    "en": "matterport-virtual-tours"
+  },
+  "tile": "vr",
+  "icon": "360",
+  "theme": "vr",
+  "img": "interior",
+  "hero_image": "",
+  "hero_video": "",
+  "youtube": "",
+  "gallery": [],
+  "cs": {
+    "t": "360° / Matterport",
+    "h1": "Virtuální prohlídky Matterport 360°",
+    "s": "Virtuální prohlídky prostor přímo v prohlížeči.",
+    "lead": "Klient si projde prostor, jako by v něm stál. Kdykoli a odkudkoli, bez nutnosti prohlídky na místě.",
+    "seo": {
+      "title": "Virtuální prohlídky Matterport 360° pro reality",
+      "desc": "3D virtuální prohlídky Matterport pro prodej nemovitostí, showroomy, hotely a dokumentaci budov. Půdorys, body zájmu a vložení na web. Nezávazná poptávka."
+    },
+    "intro": [
+      "Virtuální prohlídka Matterport je 3D model prostoru, kterým se návštěvník volně pohybuje v prohlížeči na počítači i mobilu. Vidí dispozici, rozměry a návaznost místností lépe než na fotkách.",
+      "Prostor naskenujeme během jedné návštěvy, doplníme půdorys, popisky a body zájmu a předáme odkaz i kód pro vložení na web nebo do inzerátu. Prohlídka šetří prohlídky naprázdno a přivede zájemce, kteří už jsou rozhodnutí."
+    ],
+    "who": [
+      "Prodej a pronájem nemovitostí",
+      "Showroomy a obchody",
+      "Hotely, restaurace a penziony",
+      "Správa budov a dokumentace prostor"
+    ],
+    "inc": [
+      "3D skenování prostoru",
+      "Interaktivní prohlídka s pohledem „domeček“",
+      "Odkaz a kód pro vložení na web",
+      "Popisky a body zájmu v prohlídce",
+      "Fotky vybraných pohledů ze skenu",
+      "Hosting prohlídky po dohodnutou dobu"
+    ],
+    "get": [
+      "Odkaz na prohlídku pro inzerát i web",
+      "Snímky v HD",
+      "Volitelně půdorys s rozměry"
+    ],
+    "time": "1–3 pracovní dny",
+    "equip": [
+      {
+        "n": "Skener",
+        "x": "Matterport 3D kamera s přesným měřením hloubky"
+      },
+      {
+        "n": "Platforma",
+        "x": "Matterport cloud a prohlížeč Showcase"
+      },
+      {
+        "n": "Doplňky",
+        "x": "Stativ, nivelace a příprava světla pro čisté snímky"
+      }
+    ],
+    "faq": [
+      {
+        "q": "Jak dlouho skenování trvá?",
+        "a": "Záleží na velikosti prostoru. Byt zvládneme během jedné návštěvy."
+      },
+      {
+        "q": "Kolik stojí virtuální prohlídka Matterport?",
+        "a": "Cena závisí na rozsahu, termínu a náročnosti projektu. Po krátké konzultaci vám pošleme nabídku na míru, zdarma a nezávazně."
+      },
+      {
+        "q": "Kde prohlídka poběží?",
+        "a": "V prohlížeči na počítači i mobilu. Vložíte ji na web nebo pošlete odkazem."
+      },
+      {
+        "q": "Musí být prostor prázdný?",
+        "a": "Nemusí, jen uklizený. Prohlídka ukáže prostor tak, jak ho klient uvidí."
+      },
+      {
+        "q": "Jak dlouho bude prohlídka online?",
+        "a": "Hosting domluvíme podle potřeby, obvykle na dobu prodeje nebo pronájmu."
+      }
+    ],
+    "tags": [
+      "Reality",
+      "Showroomy",
+      "Hotely"
+    ]
+  },
+  "en": {
+    "t": "360° / Matterport",
+    "h1": "Matterport 360° virtual tours",
+    "s": "Virtual tours your clients open in the browser.",
+    "lead": "Clients walk through the space as if they were there. Any time, from anywhere, without a site visit.",
+    "seo": {
+      "title": "Matterport 360° virtual tours for property",
+      "desc": "Matterport 3D virtual tours for property sales, showrooms, hotels and building documentation. Floor plan, tags and website embed. Free enquiry."
+    },
+    "intro": [
+      "A Matterport virtual tour is a 3D model of a space that visitors move through freely in the browser on desktop and mobile. They understand layout, size and flow better than from photos.",
+      "We scan the space in a single visit, add a floor plan, labels and points of interest, and hand over a link and embed code for your website or listing. Tours cut wasted viewings and bring buyers who have already decided."
+    ],
+    "who": [
+      "Property sales and rentals",
+      "Showrooms and shops",
+      "Hotels, restaurants and guesthouses",
+      "Facility management and documentation"
+    ],
+    "inc": [
+      "3D scan of the space",
+      "Interactive tour with dollhouse view",
+      "Link and embed code for your website",
+      "Labels and points of interest",
+      "Stills of selected views",
+      "Hosting for an agreed period"
+    ],
+    "get": [
+      "Tour link for listings and website",
+      "HD stills",
+      "Optional floor plan with dimensions"
+    ],
+    "time": "1–3 working days",
+    "equip": [
+      {
+        "n": "Scanner",
+        "x": "Matterport 3D camera with accurate depth capture"
+      },
+      {
+        "n": "Platform",
+        "x": "Matterport cloud and Showcase viewer"
+      },
+      {
+        "n": "Kit",
+        "x": "Tripod, levelling and light preparation for clean captures"
+      }
+    ],
+    "faq": [
+      {
+        "q": "How long does scanning take?",
+        "a": "It depends on size. A flat takes a single visit."
+      },
+      {
+        "q": "How much does a Matterport tour cost?",
+        "a": "It depends on scope, timing and complexity. After a short call we send you a tailored quote, free and non-binding."
+      },
+      {
+        "q": "Where does the tour run?",
+        "a": "In the browser on desktop and mobile. Embed it or share a link."
+      },
+      {
+        "q": "Does the space need to be empty?",
+        "a": "No, just tidy. The tour shows it as clients will see it."
+      },
+      {
+        "q": "How long will the tour stay online?",
+        "a": "We agree hosting as needed, usually for the sale or rental period."
+      }
+    ],
+    "tags": [
+      "Real estate",
+      "Showrooms",
+      "Hotels"
+    ]
+  }
+}

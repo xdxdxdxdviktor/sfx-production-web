@@ -1,52 +1,56 @@
 #!/usr/bin/env node
-/* SFX production — static site build.
+/* SFX production — static site build (runs locally and on GitHub Actions).
    node build.mjs          build into ./github-pages
-   node build.mjs --og     also (re)generate Open Graph share images with headless Chrome */
+   node build.mjs --og     force regeneration of all Open Graph share images */
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { SITE, COMPANY, INDEXABLE } from './src/js/config.js';
-import { I18N } from './src/js/i18n.js';
-import { SERVICES } from './src/js/services.js';
-import { POSTS } from './src/js/posts.js';
-import { PATHS, LANGS, svcPath, postPath } from './src/js/routes.js';
-import * as P from './src/js/pages.js';
+import sharp from 'sharp';
+import { generate } from './tools/content.mjs';
 
 const ROOT = path.dirname(new URL(import.meta.url).pathname);
 const SRC = path.join(ROOT, 'src');
 const OUT = path.join(ROOT, 'github-pages');
-const BROWSER_JS = ['app.js','ui.js','config.js','i18n.js','services.js','posts.js','icons.js','routes.js','camera3d.js','db.js','admin.js'];
+const OGCACHE = path.join(ROOT, '.og-cache');
+
+/* 1) content → generated JS modules (must run before the site modules are imported) */
+const gen = generate(ROOT);
+const { SITE, COMPANY, INDEXABLE, GITHUB } = await import('./src/js/config.js');
+const { I18N } = await import('./src/js/i18n.js');
+const { SERVICES } = await import('./src/js/services.js');
+const { POSTS } = await import('./src/js/posts.js');
+const { HOME } = await import('./src/js/site-content.js');
+const { PATHS, LANGS, svcPath, postPath } = await import('./src/js/routes.js');
+const P = await import('./src/js/pages.js');
+const { cmsConfig } = await import('./src/admin/cms-config.mjs');
+
+const BROWSER_JS = ['app.js','ui.js','config.js','site-content.js','i18n.js','services.js','posts.js','icons.js','routes.js','camera3d.js','db.js'];
 const today = new Date().toISOString().slice(0,10);
-
-const hash = buf => crypto.createHash('sha1').update(buf).digest('hex').slice(0,8);
+const hash = buf => crypto.createHash('sha1').update(buf).digest('hex').slice(0,10);
 const write = (rel, data) => { const f = path.join(OUT, rel); fs.mkdirSync(path.dirname(f), {recursive:true}); fs.writeFileSync(f, data); };
-const copyDir = (from, to) => { fs.mkdirSync(to, {recursive:true}); for(const e of fs.readdirSync(from, {withFileTypes:true})){ if(e.name.startsWith('.')) continue; const a = path.join(from,e.name), b = path.join(to,e.name); e.isDirectory() ? copyDir(a,b) : fs.copyFileSync(a,b); } };
+const copyDir = (from, to) => { if(!fs.existsSync(from)) return; fs.mkdirSync(to, {recursive:true}); for(const e of fs.readdirSync(from, {withFileTypes:true})){ if(e.name.startsWith('.')) continue; const a = path.join(from,e.name), b = path.join(to,e.name); e.isDirectory() ? copyDir(a,b) : fs.copyFileSync(a,b); } };
 const page = (p, html) => write(p.endsWith('/') ? p + 'index.html' : p, html);
+const local = p => p && p.startsWith('/assets/') ? path.join(OUT, p) : null;   // site path → file in OUT
 
-/* ---------- clean (keep generated OG images between builds) ---------- */
-const ogKeep = path.join(ROOT, '.og-cache');
-if(fs.existsSync(path.join(OUT,'assets/og'))) { fs.rmSync(ogKeep, {recursive:true, force:true}); fs.cpSync(path.join(OUT,'assets/og'), ogKeep, {recursive:true}); }
+/* 2) clean output */
 fs.rmSync(OUT, {recursive:true, force:true});
 fs.mkdirSync(OUT, {recursive:true});
 
-/* ---------- assets ---------- */
-for(const d of ['fonts','img','video']) copyDir(path.join(SRC,'assets',d), path.join(OUT,'assets',d));
-/* portrait for the "About me" section: drop a photo into brand/ as jiri-hromadka.jpg (or .jpeg/.png).
-   It is cropped to a 1:1 square around the face (PORTRAIT focus, fractions of the photo) and resized to 900×900. */
+/* 3) assets (built-in + uploaded through the admin console) */
+for(const d of ['fonts','img','video','uploads']) copyDir(path.join(SRC,'assets',d), path.join(OUT,'assets',d));
+
+/* portrait from brand/jiri-hromadka.* (if the admin console has no photo of its own):
+   square photos are used whole, others are cropped to 1:1 around the face */
 const PORTRAIT = { x:.51, y:.305, size:.62 };
-const portraitSrc = ['jpg','jpeg','png','JPG','JPEG','PNG'].map(e=>path.join(ROOT,'brand','jiri-hromadka.'+e)).find(f=>fs.existsSync(f));
+const portraitSrc = ['jpg','jpeg','png','webp'].map(e=>path.join(ROOT,'brand','jiri-hromadka.'+e)).find(f=>fs.existsSync(f));
 if(portraitSrc){
-  const dim = k => Number(execFileSync('sips', ['-g',k, portraitSrc]).toString().match(/:\s*(\d+)/)[1]);
-  const W = dim('pixelWidth'), H = dim('pixelHeight');
-  const square = Math.abs(W - H) <= 4;   // an already-square photo is used whole
-  const sz = square ? Math.min(W, H) : Math.min(W, H, Math.round((W < H ? W : H) * PORTRAIT.size));
-  const ox = Math.max(0, Math.min(W-sz, Math.round(W*PORTRAIT.x - sz/2))), oy = Math.max(0, Math.min(H-sz, Math.round(H*PORTRAIT.y - sz/2)));
-  const out = path.join(OUT,'assets/img/jiri-hromadka.jpg');
-  execFileSync('sips', ['-s','format','jpeg','-s','formatOptions','84','-c',String(sz),String(sz),'--cropOffset',String(oy),String(ox), portraitSrc, '--out', out], {stdio:'ignore'});
-  execFileSync('sips', ['-Z','900', out], {stdio:'ignore'});
-  P.ASSETS.portrait = true;
+  const img = sharp(portraitSrc), { width:W, height:H } = await img.metadata();
+  const sz = Math.abs(W-H) <= 4 ? Math.min(W,H) : Math.min(W, H, Math.round((W < H ? W : H) * PORTRAIT.size));
+  const left = Math.max(0, Math.min(W-sz, Math.round(W*PORTRAIT.x - sz/2))), top = Math.max(0, Math.min(H-sz, Math.round(H*PORTRAIT.y - sz/2)));
+  await img.extract({left, top, width:sz, height:sz}).resize(900, 900).jpeg({quality:84, mozjpeg:true}).toFile(path.join(OUT,'assets/img/jiri-hromadka.jpg'));
 }
+
 const css = ['base.css','site.css'].map(f=>fs.readFileSync(path.join(SRC,'css',f),'utf8')).join('\n');
 write('assets/css/site.css', css);
 P.VERSION.css = hash(css);
@@ -54,42 +58,53 @@ let jsAll = '';
 for(const f of BROWSER_JS){ const s = fs.readFileSync(path.join(SRC,'js',f),'utf8'); jsAll += s; write('assets/js/'+f, s); }
 P.VERSION.js = hash(jsAll);
 
-
-/* ---------- pages ---------- */
-const urls = [];   // for the sitemap: {loc:{cs,en}, lastmod, prio}
+/* 4) pages */
 for(const lang of LANGS){
   page(PATHS.home[lang], P.homePage(lang));
   page(PATHS.services[lang], P.hubPage(lang));
   page(PATHS.blog[lang], P.blogIndex(lang));
-  page(PATHS.article[lang], P.articlePage(lang));
   for(const s of SERVICES) page(svcPath(s,lang), P.servicePage(s, lang));
-  for(const x of POSTS) page(postPath(x,lang), P.postPage(x, lang));
+  for(const x of POSTS.filter(p=>p.langs.includes(lang))) page(postPath(x,lang), P.postPage(x, lang));
   for(const k of ['legal','privacy','cookies']) page(PATHS[k][lang], P.legalPage(k, lang));
 }
 page('/404.html', P.notFoundPage());
-page(PATHS.admin.cs, P.adminPage());
 
-urls.push({loc:PATHS.home, prio:'1.0', freq:'weekly'}, {loc:PATHS.services, prio:'0.9', freq:'monthly'});
+/* 5) admin console (Sveltia CMS) */
+write('admin/index.html', `<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Administrace | ${COMPANY.name}</title>
+<link rel="icon" href="../assets/img/favicon.png" type="image/png">
+</head>
+<body>
+<script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
+</body>
+</html>
+`);
+write('admin/config.yml', '# Generated from src/admin/cms-config.mjs (YAML is a superset of JSON).\n' +
+  JSON.stringify(cmsConfig({repo:GITHUB.repo, branch:GITHUB.branch, site:SITE}), null, 2) + '\n');
+
+/* 6) sitemap, robots, manifest, llms.txt */
+const urls = [{loc:PATHS.home, prio:'1.0', freq:'weekly'}, {loc:PATHS.services, prio:'0.9', freq:'monthly'}];
 for(const s of SERVICES) urls.push({loc:{cs:svcPath(s,'cs'), en:svcPath(s,'en')}, prio:'0.9', freq:'monthly'});
-urls.push({loc:PATHS.blog, prio:'0.7', freq:'weekly'});
-for(const x of POSTS) urls.push({loc:{cs:postPath(x,'cs'), en:postPath(x,'en')}, prio:'0.6', freq:'yearly', lastmod:x.date});
+urls.push({loc:PATHS.blog, prio:'0.7', freq:'weekly', lastmod:POSTS[0]?.date});
+for(const x of POSTS) urls.push({loc:Object.fromEntries(x.langs.map(l=>[l, postPath(x,l)])), prio:'0.6', freq:'yearly', lastmod:x.date});
 for(const k of ['legal','privacy','cookies']) urls.push({loc:PATHS[k], prio:'0.2', freq:'yearly'});
-
-/* ---------- sitemap, robots, manifest, llms.txt ---------- */
-const alt = loc => LANGS.map(l=>`<xhtml:link rel="alternate" hreflang="${l}" href="${SITE}${loc[l]}"/>`).join('') + `<xhtml:link rel="alternate" hreflang="x-default" href="${SITE}${loc.cs}"/>`;
+const alt = loc => Object.keys(loc).length < 2 ? '' : LANGS.map(l=>`<xhtml:link rel="alternate" hreflang="${l}" href="${SITE}${loc[l]}"/>`).join('') + `<xhtml:link rel="alternate" hreflang="x-default" href="${SITE}${loc.cs}"/>`;
 write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${urls.flatMap(u=>LANGS.map(l=>`<url><loc>${SITE}${u.loc[l]}</loc><lastmod>${u.lastmod||today}</lastmod><changefreq>${u.freq}</changefreq><priority>${u.prio}</priority>${alt(u.loc)}</url>`)).join('\n')}
+${urls.flatMap(u=>LANGS.filter(l=>u.loc[l]).map(l=>`<url><loc>${SITE}${u.loc[l]}</loc><lastmod>${u.lastmod||today}</lastmod><changefreq>${u.freq}</changefreq><priority>${u.prio}</priority>${alt(u.loc)}</url>`)).join('\n')}
 </urlset>
 `);
-write('robots.txt', INDEXABLE
-  ? `User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /blog/clanek/\nDisallow: /en/blog/article/\n\nSitemap: ${SITE}/sitemap.xml\n`
-  : `User-agent: *\nDisallow: /\n`);
+write('robots.txt', INDEXABLE ? `User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: ${SITE}/sitemap.xml\n` : `User-agent: *\nDisallow: /\n`);
 write('site.webmanifest', JSON.stringify({name:COMPANY.name, short_name:'SFX', lang:'cs', start_url:'/', display:'standalone', background_color:'#000000', theme_color:'#000000',
   icons:[{src:'/assets/img/icon-192.png', sizes:'192x192', type:'image/png'},{src:'/assets/img/icon-512.png', sizes:'512x512', type:'image/png', purpose:'any maskable'}]}, null, 2));
 write('llms.txt', `# ${COMPANY.name}
 
-> ${I18N.cs['hero.sub']} ${I18N.en['hero.sub']}
+> ${HOME.cs.sub} ${HOME.en.sub}
 
 Kontakt / contact: ${COMPANY.email}${COMPANY.phone?', '+COMPANY.phone:''}${COMPANY.city?'\nSídlo / based in: '+COMPANY.city:''}
 Poptávka / enquiry: ${SITE}/#poptavka
@@ -105,27 +120,32 @@ ${POSTS.map(x=>`- [${x.cs.t}](${SITE}${postPath(x,'cs')})`).join('\n')}
 `);
 write('.nojekyll', '');
 
-/* ---------- Open Graph share images (1200×630) ---------- */
-if(fs.existsSync(ogKeep)){ fs.cpSync(ogKeep, path.join(OUT,'assets/og'), {recursive:true}); fs.rmSync(ogKeep, {recursive:true, force:true}); }
+/* 7) Open Graph share images (1200×630), cached in .og-cache by content hash */
+const CHROME = [process.env.CHROME_PATH, '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/usr/bin/google-chrome', '/usr/bin/google-chrome-stable', '/usr/bin/chromium', '/usr/bin/chromium-browser'].find(p=>p && fs.existsSync(p));
 const ogJobs = [];
+const imgFile = (upload, key) => local(upload) && fs.existsSync(local(upload)) ? local(upload) : path.join(OUT,'assets/img',key+'.webp');
 for(const lang of LANGS){
-  const T = I18N[lang], pre = lang==='en' ? 'en-' : '';
-  ogJobs.push({file:pre+'home', img:'camera-poster', kicker:T['hero.kicker'], title:T['hero.h1'].replace('<br>',' '), sub:T['hero.sub'], logo:true});
-  ogJobs.push({file:pre+'blog', img:'edit', kicker:COMPANY.name, title:T['blog.h'], sub:T['bi.lead']});
-  for(const s of SERVICES) ogJobs.push({file:pre+s.id, img:s.img, kicker:s[lang].t, title:s[lang].h1, sub:s[lang].s});
-  for(const x of POSTS) ogJobs.push({file:pre+'post-'+x.id, img:x.img, kicker:T['m.blog'], title:x[lang].t, sub:x[lang].lead});
+  const T = I18N[lang], H = HOME[lang] || HOME.cs, pre = lang==='en' ? 'en-' : '';
+  ogJobs.push({file:pre+'home', img:path.join(OUT,'assets/img/camera-poster.webp'), kicker:H.kicker, title:H.h1.replace(/\n/g,' '), sub:H.sub});
+  ogJobs.push({file:pre+'blog', img:path.join(OUT,'assets/img/edit.webp'), kicker:COMPANY.name, title:T['blog.h'], sub:T['bi.lead']});
+  for(const s of SERVICES) ogJobs.push({file:pre+s.id, img:imgFile(s.hero, s.img), kicker:s[lang].t, title:s[lang].h1, sub:s[lang].s});
+  for(const x of POSTS.filter(p=>p.langs.includes(lang))) ogJobs.push({file:pre+'post-'+x.id, img:imgFile(x.cover, x.img), kicker:T['m.blog'], title:x[lang].t, sub:x[lang].lead});
 }
-const sipsOK = (()=>{ try{ execFileSync('sips', ['--help'], {stdio:'ignore'}); return true; }catch(e){ return false; } })();
-const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-const wantOG = process.argv.includes('--og');
-const missing = ogJobs.filter(j=>!fs.existsSync(path.join(OUT,'assets/og',j.file+'.jpg')));
-if((wantOG || missing.length) && fs.existsSync(CHROME) && sipsOK){
-  const tmp = fs.mkdtempSync(path.join(ROOT,'.og-tmp-'));
-  const fontUrl = f => 'file://' + path.join(OUT,'assets/fonts',f);
-  for(const j of (wantOG ? ogJobs : missing)){
+fs.mkdirSync(OGCACHE, {recursive:true});
+fs.mkdirSync(path.join(OUT,'assets/og'), {recursive:true});
+const escH = s => String(s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let ogMade = 0, ogMissing = 0;
+const logoHash = hash(fs.readFileSync(path.join(OUT,'assets/img/logo.webp')));
+for(const j of ogJobs){
+  const key = hash(JSON.stringify(j) + logoHash + (fs.existsSync(j.img) ? fs.statSync(j.img).size : 0));
+  const cached = path.join(OGCACHE, `${j.file}-${key}.jpg`);
+  if(!fs.existsSync(cached) || process.argv.includes('--og')){
+    if(!CHROME){ ogMissing++; continue; }
+    const tmp = fs.mkdtempSync(path.join(ROOT,'.og-tmp-'));
+    const font = f => 'file://' + path.join(OUT,'assets/fonts',f);
     const html = `<!doctype html><html><head><meta charset="utf-8"><style>
-@font-face{font-family:H;src:url(${fontUrl('hanken-grotesk-latin.woff2')}) format('woff2');font-weight:100 900;unicode-range:U+0000-00FF,U+2000-206F,U+20AC}
-@font-face{font-family:H;src:url(${fontUrl('hanken-grotesk-latin-ext.woff2')}) format('woff2');font-weight:100 900;unicode-range:U+0100-02BA,U+1E00-1EFF}
+@font-face{font-family:H;src:url(${font('hanken-grotesk-latin.woff2')}) format('woff2');font-weight:100 900;unicode-range:U+0000-00FF,U+2000-206F,U+20AC}
+@font-face{font-family:H;src:url(${font('hanken-grotesk-latin-ext.woff2')}) format('woff2');font-weight:100 900;unicode-range:U+0100-02BA,U+1E00-1EFF}
 *{margin:0;box-sizing:border-box}html,body{width:1200px;height:630px;background:#000;overflow:hidden}
 body{font-family:H,Helvetica,Arial,sans-serif;color:#f1ece4;position:relative}
 .im{position:absolute;right:0;top:0;width:760px;height:630px;object-fit:cover;filter:saturate(.85) brightness(.9);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 38%)}
@@ -137,17 +157,21 @@ h1{font-size:${j.title.length>48?50:60}px;line-height:1.04;font-weight:700;lette
 p{font-size:25px;line-height:1.4;color:rgba(241,236,228,.78);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .bar{width:150px;height:6px;margin-top:28px;background:linear-gradient(90deg,#efd9b0,#b8955f);transform:skewX(-28deg)}
 .d{position:absolute;right:56px;bottom:46px;font-size:20px;letter-spacing:.08em;color:rgba(241,236,228,.7)}
-</style></head><body><img class="im" src="file://${path.join(OUT,'assets/img',j.img+'.webp')}"><div class="g"></div>
-<div class="c"><img class="logo" src="file://${path.join(OUT,'assets/img/logo.webp')}"><div class="k">${j.kicker}</div><h1>${j.title}</h1><p>${j.sub}</p><div class="bar"></div></div>
+</style></head><body><img class="im" src="file://${j.img}"><div class="g"></div>
+<div class="c"><img class="logo" src="file://${path.join(OUT,'assets/img/logo.webp')}"><div class="k">${escH(j.kicker)}</div><h1>${escH(j.title)}</h1><p>${escH(j.sub)}</p><div class="bar"></div></div>
 <div class="d">${SITE.replace(/^https?:\/\/(www\.)?/,'')}</div></body></html>`;
-    const hf = path.join(tmp, j.file+'.html'), png = path.join(tmp, j.file+'.png');
+    const hf = path.join(tmp,'og.html'), png = path.join(tmp,'og.png');
     fs.writeFileSync(hf, html);
-    execFileSync(CHROME, ['--headless=new','--disable-gpu','--hide-scrollbars','--allow-file-access-from-files','--force-device-scale-factor=1','--window-size=1200,630','--virtual-time-budget=1500','--screenshot='+png, 'file://'+hf], {stdio:'ignore', timeout:30000});
-    fs.mkdirSync(path.join(OUT,'assets/og'), {recursive:true});
-    execFileSync('sips', ['-s','format','jpeg','-s','formatOptions','82', png, '--out', path.join(OUT,'assets/og',j.file+'.jpg')], {stdio:'ignore'});
+    try{
+      execFileSync(CHROME, ['--headless=new','--no-sandbox','--disable-gpu','--hide-scrollbars','--allow-file-access-from-files','--force-device-scale-factor=1','--window-size=1200,630','--virtual-time-budget=1500','--screenshot='+png, 'file://'+hf], {stdio:'ignore', timeout:60000});
+      for(const old of fs.readdirSync(OGCACHE).filter(f=>f.startsWith(j.file+'-'))) fs.rmSync(path.join(OGCACHE,old));
+      await sharp(png).jpeg({quality:82, mozjpeg:true}).toFile(cached);
+      ogMade++;
+    }catch(e){ ogMissing++; }
+    fs.rmSync(tmp, {recursive:true, force:true});
   }
-  fs.rmSync(tmp, {recursive:true, force:true});
+  if(fs.existsSync(cached)) fs.copyFileSync(cached, path.join(OUT,'assets/og',j.file+'.jpg'));
 }
 
-const count = (d) => fs.readdirSync(d,{withFileTypes:true}).reduce((n,e)=>n+(e.isDirectory()?count(path.join(d,e.name)):(e.name==='index.html'||e.name==='404.html'?1:0)),0);
-console.log(`built ${count(OUT)} pages → ${path.relative(ROOT,OUT)}/  (css ${P.VERSION.css}, js ${P.VERSION.js}, og ${fs.existsSync(path.join(OUT,'assets/og'))?fs.readdirSync(path.join(OUT,'assets/og')).length:0})`);
+const count = d => fs.readdirSync(d,{withFileTypes:true}).reduce((n,e)=>n+(e.isDirectory()?count(path.join(d,e.name)):(e.name==='index.html'||e.name==='404.html'?1:0)),0);
+console.log(`built ${count(OUT)} pages → ${path.relative(ROOT,OUT)}/  (${gen.services} services, ${gen.posts} posts; og ${ogJobs.length-ogMissing}/${ogJobs.length}${ogMade?`, ${ogMade} new`:''}${ogMissing?`, ${ogMissing} missing: no Chrome`:''})`);

@@ -1,0 +1,21 @@
+{
+  "showreel_video": "/assets/video/showreel.mp4",
+  "showreel_poster": "/assets/img/festival.webp",
+  "showreel_note": true,
+  "cs": {
+    "kicker": "Videoprodukce · fotografie · dron · 3D",
+    "h1": "Obraz,\nkterý zůstane.",
+    "sub": "Video, fotografie, dron, 360° prohlídky, 3D a střih. Od prvního nápadu po hotový výstup.",
+    "reel_h": "Showreel",
+    "reel_p": "Minuta toho nejlepšího z natáčení, focení a postprodukce.",
+    "reel_note": "Ukázkový sestřih z ilustračních záběrů. Nahradíme skutečným showreelem."
+  },
+  "en": {
+    "kicker": "Video production · photography · drone · 3D",
+    "h1": "Images\nthat stay.",
+    "sub": "Video, photography, drone, 360° tours, 3D and editing. From the first idea to the finished piece.",
+    "reel_h": "Showreel",
+    "reel_p": "A minute of the best from our shoots, photography and post-production.",
+    "reel_note": "Sample cut from illustrative footage, to be replaced with the real showreel."
+  }
+}

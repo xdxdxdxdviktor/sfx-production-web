@@ -1,0 +1,182 @@
+{
+  "id": "film",
+  "order": 8,
+  "slug": {
+    "cs": "filmova-produkce",
+    "en": "film-production"
+  },
+  "tile": "film",
+  "icon": "film",
+  "theme": "film",
+  "img": "factory",
+  "hero_image": "",
+  "hero_video": "",
+  "youtube": "",
+  "gallery": [],
+  "cs": {
+    "t": "Filmová produkce",
+    "h1": "Filmová produkce, hudební klipy a krátké filmy",
+    "s": "Krátké filmy, klipy a větší natáčení.",
+    "lead": "Větší projekt vyžaduje víc než kameru. Zajistíme štáb, techniku, lokace a harmonogram, abyste se mohli soustředit na příběh.",
+    "seo": {
+      "title": "Filmová produkce – klipy, krátké filmy a reklama",
+      "desc": "Produkce hudebních klipů, krátkých filmů, dokumentů a reklam s větším štábem. Rozpočet, štáb, lokace, natáčení i postprodukce. Pošlete nezávaznou poptávku."
+    },
+    "intro": [
+      "Produkujeme hudební klipy, krátké filmy, dokumenty a reklamy s větším štábem. Postaráme se o rozpočet, sestavení štábu, lokace, povolení a řízení natáčecích dnů.",
+      "S režisérem a kameramanem ladíme vizuální styl od moodboardu po finální color grading. Můžeme dodat celou produkci, nebo jen techniku a lidi, které váš projekt potřebuje."
+    ],
+    "who": [
+      "Krátké filmy a studentské projekty",
+      "Hudební klipy",
+      "Dokumenty a portréty",
+      "Reklamní spoty s větším štábem"
+    ],
+    "inc": [
+      "Produkční plán a rozpočet",
+      "Sestavení štábu",
+      "Zajištění lokací a povolení",
+      "Řízení natáčecích dnů",
+      "Kompletní postprodukce",
+      "Kinematografický color grading"
+    ],
+    "get": [
+      "Hotový film nebo klip v kinematografické kvalitě",
+      "Verze pro festivaly, web a sítě",
+      "Trailer a stills pro propagaci"
+    ],
+    "time": "3–8 týdnů podle rozsahu",
+    "equip": [
+      {
+        "n": "Kamery",
+        "x": "Kino kamery s RAW nebo 10bitovým záznamem"
+      },
+      {
+        "n": "Objektivy",
+        "x": "Sady kinematografických objektivů"
+      },
+      {
+        "n": "Světlo a grip",
+        "x": "Světelný park, stativy, slider a dolly"
+      },
+      {
+        "n": "Zvuk",
+        "x": "Záznam zvuku na place a postsynchrony"
+      },
+      {
+        "n": "Postprodukce",
+        "x": "DaVinci Resolve Studio, Adobe After Effects"
+      }
+    ],
+    "faq": [
+      {
+        "q": "Pracujete i s externím režisérem?",
+        "a": "Ano. Můžeme dodat celý štáb, nebo jen techniku a produkci."
+      },
+      {
+        "q": "Kolik stojí hudební klip?",
+        "a": "Cena závisí na rozsahu, termínu a náročnosti projektu. Po krátké konzultaci vám pošleme nabídku na míru, zdarma a nezávazně."
+      },
+      {
+        "q": "Jak velký projekt zvládnete?",
+        "a": "Záleží na termínu a rozpočtu. Na konzultaci zjistíme, co je reálné."
+      },
+      {
+        "q": "Pomůžete se scénářem?",
+        "a": "Ano, s námětem i scénářem pomůžeme."
+      },
+      {
+        "q": "Zajistíte herce a lokace?",
+        "a": "Ano, casting, lokace i potřebná povolení zajistíme."
+      }
+    ],
+    "tags": [
+      "Klipy",
+      "Krátké filmy",
+      "Dokumenty"
+    ]
+  },
+  "en": {
+    "t": "Film production",
+    "h1": "Film production, music videos and short films",
+    "s": "Short films, music videos and larger shoots.",
+    "lead": "Bigger projects need more than a camera. We handle crew, gear, locations and schedule so you can focus on the story.",
+    "seo": {
+      "title": "Film production – music videos and short films",
+      "desc": "Production of music videos, short films, documentaries and commercials with a larger crew. Budget, crew, locations, shoot and post. Send a free enquiry."
+    },
+    "intro": [
+      "We produce music videos, short films, documentaries and commercials with a larger crew. We handle the budget, crew, locations, permits and running the shoot days.",
+      "Together with the director and DoP we shape the look from moodboard to final grade. We can deliver the whole production, or just the gear and people your project needs."
+    ],
+    "who": [
+      "Short films and student projects",
+      "Music videos",
+      "Documentaries and portraits",
+      "Commercials with a larger crew"
+    ],
+    "inc": [
+      "Production plan and budget",
+      "Crew assembly",
+      "Locations and permits",
+      "Running the shoot days",
+      "Full post-production",
+      "Cinematic colour grading"
+    ],
+    "get": [
+      "Finished film or music video in cinema quality",
+      "Versions for festivals, web and social",
+      "Trailer and stills for promotion"
+    ],
+    "time": "3–8 weeks depending on scope",
+    "equip": [
+      {
+        "n": "Cameras",
+        "x": "Cinema cameras recording RAW or 10-bit"
+      },
+      {
+        "n": "Lenses",
+        "x": "Cinema lens sets"
+      },
+      {
+        "n": "Lighting and grip",
+        "x": "Lighting kit, stands, slider and dolly"
+      },
+      {
+        "n": "Sound",
+        "x": "On-set sound recording and ADR"
+      },
+      {
+        "n": "Post",
+        "x": "DaVinci Resolve Studio, Adobe After Effects"
+      }
+    ],
+    "faq": [
+      {
+        "q": "Do you work with external directors?",
+        "a": "Yes. We can supply the whole crew, or just gear and production."
+      },
+      {
+        "q": "How much does a music video cost?",
+        "a": "It depends on scope, timing and complexity. After a short call we send you a tailored quote, free and non-binding."
+      },
+      {
+        "q": "How big a project can you handle?",
+        "a": "It depends on timeline and budget. We’ll work out what’s realistic on a call."
+      },
+      {
+        "q": "Can you help with the script?",
+        "a": "Yes, with the idea and the script."
+      },
+      {
+        "q": "Can you arrange actors and locations?",
+        "a": "Yes, casting, locations and permits."
+      }
+    ],
+    "tags": [
+      "Music videos",
+      "Short films",
+      "Docs"
+    ]
+  }
+}

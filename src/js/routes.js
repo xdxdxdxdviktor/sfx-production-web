@@ -5,7 +5,6 @@ export const PATHS = {
   home:     {cs:'/',                         en:'/en/'},
   services: {cs:'/sluzby/',                  en:'/en/services/'},
   blog:     {cs:'/blog/',                    en:'/en/blog/'},
-  article:  {cs:'/blog/clanek/',             en:'/en/blog/article/'},   // CMS posts (client-side)
   legal:    {cs:'/pravni-informace/',        en:'/en/legal/'},
   privacy:  {cs:'/ochrana-osobnich-udaju/',  en:'/en/privacy/'},
   cookies:  {cs:'/cookies/',                 en:'/en/cookies/'},

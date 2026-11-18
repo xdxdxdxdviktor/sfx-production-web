@@ -1,0 +1,25 @@
+{
+  "company": {
+    "name": "SFX production",
+    "person": "Jiří Hromádka",
+    "owner": "",
+    "ico": "",
+    "street": "",
+    "city": "",
+    "zip": "",
+    "region": "",
+    "register": "",
+    "phone": "",
+    "email": "sfx-production@seznam.cz",
+    "areaServed": [
+      "Česká republika"
+    ],
+    "sameAs": [],
+    "founded": ""
+  },
+  "verify": {
+    "google": "",
+    "bing": "",
+    "seznam": ""
+  }
+}

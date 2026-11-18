@@ -64,9 +64,9 @@ cs: {
   'budgets':['do 20 tis. Kč','20–50 tis. Kč','50–100 tis. Kč','100 tis. Kč+','Zatím nevím'],
   /* service pages */
   'pg.home':'Úvod','pg.who':'Pro koho','pg.get':'Co dostanete','pg.inc':'Co obsahuje','pg.equip':'Technika a software','pg.how':'Jak to probíhá','pg.faq':'Časté dotazy',
-  'pg.cta':'Poptat tuto službu','pg.ctaH':'Máte projekt?','pg.ctaP':'Popište nám ho ve čtyřech krocích. Nabídku pošleme e-mailem.','pg.other':'Další služby',
+  'pg.cta':'Poptat tuto službu','pg.ctaH':'Máte projekt?','pg.ctaP':'Popište nám ho ve třech krocích. Nabídku pošleme e-mailem.','pg.other':'Další služby',
   
-  'pg.time':'Typické dodání','pg.illu':'Ilustrační obrázky, nahradíme fotkami z realizace.','pg.related':'Související články',
+  'pg.time':'Typické dodání','pg.illu':'Ilustrační obrázky, nahradíme fotkami z realizace.','pg.related':'Související články','pg.work':'Ukázky práce','pg.svcs':'Služby','pg.date':'Publikováno',
   'mp.h':'Vyzkoušejte si to','mp.p':'Živá ukázka virtuální prohlídky. Klikněte a projděte si prostor myší nebo prstem.','mp.load':'Spustit prohlídku','mp.note':'Po spuštění se načte obsah ze serveru Matterport.',
   /* hub + blog index */
   'hub.h':'Služby','hub.lead':'Video, fotografie, dron, střih, 360° prohlídky, 3D a vizualizace. Vyberte, co potřebujete, nebo služby zkombinujte.',
@@ -137,9 +137,9 @@ en: {
   'tileSub':{foto:'Products, spaces, people, events',video:'Corporate, ads, social, events',fotovideo:'Both from one shoot',dron:'Aerial shots',strih:'You have the footage',vr:'Matterport','3d':'Products and animation',viz:'Architecture and interiors',film:'Music videos, short films',other:'Or not sure yet'},
   'budgets':['under €800','€800–2,000','€2,000–4,000','€4,000+','Not sure yet'],
   'pg.home':'Home','pg.who':'Who it’s for','pg.get':'What you get','pg.inc':'What’s included','pg.equip':'Equipment and software','pg.how':'How it works','pg.faq':'FAQ',
-  'pg.cta':'Request this service','pg.ctaH':'Got a project?','pg.ctaP':'Describe it in four steps. We’ll email you a quote.','pg.other':'Other services',
+  'pg.cta':'Request this service','pg.ctaH':'Got a project?','pg.ctaP':'Describe it in three steps. We’ll email you a quote.','pg.other':'Other services',
   
-  'pg.time':'Typical delivery','pg.illu':'Illustrative images, to be replaced with photos from the project.','pg.related':'Related articles',
+  'pg.time':'Typical delivery','pg.illu':'Illustrative images, to be replaced with photos from the project.','pg.related':'Related articles','pg.work':'Our work','pg.svcs':'Services','pg.date':'Published',
   'mp.h':'Try it yourself','mp.p':'A live virtual tour demo. Click and walk through the space with your mouse or finger.','mp.load':'Start the tour','mp.note':'Starting the tour loads content from Matterport’s servers.',
   'hub.h':'Services','hub.lead':'Video, photography, drone, editing, 360° tours, 3D and visualisation. Pick what you need, or combine services.',
   'hub.title':'Services – video, photo, drone, 3D and visualisation',

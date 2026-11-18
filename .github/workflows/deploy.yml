@@ -1,0 +1,61 @@
+# Každý push na main (i uložení v administraci /admin/) web znovu sestaví a nasadí na GitHub Pages.
+name: Sestavení a nasazení webu
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '15 5 * * *'   # denně ráno: zveřejní články s datem, které právě nastalo
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Chrome pro obrázky ke sdílení
+        id: chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Mezipaměť obrázků ke sdílení
+        uses: actions/cache@v4
+        with:
+          path: .og-cache
+          key: og-${{ github.sha }}
+          restore-keys: og-
+
+      - name: Sestavení
+        run: node build.mjs
+        env:
+          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: github-pages
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

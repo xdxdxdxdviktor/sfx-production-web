@@ -1,0 +1,182 @@
+{
+  "id": "foto",
+  "order": 2,
+  "slug": {
+    "cs": "fotografie",
+    "en": "photography"
+  },
+  "tile": "foto",
+  "icon": "foto",
+  "theme": "foto",
+  "img": "product",
+  "hero_image": "",
+  "hero_video": "",
+  "youtube": "",
+  "gallery": [],
+  "cs": {
+    "t": "Fotografie",
+    "h1": "Produktová, architektonická a firemní fotografie",
+    "s": "Produkty, architektura, portréty a reportáže.",
+    "lead": "Fotky, které prodávají a dobře vypadají všude, kde je použijete: na webu, v katalogu i na billboardu.",
+    "seo": {
+      "title": "Fotograf – produkty, architektura a portréty",
+      "desc": "Produktové fotky pro e-shop, fotografie architektury a interiérů, firemní portréty a reportáže z akcí. Retuš v ceně. Pošlete nezávaznou poptávku."
+    },
+    "intro": [
+      "Fotíme produkty pro e-shopy a katalogy, architekturu a interiéry pro developery a realitní kanceláře, portréty týmu i reportáže z firemních akcí. Každé focení začíná krátkým plánem: kde se fotky použijí, v jakém poměru stran a jak mají působit.",
+      "V ceně je výběr nejlepších snímků, retuš a barevné sjednocení celé série. Dostanete hotové fotky připravené pro web i tisk, ne neupravená data z karty."
+    ],
+    "who": [
+      "E-shopy a výrobci",
+      "Architekti, developeři a realitní kanceláře",
+      "Firmy, které potřebují portréty týmu",
+      "Pořadatelé akcí a konferencí"
+    ],
+    "inc": [
+      "Plán focení a výběr lokace nebo ateliéru",
+      "Focení s profesionálním světlem",
+      "Výběr nejlepších snímků",
+      "Retuš a barevné sjednocení série",
+      "Exporty pro web (WebP/JPG) a tisk",
+      "Online galerie ke stažení"
+    ],
+    "get": [
+      "Upravené fotografie ve vysokém rozlišení",
+      "Verze pro web a sociální sítě",
+      "Licence k užití pro vaši firmu"
+    ],
+    "time": "3–10 pracovních dní",
+    "equip": [
+      {
+        "n": "Fotoaparáty",
+        "x": "Full-frame bezzrcadlovky s vysokým rozlišením"
+      },
+      {
+        "n": "Objektivy",
+        "x": "Širokoúhlé objektivy pro architekturu, portrétní a makro objektivy pro detaily"
+      },
+      {
+        "n": "Světlo",
+        "x": "Zábleskové hlavy, softboxy a odrazné desky"
+      },
+      {
+        "n": "Ateliér",
+        "x": "Produktový stůl a čisté pozadí pro fotky na bílé"
+      },
+      {
+        "n": "Postprodukce",
+        "x": "Adobe Lightroom a Photoshop, kalibrovaný monitor"
+      }
+    ],
+    "faq": [
+      {
+        "q": "Kolik fotek dostaneme?",
+        "a": "Počet domluvíme předem podle účelu. Dodáváme vybrané a upravené snímky, ne syrová data."
+      },
+      {
+        "q": "Kolik stojí produktové focení?",
+        "a": "Cena závisí na rozsahu, termínu a náročnosti projektu. Po krátké konzultaci vám pošleme nabídku na míru, zdarma a nezávazně."
+      },
+      {
+        "q": "Fotíte i produkty na bílém pozadí?",
+        "a": "Ano, produkty fotíme na čistém pozadí i v prostředí, kde se používají."
+      },
+      {
+        "q": "Kdy budou fotky hotové?",
+        "a": "Běžně do 3–10 pracovních dní. Pokud spěcháte, nabízíme expresní dodání."
+      },
+      {
+        "q": "Můžeme fotky použít i v tisku a reklamě?",
+        "a": "Ano. Licenci k užití pro vaši firmu dostanete spolu s fotkami."
+      }
+    ],
+    "tags": [
+      "Produkty",
+      "Architektura",
+      "Portréty"
+    ]
+  },
+  "en": {
+    "t": "Photography",
+    "h1": "Product, architecture and corporate photography",
+    "s": "Products, architecture, portraits and reportage.",
+    "lead": "Photos that sell and look good wherever you use them: web, catalogue or billboard.",
+    "seo": {
+      "title": "Photographer – products, architecture, portraits",
+      "desc": "Product photos for e-shops, architecture and interior photography, team portraits and event coverage. Retouching included. Send a free enquiry."
+    },
+    "intro": [
+      "We photograph products for e-shops and catalogues, architecture and interiors for developers and estate agents, team portraits and corporate events. Every shoot starts with a short plan: where the photos will be used, in which aspect ratio and how they should feel.",
+      "Selecting the best frames, retouching and consistent colour across the set are included. You get finished photos ready for web and print, not raw files off the card."
+    ],
+    "who": [
+      "E-shops and manufacturers",
+      "Architects, developers and estate agents",
+      "Companies needing team portraits",
+      "Event and conference organisers"
+    ],
+    "inc": [
+      "Shoot plan and location or studio",
+      "Shoot with professional lighting",
+      "Selection of the best frames",
+      "Retouching and consistent colour",
+      "Exports for web and print",
+      "Online gallery for download"
+    ],
+    "get": [
+      "Edited high-resolution photos",
+      "Versions for web and social",
+      "A licence for your company’s use"
+    ],
+    "time": "3–10 working days",
+    "equip": [
+      {
+        "n": "Cameras",
+        "x": "High-resolution full-frame mirrorless cameras"
+      },
+      {
+        "n": "Lenses",
+        "x": "Wide-angle lenses for architecture, portrait and macro lenses for detail"
+      },
+      {
+        "n": "Lighting",
+        "x": "Strobes, softboxes and reflectors"
+      },
+      {
+        "n": "Studio",
+        "x": "Product table and seamless background for white-background shots"
+      },
+      {
+        "n": "Post",
+        "x": "Adobe Lightroom and Photoshop on a calibrated monitor"
+      }
+    ],
+    "faq": [
+      {
+        "q": "How many photos do we get?",
+        "a": "We agree the number up front based on purpose. You get selected, edited images, not raw files."
+      },
+      {
+        "q": "How much does product photography cost?",
+        "a": "It depends on scope, timing and complexity. After a short call we send you a tailored quote, free and non-binding."
+      },
+      {
+        "q": "Do you shoot products on white?",
+        "a": "Yes, on clean backgrounds as well as in context."
+      },
+      {
+        "q": "When will the photos be ready?",
+        "a": "Usually within 3–10 working days. Express delivery is available."
+      },
+      {
+        "q": "Can we use the photos in print and ads?",
+        "a": "Yes. A licence for your company’s use comes with the photos."
+      }
+    ],
+    "tags": [
+      "Products",
+      "Architecture",
+      "Portraits"
+    ]
+  }
+}

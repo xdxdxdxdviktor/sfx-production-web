@@ -1,7 +1,7 @@
 /* SFX production — browser entry. Pages are pre-rendered by the build; this file only adds behaviour. */
 import { RUNTIME, COMPANY, MATTERPORT_ID } from './config.js';
 import { SERVICES, SVC_BY, SVC_BY_TILE } from './services.js';
-import { POSTS } from './posts.js';
+import { postsIn } from './posts.js';
 import { ICON } from './icons.js';
 import { PATHS } from './routes.js';
 import { ctx, esc, svcPreview, blogGrid, blogChips, postCard, tiles, budgetBtns, summary, ORDER, MAIN } from './ui.js';
@@ -50,18 +50,6 @@ document.addEventListener('click', e=>{
 /* language switch remembers the choice (used only to suggest, never to redirect crawlers) */
 $$('.lang a[data-lang]').forEach(a=>a.addEventListener('click', ()=>store.set('sfx-lang', a.dataset.lang)));
 
-/* admin: Alt/⌥ + Shift + A or triple-click © */
-let adminP = null;
-function admin(){
-  if(!$('#admin')) return;
-  adminP = adminP || import('./admin.js').then(m=>m.initAdmin(API, DB));
-  return adminP;
-}
-const API = { t, lang:()=>lang, esc, SERVICES, svcT:id=>SVC_BY[id]?.[lang], postLink:p=>C.href(PATHS.article[lang])+'?p='+encodeURIComponent(p.slug), setPosts:rows=>setDynPosts(rows) };
-addEventListener('keydown', e=>{ if(e.altKey && e.shiftKey && e.code==='KeyA'){ e.preventDefault(); const p=admin(); p && p.then(a=>a && a.toggle()); } });
-document.addEventListener('click', e=>{ if(e.detail===3 && e.target.closest('#ftCopy')){ const p=admin(); p && p.then(a=>a && a.open()); } });
-if(PAGE==='admin') admin();
-
 /* =============================================================== MEDIA */
 /* play muted loops only while visible */
 const vio = 'IntersectionObserver' in window ? new IntersectionObserver(es=>es.forEach(e=>{ const v=e.target; if(e.isIntersecting){ play(v); v.addEventListener('playing',()=>v.classList.add('on'),{once:true}); } else v.pause(); }), {rootMargin:'100px'}) : null;
@@ -96,7 +84,6 @@ if(isHome){
   initHero();
   initIntro();
   initForm();
-  if(DB.mode==='supabase') DB.listPosts().then(setDynPosts).catch(()=>{});
 }
 
 /* ---------- hero: 3D camera driven by scroll ---------- */
@@ -351,31 +338,13 @@ const mp = $('#mpLoad');
 if(mp) mp.addEventListener('click', ()=>{ $('#mpFrame').innerHTML = `<iframe src="https://my.matterport.com/show/?m=${MATTERPORT_ID}&play=1&qs=1&lang=${lang}" allow="fullscreen; xr-spatial-tracking" allowfullscreen title="Matterport"></iframe>`; });
 
 /* =============================================================== BLOG */
-let DYN = [];
-function allPosts(){ return [...DYN, ...POSTS]; }
-function setDynPosts(rows){
-  DYN = (rows||[]).filter(r=>r.published && (r.lang||'cs')===lang).map(r=>({dyn:true, id:r.id, cat:SVC_BY[r.category]?r.category:'video', svcs:(r.services&&r.services.length?r.services:[r.category||'video']).filter(k=>SVC_BY[k]),
-    date:(r.published_at||r.created_at||'').slice(0,10), cover:r.cover_url, img:'edit', url:C.href(PATHS.article[lang])+'?p='+encodeURIComponent(r.slug), slug:r.slug,
-    [lang]:{t:r.title, lead:r.lead||'', body:String(r.body||'').split(/\n\s*\n/).map(x=>x.trim()).filter(Boolean)}, gal:r.gallery||[], client:r.client||''}));
-  const g = $('#blogGrid'); if(g && DYN.length) g.innerHTML = blogGrid(C, isHome ? allPosts().slice(0,4) : allPosts(), 'all');
-  if($('#chips')) $('#chips').innerHTML = blogChips(C, allPosts(), 'all');
-  if(PAGE==='article') renderDynPost();
-}
 if(PAGE==='blog'){
   document.addEventListener('click', e=>{ const c = e.target.closest('#chips .chip'); if(!c) return;
-    $$('#chips .chip').forEach(x=>x.setAttribute('aria-pressed', x===c)); const g = $('#blogGrid'); g.classList.toggle('flat', c.dataset.f!=='all'); g.innerHTML = blogGrid(C, allPosts(), c.dataset.f); });
-  if(DB.mode==='supabase') DB.listPosts().then(setDynPosts).catch(()=>{});
+    $$('#chips .chip').forEach(x=>x.setAttribute('aria-pressed', x===c)); const g = $('#blogGrid'); g.classList.toggle('flat', c.dataset.f!=='all'); g.innerHTML = blogGrid(C, postsIn(lang), c.dataset.f); });
 }
-function renderDynPost(){
-  const slug = new URLSearchParams(location.search).get('p'), p = DYN.find(x=>x.slug===slug), box = $('#dynPost');
-  if(!p){ box.innerHTML = `<section class="nf"><h1>${t('nf.t')}</h1><p>${t('nf.p')}</p></section>`; return; }
-  const d = p[lang]; document.title = d.t + ' | SFX production';
-  box.innerHTML = `<header class="art"><div class="meta"><span class="cat">${SVC_BY[p.cat][lang].t}</span><span>${p.date}</span></div><h1>${esc(d.t)}</h1><p class="lead">${esc(d.lead)}</p></header>
-    ${p.cover?`<div class="art-cover"><img src="${esc(p.cover)}" alt=""></div>`:''}
-    <div class="art-body"><div class="text">${d.body.map(x=>x.startsWith('## ')?`<h2>${esc(x.slice(3))}</h2>`:`<p>${esc(x)}</p>`).join('')}
-    ${p.gal.length?`<div class="gallery">${p.gal.map(g=>`<div><img src="${esc(g)}" alt="" loading="lazy"></div>`).join('')}</div>`:''}</div></div>`;
-}
-if(PAGE==='article') DB.listPosts().then(setDynPosts).catch(()=>renderDynPost());
+/* click-to-load YouTube (no cookies until the visitor asks) */
+document.addEventListener('click', e=>{ const b = e.target.closest('[data-yt]'); if(!b) return;
+  b.outerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(b.dataset.yt)}?autoplay=1&rel=0" title="YouTube" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`; });
 
 onScroll();
 if(!isHome) document.body.classList.add('ready');

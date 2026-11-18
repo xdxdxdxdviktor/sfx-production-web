@@ -1,0 +1,176 @@
+{
+  "id": "strih",
+  "order": 4,
+  "slug": {
+    "cs": "strih-a-postprodukce",
+    "en": "video-editing-post-production"
+  },
+  "tile": "strih",
+  "icon": "strih",
+  "theme": "strih",
+  "img": "edit",
+  "hero_image": "",
+  "hero_video": "",
+  "youtube": "",
+  "gallery": [],
+  "cs": {
+    "t": "Střih a postprodukce",
+    "h1": "Střih videa a postprodukce",
+    "s": "Střih, color grading, zvuk, titulky a motion grafika.",
+    "lead": "Máte natočený materiál? Postaráme se o to, aby z něj vznikl příběh, který diváka udrží do konce.",
+    "seo": {
+      "title": "Střih videa, color grading a postprodukce",
+      "desc": "Střih videa z vašeho materiálu, color grading, čištění a mix zvuku, titulky a motion grafika. Verze pro YouTube, Instagram i TikTok. Nezávazná poptávka."
+    },
+    "intro": [
+      "Stříháme firemní videa, obsah pro YouTube a sociální sítě, svatby, eventy i delší dokumentární formáty. Pošlete nám materiál z kamery nebo telefonu a my z něj složíme video s rytmem, příběhem a čistým zvukem.",
+      "Součástí postprodukce je color grading, který sjednotí záběry z různých kamer, čištění a mix zvuku, titulky a motion grafika. Z jednoho střihu připravíme verze na šířku i na výšku."
+    ],
+    "who": [
+      "Firmy s vlastním natočeným materiálem",
+      "Tvůrci a influenceři",
+      "Agentury, které potřebují posílit tým",
+      "Svatby a rodinná videa"
+    ],
+    "inc": [
+      "Převzetí a zálohování materiálu",
+      "Střih podle scénáře nebo z volného materiálu",
+      "Color grading a sjednocení záběrů",
+      "Čištění a mix zvuku",
+      "Titulky a popisky",
+      "Dvě kola připomínek",
+      "Exporty pro všechny kanály"
+    ],
+    "get": [
+      "Hotové video ve 4K nebo Full HD",
+      "Verze pro sociální sítě",
+      "Projekt archivujeme pro pozdější úpravy"
+    ],
+    "time": "3–14 pracovních dní",
+    "equip": [
+      {
+        "n": "Střih",
+        "x": "DaVinci Resolve Studio a Adobe Premiere Pro"
+      },
+      {
+        "n": "Grafika",
+        "x": "Adobe After Effects pro motion grafiku a animované titulky"
+      },
+      {
+        "n": "Barvy",
+        "x": "Kalibrovaný monitor a color grading v DaVinci Resolve"
+      },
+      {
+        "n": "Zvuk",
+        "x": "Čištění šumu, mix a mastering zvukové stopy"
+      }
+    ],
+    "faq": [
+      {
+        "q": "V jakém formátu máme poslat materiál?",
+        "a": "Stačí originální soubory z kamery nebo telefonu. Převezmeme je přes úložiště nebo osobně."
+      },
+      {
+        "q": "Kolik stojí střih videa?",
+        "a": "Cena závisí na rozsahu, termínu a náročnosti projektu. Po krátké konzultaci vám pošleme nabídku na míru, zdarma a nezávazně."
+      },
+      {
+        "q": "Kolik kol úprav je v ceně?",
+        "a": "Dvě kola připomínek. Další úpravy domluvíme podle rozsahu."
+      },
+      {
+        "q": "Umíte i krátká videa na výšku?",
+        "a": "Ano, z jednoho natáčení připravíme verze pro YouTube, Instagram i TikTok."
+      },
+      {
+        "q": "Uděláte i titulky v angličtině?",
+        "a": "Ano, titulky připravíme v češtině i angličtině."
+      }
+    ],
+    "tags": [
+      "Color grading",
+      "Zvuk",
+      "Titulky"
+    ]
+  },
+  "en": {
+    "t": "Editing and post",
+    "h1": "Video editing and post-production",
+    "s": "Editing, colour grading, sound, subtitles and motion graphics.",
+    "lead": "Already have footage? We turn it into a story that keeps viewers watching to the end.",
+    "seo": {
+      "title": "Video editing, colour grading and post-production",
+      "desc": "Editing of your footage, colour grading, sound clean-up and mix, subtitles and motion graphics. Versions for YouTube, Instagram and TikTok. Free enquiry."
+    },
+    "intro": [
+      "We edit corporate videos, YouTube and social content, weddings, events and longer documentary pieces. Send us footage from a camera or phone and we cut it into a video with rhythm, story and clean sound.",
+      "Post-production includes colour grading to match shots from different cameras, sound clean-up and mixing, subtitles and motion graphics. One edit gives you landscape and vertical versions."
+    ],
+    "who": [
+      "Companies with their own footage",
+      "Creators and influencers",
+      "Agencies needing extra hands",
+      "Weddings and family videos"
+    ],
+    "inc": [
+      "Footage hand-over and backup",
+      "Edit to script or from raw footage",
+      "Colour grading and shot matching",
+      "Sound clean-up and mix",
+      "Subtitles and captions",
+      "Two rounds of feedback",
+      "Exports for every channel"
+    ],
+    "get": [
+      "Finished video in 4K or Full HD",
+      "Social versions",
+      "Project archived for later changes"
+    ],
+    "time": "3–14 working days",
+    "equip": [
+      {
+        "n": "Editing",
+        "x": "DaVinci Resolve Studio and Adobe Premiere Pro"
+      },
+      {
+        "n": "Graphics",
+        "x": "Adobe After Effects for motion graphics and animated titles"
+      },
+      {
+        "n": "Colour",
+        "x": "Calibrated monitor and grading in DaVinci Resolve"
+      },
+      {
+        "n": "Sound",
+        "x": "Noise reduction, mixing and mastering"
+      }
+    ],
+    "faq": [
+      {
+        "q": "What format should we send?",
+        "a": "Original files from the camera or phone are fine. We take them via cloud storage or in person."
+      },
+      {
+        "q": "How much does video editing cost?",
+        "a": "It depends on scope, timing and complexity. After a short call we send you a tailored quote, free and non-binding."
+      },
+      {
+        "q": "How many revision rounds are included?",
+        "a": "Two rounds of feedback. Further changes are agreed by scope."
+      },
+      {
+        "q": "Do you do vertical short videos?",
+        "a": "Yes, one shoot can give you versions for YouTube, Instagram and TikTok."
+      },
+      {
+        "q": "Can you do English subtitles?",
+        "a": "Yes, in Czech and English."
+      }
+    ],
+    "tags": [
+      "Colour",
+      "Sound",
+      "Subtitles"
+    ]
+  }
+}
