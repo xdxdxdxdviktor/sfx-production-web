@@ -34,7 +34,7 @@ fs.mkdirSync(OUT, {recursive:true});
 for(const d of ['fonts','img','video']) copyDir(path.join(SRC,'assets',d), path.join(OUT,'assets',d));
 /* portrait for the "About me" section: drop a photo into brand/ as jiri-hromadka.jpg (or .jpeg/.png).
    It is cropped to a 1:1 square around the face (PORTRAIT focus, fractions of the photo) and resized to 900×900. */
-const PORTRAIT = { x:.51, y:.335, size:.62 };
+const PORTRAIT = { x:.51, y:.305, size:.62 };
 const portraitSrc = ['jpg','jpeg','png','JPG','JPEG','PNG'].map(e=>path.join(ROOT,'brand','jiri-hromadka.'+e)).find(f=>fs.existsSync(f));
 if(portraitSrc){
   const dim = k => Number(execFileSync('sips', ['-g',k, portraitSrc]).toString().match(/:\s*(\d+)/)[1]);
