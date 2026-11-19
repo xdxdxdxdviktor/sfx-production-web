@@ -203,12 +203,12 @@ export function homePage(lang){
   const reelPoster = HOME.showreel_poster ? media(c, HOME.showreel_poster) : reelYt ? `https://i.ytimg.com/vi/${reelYt}/maxresdefault.jpg` : c.asset('img/festival.webp');
   const refs = SHOW_REFS() ? `
   <section class="sec" id="reference" data-sec>
-    <div class="sec-head"><h2>${t('ref.h')}</h2><p>${t('ref.p')}</p></div>
+    <div class="sec-head"><h2>${t('ref.h')}</h2></div>
     <div class="refs">${REFERENCES.map(r=>{ const d=r[lang], w=WORK.find(x=>x.id===r.project); return `<figure class="ref glass"><blockquote>${esc(d.quote)}</blockquote>
       <figcaption><span class="av">${r.photo?`<img src="${media(c,r.photo)}" alt="" loading="lazy">`:esc((r.name||r.company).split(/\s+/).map(x=>x[0]).join('').slice(0,2))}</span><span><b>${esc(r.name||r.company)}</b><small>${esc([d.role, r.name?r.company:''].filter(Boolean).join(', '))}${w?` · <a href="${c.href(PATHS.work[lang])}#ukazka-${w.id}">${esc(w[lang].t)}</a>`:''}</small></span></figcaption></figure>`; }).join('')}</div>
   </section>` : '';
   const partners = SHOW_PARTNERS() ? (()=>{ const P = PARTNERS[lang].map((x,i)=>{ const u=PARTNER_URLS[i]; return `<a class="plink" href="${u||'#partneri'}" ${u?'target="_blank" rel="noopener"':''}><span class="mk">P${i+1}</span><span><b>${x.n}</b><small>${x.t}</small></span></a>`; }).join('');
-    return `<section class="sec" id="partneri" data-sec><div class="sec-head"><h2>${t('pt.h')}</h2><p>${t('pt.p')}</p></div><div class="marquee"><div class="track">${P}${P.replace(/<a /g,'<a tabindex="-1" aria-hidden="true" ')}</div></div></section>`; })() : '';
+    return `<section class="sec" id="partneri" data-sec><div class="sec-head"><h2>${t('pt.h')}</h2></div><div class="marquee"><div class="track">${P}${P.replace(/<a /g,'<a tabindex="-1" aria-hidden="true" ')}</div></div></section>`; })() : '';
 
   const main = `
 <div class="intro" id="intro" hidden>
@@ -236,7 +236,7 @@ export function homePage(lang){
   </section>
 
   <section class="sec reel-sec" id="showreel" data-sec>
-    <div class="sec-head"><h2>${esc(H.reel_h)}</h2><p>${esc(H.reel_p)}</p></div>
+    <div class="sec-head"><h2>${esc(H.reel_h)}</h2></div>
     <button class="reel-card" id="reelOpen" type="button" aria-label="${t('reel.play')}">
       ${reelYt ? `<img class="reel-bg" src="${reelPoster}" alt="" loading="lazy" decoding="async">` : `<video class="reel-bg" id="reelBg" muted loop playsinline preload="none" poster="${reelPoster}" data-src="${reelVideo}"></video>`}
       <span class="reel-play">${ICON.play}</span><span class="reel-label">${t('reel.play')}</span>
@@ -245,13 +245,13 @@ export function homePage(lang){
   </section>
 ${WORK.length ? `
   <section class="sec" id="ukazky" data-sec>
-    <div class="sec-head"><h2>${t('wk.h')}</h2><p>${t('wk.p')}</p></div>
+    <div class="sec-head"><h2>${t('wk.h')}</h2></div>
     ${workGrid(c, (WORK.filter(w=>w.featured).length ? WORK.filter(w=>w.featured) : WORK).slice(0,8))}
     <p class="sec-more"><a class="btn glass" href="${c.href(PATHS.work[lang])}">${t('wk.all')} (${WORK.length}) ${ICON.arrow}</a></p>
   </section>` : ''}
 
   <section class="sec" id="sluzby" data-sec>
-    <div class="sec-head"><h2>${t('svc.h')}</h2><p>${t('svc.p')}</p></div>
+    <div class="sec-head"><h2>${t('svc.h')}</h2></div>
     <div class="svc-index">
       <ol class="svc-list" id="svcList">${SERVICES.map((s,i)=>{ const d=s[lang]; return `<li><a href="${c.href(svcPath(s,lang))}" data-s="${s.id}">
         <span class="n">0${i+1}</span>${srcTag(svcImgSrc(c, s), d.t, 'th')}
@@ -264,18 +264,18 @@ ${WORK.length ? `
 
   <section class="sec" id="vyhody">
     <div class="why glass">
-      <div class="why-head"><h2>${t('why.h')}</h2><p>${t('why.p')}</p></div>
+      <div class="why-head"><h2>${t('why.h')}</h2></div>
       <ul class="why-grid">${WHY[lang].map(([h,d,ic])=>`<li><span class="wi">${ICON[ic]}</span><h3>${h}</h3><p>${d}</p></li>`).join('')}</ul>
     </div>
   </section>
 
   <section class="sec" id="proces" data-sec>
-    <div class="sec-head"><h2>${t('proc.h')}</h2><p>${t('proc.p')}</p></div>
+    <div class="sec-head"><h2>${t('proc.h')}</h2></div>
     ${flow(c)}
   </section>
 
   <section class="sec" id="blog" data-sec>
-    <div class="sec-head"><h2>${t('blog.h')}</h2><p>${t('blog.p')}</p></div>
+    <div class="sec-head"><h2>${t('blog.h')}</h2></div>
     <div class="blog-grid" id="blogGrid">${blogGrid(c, posts)}</div>
     <p class="sec-more"><a class="btn glass" href="${c.href(PATHS.blog[lang])}">${t('blog.more')} ${ICON.arrow}</a></p>
   </section>
@@ -304,7 +304,7 @@ function enquiry(c){
   const t = c.t, lang = c.lang;
   const ok = t('f.ok').replace('{privacy}', `<a href="${c.href(PATHS.privacy[lang])}">${t('f.okLink')}</a>`);
   return `<section class="sec" id="poptavka" data-sec>
-    <div class="sec-head"><h2>${t('f.h')}</h2><p>${t('f.p')}</p></div>
+    <div class="sec-head"><h2>${t('f.h')}</h2></div>
     <div class="inq">
       <form class="wiz glass vf" id="wiz" novalidate>
         <span class="vf-c tl"></span><span class="vf-c tr"></span><span class="vf-c bl"></span><span class="vf-c br"></span>
@@ -408,7 +408,6 @@ export function servicePage(s, lang){
   <header class="pg-hero sv-hero">
     <div class="pg-hero-t">
       <div class="ico">${ICON[s.icon]}</div>
-      <p class="kicker">${d.t}</p>
       <h1>${d.h1}</h1>
       <p class="lead">${d.lead}</p>
       <ul class="pg-chips">${s.tags[lang].map(x=>`<li>${x}</li>`).join('')}<li>${ICON.clock}<span>${d.time}</span></li></ul>
@@ -458,7 +457,7 @@ export function hubPage(lang){
     crumbLD(crumbsArr.map(([u,n])=>[n, u||path]))];
   const main = `<main id="main" class="page">
   ${crumbs(c, crumbsArr)}
-  <header class="pg-hero hub-hero"><div><p class="kicker">${COMPANY.name}</p><h1>${t('hub.h')}</h1></div><div><p class="lead">${t('hub.lead')}</p></div></header>
+  <header class="pg-hero hub-hero"><div><h1>${t('hub.h')}</h1></div></header>
   <ul class="hub-grid">${SERVICES.map((s,i)=>{ const d=s[lang]; return `<li><a class="hub-card glass" href="${c.href(svcPath(s,lang))}">
       <div class="hc-img">${srcTag(svcImgSrc(c, s), d.t)}<span class="ico">${ICON[s.icon]}</span><span class="hc-n">0${i+1}</span></div>
       <div class="hc-b"><h2>${d.t}</h2><p>${d.s}</p><span class="more">${t('svc.more')} ${ICON.arrow}</span></div></a></li>`; }).join('')}</ul>
@@ -477,7 +476,7 @@ export function blogIndex(lang){
     crumbLD(crumbsArr.map(([u,n])=>[n, u||path]))];
   const main = `<main id="main" class="page">
   ${crumbs(c, crumbsArr)}
-  <header class="pg-hero hub-hero"><div><p class="kicker">${COMPANY.name}</p><h1>${t('blog.h')}</h1></div><div><p class="lead">${t('bi.lead')}</p></div></header>
+  <header class="pg-hero hub-hero"><div><h1>${t('blog.h')}</h1></div></header>
   <div class="chips" id="chips" role="group">${blogChips(c, postsIn(lang))}</div>
   <div class="blog-grid" id="blogGrid">${blogGrid(c, postsIn(lang))}</div>
 </main>`;
@@ -530,7 +529,7 @@ export function workPage(lang){
     crumbLD(crumbsArr.map(([u,n])=>[n, u||path]))];
   const main = `<main id="main" class="page">
   ${crumbs(c, crumbsArr)}
-  <header class="pg-hero hub-hero"><div><p class="kicker">${COMPANY.name}</p><h1>${t('wk.h')}</h1></div><div><p class="lead">${t('wk.p')}</p></div></header>
+  <header class="pg-hero hub-hero"><div><h1>${t('wk.h')}</h1></div></header>
   ${workChips(c, WORK)}
   <ul class="wk-grid wall" id="wkWall">${WORK.map(w=>workCard(c, w)).join('')}</ul>
   <section class="cta-box glass"><div><h2>${t('pg.ctaH')}</h2><p>${t('pg.ctaP')}</p></div><a class="btn primary" href="${c.href(PATHS.home[lang])}#poptavka">${t('nav.cta')}</a></section>
@@ -566,7 +565,7 @@ function regionCards(c, list=REGIONS){
 }
 function areasSection(c){
   return `<section class="sec" id="oblasti" data-sec>
-    <div class="sec-head"><h2>${c.t('area.h')}</h2><p>${c.t('area.p')}</p></div>
+    <div class="sec-head"><h2>${c.t('area.h')}</h2></div>
     ${regionCards(c)}
   </section>`;
 }
@@ -580,7 +579,7 @@ export function areasPage(lang){
     crumbLD(crumbsArr.map(([u,n])=>[n, u||path]))];
   const main = `<main id="main" class="page">
   ${crumbs(c, crumbsArr)}
-  <header class="pg-hero hub-hero"><div><p class="kicker">${COMPANY.name}</p><h1>${t('area.h')}</h1></div><div><p class="lead">${t('area.p')}</p></div></header>
+  <header class="pg-hero hub-hero"><div><h1>${t('area.h')}</h1></div></header>
   ${regionCards(c)}
   <section class="pg-sec"><h2>${t('area.cities')}</h2>${REGIONS.map(r=>`<h3 class="area-sub"><a href="${c.href(regionPath(r,lang))}">${r[lang].t}</a></h3><ul class="city-chips">${r.cities.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`).join('')}<p class="mp-p">${t('area.travel')}</p></section>
   <section class="cta-box glass"><div><h2>${t('pg.ctaH')}</h2><p>${t('pg.ctaP')}</p></div><a class="btn primary" href="${c.href(PATHS.home[lang])}#poptavka">${t('nav.cta')}</a></section>
@@ -603,7 +602,6 @@ export function regionPage(r, lang){
   ${crumbs(c, crumbsArr)}
   <header class="pg-hero sv-hero">
     <div class="pg-hero-t">
-      <p class="kicker">${t('m.areas')} · ${d.t}</p>
       <h1>${d.h1}</h1>
       <p class="lead">${d.lead}</p>
       <ul class="pg-chips">${r.cities.slice(0,4).map(x=>`<li>${esc(x)}</li>`).join('')}${r.cities.length>4?`<li>+${r.cities.length-4}</li>`:''}</ul>
