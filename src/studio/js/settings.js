@@ -1,5 +1,5 @@
 /* SFX Studio — Nastavení: připojení služeb a oslovení. */
-import { $, esc, ic, toast, store } from './lib.js';
+import { $, esc, ic, toast, store, confirmBox } from './lib.js';
 import { CFG, GH, UM, SB, secrets } from './api.js';
 import { header, user, callName } from './main.js';
 
@@ -19,7 +19,31 @@ export async function render(main){
       <button class="btn" id="cSave" style="margin-top:12px">${ic('check')}<span>Uložit</span></button></section>
     <section class="card span-6"><div class="card-h"><h2>Poptávky · databáze</h2><span class="tag ${sb?'live':'draft'}">${sb?'Zapnuto':'Vypnuto'}</span></div>
       <p class="muted" style="margin:0">${sb ? 'Poptávky z formuláře se ukládají do databáze Supabase a zároveň chodí e-mailem.' : 'Poptávky zatím chodí jen e-mailem. Databázi zapne správce webu, pak se tu objeví přihlášení e-mailem a heslem pro celý tým.'}</p></section>
+    ${sb ? `<section class="card span-12"><div class="card-h"><h2>Tým · kdo má přístup</h2><span class="muted" id="tCount"></span></div>
+      <p class="muted" style="margin:0 0 14px">Do Studia se dostanou jen e-maily z tohoto seznamu. Nového člověka přidejte sem a pak mu v Supabase pošlete pozvánku (Authentication → Users → Invite user) na stejný e-mail.</p>
+      <ul class="timeline" id="tList"><li><div class="skel" style="height:30px;grid-column:1/-1"></div></li></ul>
+      <form id="tAdd" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><input class="in" type="email" name="em" placeholder="email@kolegy.cz" required style="flex:1;min-width:200px"><input class="in" name="nm" placeholder="Jméno" style="flex:0 1 180px"><button class="btn gold" type="submit">${ic('plus')}<span>Přidat do týmu</span></button></form></section>` : ''}
   </div>`;
+  if(sb){
+    const me = (await SB.user())?.email?.toLowerCase();
+    const drawTeam = async () => {
+      const c = await SB.client(); const {data, error} = await c.from('team').select('email,name,created_at').order('created_at');
+      if(error){ $('#tList').innerHTML = `<li><span class="muted" style="grid-column:1/-1">${esc(error.message)}</span></li>`; return; }
+      $('#tCount').textContent = `${data.length} ${data.length === 1 ? 'člověk' : data.length < 5 ? 'lidé' : 'lidí'}`;
+      $('#tList').innerHTML = data.map(m => `<li><span class="av" style="display:grid;place-items:center;font-weight:700;color:var(--gold)">${esc((m.name||m.email)[0].toUpperCase())}</span>
+        <div><b>${esc(m.name || m.email.split('@')[0])}${m.email === me ? ' <span class="muted">(vy)</span>' : ''}</b><small>${esc(m.email)}</small></div>
+        ${m.email === me ? '<span></span>' : `<button class="btn sm ghost" data-rm="${esc(m.email)}" aria-label="Odebrat ${esc(m.email)}">${ic('trash')}</button>`}</li>`).join('');
+    };
+    drawTeam();
+    $('#tAdd').addEventListener('submit', async e => { e.preventDefault(); const f = e.target, em = f.em.value.trim().toLowerCase();
+      const c = await SB.client(); const {error} = await c.from('team').insert({email:em, name:f.nm.value.trim() || null});
+      if(error) return toast(error.code === '23505' ? 'Tento e-mail už v týmu je.' : 'Nepřidáno: ' + esc(error.message), 'err');
+      f.reset(); drawTeam(); toast(`${esc(em)} je v týmu. Teď mu v Supabase pošlete pozvánku.`); });
+    $('#tList').addEventListener('click', async e => { const b = e.target.closest('[data-rm]'); if(!b) return;
+      if(!await confirmBox({title:'Odebrat z týmu?', text:`${b.dataset.rm} se už do Studia nepřihlásí.`, ok:'Odebrat', danger:true})) return;
+      const c = await SB.client(); const {error} = await c.from('team').delete().eq('email', b.dataset.rm);
+      if(error) return toast('Neodebráno: ' + esc(error.message), 'err'); drawTeam(); toast('Odebráno.'); });
+  }
   $('#uSave').addEventListener('click', async () => {
     const v = $('#uKey').value.trim(); const old = secrets.umami; secrets.umami = v;
     try{ await UM.active(); if(sb) await SB.saveSecret('umami_key', v); $('#uTag').className = 'tag live'; $('#uTag').textContent = 'Připojeno'; toast('Umami je připojené. Statistiky najdete v menu.'); }
