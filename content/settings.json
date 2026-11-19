@@ -1,11 +1,13 @@
 {
   "company": {
     "name": "SFX production",
-    "person": "Jiří Hromádka",
-    "email": "sfx-production@seznam.cz",
-    "phone": "",
+    "person": "Jiří Hromádka ",
+    "email": "info.sfxproduction@gmail.com",
+    "phone": "732 765 163",
     "founded": "",
-    "sameAs": []
+    "sameAs": [
+      "https://www.instagram.com/jiris_fx/"
+    ]
   },
   "verify": {
     "google": "",
@@ -13,27 +15,28 @@
     "seznam": ""
   },
   "billing": {
-    "owner": "",
+    "owner": "CLONECAMP s.r.o. ",
     "ico": "05042101",
     "dic": "",
-    "vat_payer": false,
-    "street": "",
-    "city": "",
-    "zip": "",
+    "vat_payer": true,
+    "street": "Jindřicha Plachty 176",
+    "city": "Mojžíř",
+    "zip": "403 31",
     "register": "",
     "bank": ""
   },
   "branch": {
-    "street": "",
-    "city": "",
-    "zip": "",
+    "street": "Velký Újezd 50b",
+    "city": "Býčkovice, Litoměřice ",
+    "zip": "412 01",
     "region": "Ústecký kraj",
     "note": ""
   },
   "areas": [
     "Ústecký kraj",
     "Liberecký kraj",
-    "Praha"
+    "Praha",
+    "Středočeský kraj"
   ],
   "analytics": {
     "provider": "umami",
