@@ -109,6 +109,10 @@ export const SB = {
   async session(){ if(!this.enabled()) return null; const c = await this.client(); return (await c.auth.getSession()).data.session; },
   async signIn(email, password){ const c = await this.client(); const {data, error} = await c.auth.signInWithPassword({email, password}); if(error) throw error; return data.session; },
   async signOut(){ if(sb) await sb.auth.signOut(); },
+  async resetPassword(email){ const c = await this.client(); const {error} = await c.auth.resetPasswordForEmail(email, {redirectTo: location.origin + location.pathname}); if(error) throw error; },
+  async setPassword(password){ const c = await this.client(); const {error} = await c.auth.updateUser({password}); if(error) throw error; },
+  async isTeam(){ const c = await this.client(); const {data, error} = await c.rpc('is_team'); return !error && data === true; },
+  async user(){ const c = await this.client(); return (await c.auth.getUser()).data.user; },
   async loadSecrets(){
     const c = await this.client(); const {data} = await c.from('studio_secrets').select('key,value');
     for(const r of data || []){ if(r.key === 'github_token' && r.value) secrets.gh = r.value; if(r.key === 'umami_key' && r.value) secrets.umami = r.value; }

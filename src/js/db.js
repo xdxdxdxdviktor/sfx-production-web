@@ -1,5 +1,6 @@
-/* Enquiry delivery: FormSubmit (one POST, the enquiry lands in the inbox as a table). */
-import { RUNTIME } from './config.js';
+/* Enquiry delivery: FormSubmit e-mail (the enquiry lands in the inbox as a table)
+   + a copy in the Supabase database for the SFX Studio enquiry board (when configured). */
+import { RUNTIME, SUPABASE } from './config.js';
 
 async function sendByEmail(rec){
   if(!RUNTIME.formEndpoint) throw new Error('no endpoint');
@@ -27,4 +28,22 @@ async function sendByEmail(rec){
   return {ref: rec.ref_code};
 }
 
-export const DB = { addInquiry: rec => sendByEmail(rec) };
+/* insert-only for visitors; reading is limited to the team by row-level security */
+async function saveToDb(rec){
+  if(!SUPABASE.url || !SUPABASE.anon) return false;
+  const row = {ref_code:rec.ref_code, name:rec.name, company:rec.company, email:rec.email, phone:rec.phone, call_time:rec.call_time,
+    services:rec.services || [], services_label:rec.services_label, date:rec.date, flexible:!!rec.flexible, location:rec.location || null,
+    budget:rec.budget, description:rec.description, lang:rec.lang};
+  const r = await fetch(SUPABASE.url + '/rest/v1/leads', {method:'POST', headers:{'Content-Type':'application/json', apikey:SUPABASE.anon, Authorization:'Bearer ' + SUPABASE.anon, Prefer:'return=minimal'}, body:JSON.stringify(row)});
+  return r.ok;
+}
+
+/* the enquiry counts as sent when either channel works; e-mail stays the primary one */
+async function addInquiry(rec){
+  const [mail, db] = await Promise.allSettled([sendByEmail(rec), saveToDb(rec)]);
+  if(mail.status === 'fulfilled') return mail.value;
+  if(db.status === 'fulfilled' && db.value === true) return {ref: rec.ref_code};
+  throw mail.reason;
+}
+
+export const DB = { addInquiry };

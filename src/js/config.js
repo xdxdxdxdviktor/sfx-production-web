@@ -43,7 +43,10 @@ export const VERIFY = Object.assign({ google: '', bing: '', seznam: '' }, SETTIN
    email to the address; after one click every enquiry arrives in that inbox. */
 /* Supabase: enquiries database + team login for SFX Studio (/studio/). The anon key is public by design;
    access is limited by row-level security in the database. Empty = enquiries go by e-mail only. */
-export const SUPABASE = { url: '', anon: '' };
+export const SUPABASE = {
+  url: 'https://lzwknppvweclbevaebai.supabase.co',
+  anon: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx6d2tucHB2d2VjbGJldmFlYmFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3MDc5NjEsImV4cCI6MjEwNjI4Mzk2MX0.7lQHuuslhoz57cjeE6YX2boX--x3vsvvP1YbBHVort4'
+};
 
 export const RUNTIME = {
   formEndpoint: 'https://formsubmit.co/ajax/' + COMPANY.email,

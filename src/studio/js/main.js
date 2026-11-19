@@ -49,9 +49,14 @@ function loginView(msg=''){
         <li>Klíč vložte sem. Zůstane uložený jen v tomto prohlížeči.</li></ol></details>`}
       <p class="err" role="alert">${esc(msg)}</p>
       <button class="btn gold" type="submit">${ic('key')}<span>Přihlásit se</span></button>
+      ${sb ? `<button class="btn ghost" type="button" id="forgot">Zapomenuté heslo</button>` : ''}
       <p class="help">Starší administrace: <a href="../admin/">Sveltia CMS</a> · <a href="../">Zpět na web</a></p>
     </form>
   </main>`;
+  $('#forgot') && $('#forgot').addEventListener('click', async () => {
+    const em = $('#lf').email.value.trim(); if(!em){ $('.err').textContent = 'Nejdřív vyplňte e-mail.'; $('#lf').email.focus(); return; }
+    try{ await SB.resetPassword(em); $('.err').style.color = 'var(--ok)'; $('.err').textContent = 'Poslali jsme vám e-mail s odkazem pro nové heslo.'; }
+    catch(err){ $('.err').textContent = 'Odeslání se nepovedlo: ' + err.message; } });
   $('#lf').addEventListener('submit', async e => {
     e.preventDefault(); const f = e.target, btn = $('button[type=submit]', f); btn.disabled = true; btn.innerHTML = '<span class="spin"></span><span>Ověřuji…</span>';
     try{
@@ -157,14 +162,54 @@ window.addEventListener('hashchange', route);
 window.addEventListener('beforeunload', e => { if(guard && guard.dirty && guard.dirty()){ e.preventDefault(); e.returnValue = ''; } });
 
 /* ---------- boot ---------- */
+/* full-screen card used for setting a password and connecting GitHub */
+function card(title, text, fields, btn, onSubmit, foot=''){
+  document.body.innerHTML = `<div class="atmo"></div><main class="login" style="grid-template-columns:1fr"><form id="cf">
+    <a class="brand" href="./"><img src="../assets/img/logo.webp" alt="SFX production"><span>Studio</span></a>
+    <h1>${title}</h1><p>${text}</p>${fields}<p class="err" role="alert"></p>
+    <button class="btn gold" type="submit">${ic('key')}<span>${btn}</span></button>${foot}</form></main>`;
+  $('#cf').addEventListener('submit', async e => { e.preventDefault(); const b = $('#cf button[type=submit]'); b.disabled = true;
+    try{ await onSubmit(e.target); }catch(err){ $('#cf .err').textContent = err.message; b.disabled = false; } });
+}
+function passwordView(kind){
+  card(kind === 'invite' ? 'Vítejte<br>v týmu.' : 'Nové<br>heslo.', 'Zvolte si heslo, kterým se budete do Studia přihlašovat.',
+    `<label class="field"><span>Heslo (aspoň 10 znaků)</span><input class="in" type="password" name="p1" autocomplete="new-password" minlength="10" required></label>
+     <label class="field"><span>Heslo znovu</span><input class="in" type="password" name="p2" autocomplete="new-password" minlength="10" required></label>`,
+    'Uložit heslo', async f => { if(f.p1.value !== f.p2.value) throw new Error('Hesla se neshodují.'); await SB.setPassword(f.p1.value); history.replaceState(null, '', location.pathname + '#/prehled'); boot(); });
+}
+function githubView(){
+  card('Připojte<br>GitHub.', 'Studio potřebuje jednou přístupový klíč k repozitáři webu. Uloží se do zabezpečené databáze a bude fungovat pro celý tým.',
+    `<label class="field"><span>Přístupový klíč GitHub</span><input class="in" type="password" name="t" autocomplete="off" placeholder="github_pat_…" required></label>
+     <details class="how"><summary>Kde klíč získám?</summary><ol>
+      <li>Na GitHubu otevřete <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener" style="color:var(--gold)">Fine-grained tokens</a>.</li>
+      <li>Repository access: <b>Only select repositories</b> → <b>${esc(CFG.repo)}</b>.</li>
+      <li>Permissions: <b>Contents: Read and write</b>, <b>Actions: Read-only</b>.</li></ol></details>`,
+    'Připojit', async f => { secrets.gh = f.t.value.trim();
+      try{ const r = await GH.repo(); if(r.permissions && !r.permissions.push) throw new Error('Klíč nemá právo zapisovat (Contents: Read and write).'); }
+      catch(e){ secrets.gh = ''; throw new Error(e.status === 401 ? 'Klíč je neplatný.' : e.message); }
+      await SB.saveSecret('github_token', secrets.gh); boot(); },
+    `<button class="btn ghost" type="button" onclick="document.getElementById('so').click()">Odhlásit se</button><button id="so" hidden></button>`);
+  $('#so').addEventListener('click', async () => { await SB.signOut(); loginView(); });
+}
+
 async function boot(){
-  if(SB.enabled()){ const s = await SB.session(); if(!s) return loginView(); if(!secrets.gh) await SB.loadSecrets().catch(()=>{}); }
+  if(SB.enabled()){
+    const link = /type=(invite|recovery|signup)/.exec(location.hash) || /type=(invite|recovery|signup)/.exec(location.search);
+    const err = /error_description=([^&]+)/.exec(location.hash);
+    await SB.client();
+    if(err){ history.replaceState(null, '', location.pathname); return loginView(decodeURIComponent(err[1].replace(/\+/g,' ')) + ' Požádejte o nový odkaz.'); }
+    if(link){ await new Promise(r => setTimeout(r, 400)); if(await SB.session()) return passwordView(link[1] === 'recovery' ? 'recovery' : 'invite'); }
+    const s = await SB.session(); if(!s) return loginView();
+    if(!(await SB.isTeam())){ await SB.signOut(); return loginView('Tento účet nemá do Studia přístup. Požádejte správce, ať vás přidá do týmu.'); }
+    if(!secrets.gh) await SB.loadSecrets().catch(()=>{});
+    if(!secrets.gh) return githubView();
+  }
   if(!secrets.gh) return loginView();
   try{
     const [me, repo] = await Promise.all([GH.me(), GH.repo()]);
     if(repo.permissions && !repo.permissions.push) throw Object.assign(new Error('Klíč nemá právo zapisovat do repozitáře. Zapněte Contents: Read and write.'), {status:403});
     Object.assign(user, {name: me.name || me.login, login: me.login, avatar: me.avatar_url});
-  }catch(e){ if(!SB.enabled()) secrets.gh = ''; return loginView(e.status===401 ? 'Klíč je neplatný nebo vypršel. Vložte nový.' : e.message); }
+  }catch(e){ secrets.gh = ''; if(SB.enabled()) return githubView(); return loginView(e.status===401 ? 'Klíč je neplatný nebo vypršel. Vložte nový.' : e.message); }
   shell(); route();
 }
 boot();
