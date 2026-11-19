@@ -21,8 +21,8 @@ export async function render(main){
       <section class="card span-4"><div class="card-h"><h2>Rychlé akce</h2></div>
         <div class="quick">
           <a href="#/blog/novy">${ic('plus')}<div><b>Nový článek</b><small>s náhledem a SEO</small></div></a>
-          <a href="../admin/#/collections/portfolio/new" target="_blank" rel="noopener">${ic('film')}<div><b>Nová ukázka</b><small>video do portfolia</small></div></a>
-          <a href="../admin/#/collections/services" target="_blank" rel="noopener">${ic('image')}<div><b>Fotky ke službám</b><small>galerie a texty</small></div></a>
+          <a href="#/obsah/portfolio/novy">${ic('film')}<div><b>Nová ukázka</b><small>video do portfolia</small></div></a>
+          <a href="#/obsah/services">${ic('image')}<div><b>Fotky ke službám</b><small>galerie a texty</small></div></a>
           <a href="${esc(CFG.site)}/" target="_blank" rel="noopener">${ic('globe')}<div><b>Otevřít web</b><small>živá verze</small></div></a>
         </div></section>
     </div>

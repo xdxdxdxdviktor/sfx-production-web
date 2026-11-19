@@ -5,12 +5,13 @@ import { CFG, GH, SB, secrets, deploys } from './api.js';
 const ROUTES = {
   prehled:   {t:'Přehled',    icon:'home',  load:() => import('./dashboard.js')},
   blog:      {t:'Blog',       icon:'pen',   load:() => import('./blog.js')},
+  obsah:     {t:'Obsah webu', icon:'film',  load:() => import('./content.js')},
   statistiky:{t:'Statistiky', icon:'chart', load:() => import('./stats.js')},
   poptavky:  {t:'Poptávky',   icon:'inbox', load:() => import('./leads.js')},
   nastaveni: {t:'Nastavení',  icon:'gear',  load:() => import('./settings.js')},
 };
 const CMS = [
-  ['film', 'Ukázky práce', 'portfolio'], ['image', 'Služby a fotky', 'services'], ['text', 'Texty webu', 'pages'], ['users', 'Reference', 'references']];
+  ['film', 'Ukázky práce', 'portfolio'], ['image', 'Služby', 'services'], ['home', 'Úvodní stránka', 'pages/home'], ['users', 'O nás', 'pages/about'], ['quote', 'Reference', 'references'], ['mail', 'Kontakty a fakturace', 'pages/settings']];
 export const user = {name:'', login:'', avatar:''};
 
 /* vocative for the greeting (Jiří → Jirko); can be overridden in Settings */
@@ -79,8 +80,8 @@ function shell(){
       <nav class="nav" id="nav">
         ${Object.entries(ROUTES).filter(([k])=>k!=='nastaveni').map(([k,r],i)=>`<a href="#/${k}" data-r="${k}">${ic(r.icon)}<span>${r.t}</span>${k==='poptavky'?'<span class="badge" id="leadBadge" hidden></span>':`<i>0${i+1}</i>`}</a>`).join('')}
         <div class="nav-sep"></div>
-        <div class="nav-label">Správa webu</div>
-        ${CMS.map(([i,t,c])=>`<a href="../admin/#/collections/${c}" target="_blank" rel="noopener">${ic(i)}<span>${t}</span>${ic('ext')}</a>`).join('')}
+        <div class="nav-label">Obsah webu</div>
+        ${CMS.map(([i,t,c])=>`<a href="#/obsah/${c}" data-c="${c}">${ic(i)}<span>${t}</span></a>`).join('')}
         <div class="nav-sep"></div>
         <a href="#/nastaveni" data-r="nastaveni">${ic('gear')}<span>Nastavení</span></a>
         <a href="${esc(CFG.site)}/" target="_blank" rel="noopener">${ic('globe')}<span>Otevřít web</span>${ic('ext')}</a>
@@ -99,7 +100,7 @@ function shell(){
   </div>
   <nav class="tabbar" id="tabbar" aria-label="Hlavní navigace">
     <a href="#/prehled" data-r="prehled">${ic('home')}<span>Přehled</span></a>
-    <a href="#/blog" data-r="blog">${ic('pen')}<span>Blog</span></a>
+    <a href="#/obsah" data-r="obsah">${ic('film')}<span>Obsah</span></a>
     <a href="#/blog/novy" class="fab" aria-label="Nový článek">${ic('plus')}</a>
     <a href="#/poptavky" data-r="poptavky">${ic('inbox')}<span>Poptávky</span><i class="tb-badge" id="tbBadge" hidden></i></a>
     <a href="#/statistiky" data-r="statistiky">${ic('chart')}<span>Statistiky</span></a>
@@ -125,8 +126,8 @@ function moreSheet(){
   d.innerHTML = `<div role="dialog" aria-modal="true" aria-label="Další volby"><span class="grab"></span>
     <div class="me" style="padding:0 0 14px">${user.avatar?`<img src="${esc(user.avatar)}" alt="">`:`<span class="av">${esc((user.name||'?')[0])}</span>`}<div><b>${esc(user.name||user.login)}</b><small>@${esc(user.login)}</small></div></div>
     ${p ? p.outerHTML.replace('id="dpill"','') : ''}
-    <div class="sheet-label">Správa webu</div>
-    <div class="sheet-grid">${CMS.map(([i,t,c])=>`<a href="../admin/#/collections/${c}" target="_blank" rel="noopener">${ic(i)}<span>${t}</span></a>`).join('')}</div>
+    <div class="sheet-label">Obsah webu</div>
+    <div class="sheet-grid"><a href="#/blog">${ic('pen')}<span>Blog</span></a>${CMS.map(([i,t,c])=>`<a href="#/obsah/${c}">${ic(i)}<span>${t}</span></a>`).join('')}<a href="#/statistiky">${ic('chart')}<span>Statistiky</span></a></div>
     <div class="sheet-list">
       <a href="#/nastaveni">${ic('gear')}<span>Nastavení</span></a>
       <a href="${esc(CFG.site)}/" target="_blank" rel="noopener">${ic('globe')}<span>Otevřít web</span>${ic('ext')}</a>
@@ -150,8 +151,11 @@ async function route(){
   guard = null;
   const [, name='prehled', ...rest] = (location.hash || '#/prehled').split('/');
   const r = ROUTES[name] || ROUTES.prehled;
-  $$('#nav a[data-r], #tabbar a[data-r]').forEach(a => a.classList.toggle('on', a.dataset.r === (ROUTES[name] ? name : 'prehled')));
-  document.body.classList.toggle('editing', name === 'blog' && rest.length > 0);
+  const tabName = name === 'blog' ? 'obsah' : name;
+  $$('#nav a[data-r]').forEach(a => a.classList.toggle('on', a.dataset.r === (ROUTES[name] ? name : 'prehled') && !(name === 'obsah' && rest[0])));
+  $$('#nav a[data-c]').forEach(a => a.classList.toggle('on', name === 'obsah' && rest.join('/').startsWith(a.dataset.c)));
+  $$('#tabbar a[data-r]').forEach(a => a.classList.toggle('on', a.dataset.r === (ROUTES[tabName] ? tabName : 'prehled')));
+  document.body.classList.toggle('editing', (name === 'blog' && rest.length > 0) || (name === 'obsah' && (rest.length > 1)));
   document.title = `${r.t} · SFX Studio`;
   if(cleanup){ try{ cleanup(); }catch(e){} cleanup = null; }
   const main = $('#main'); main.innerHTML = '';
