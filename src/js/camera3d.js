@@ -42,7 +42,7 @@ function _initCamera3D(canvas, logoUrl, hooks){
 
   /* ---- materials ---- */
   const M = {
-    body: new T.MeshStandardMaterial({color:0x050505, roughness:.38, metalness:.2, envMapIntensity:.3}),
+    body: new T.MeshStandardMaterial({color:0x060606, roughness:.46, metalness:.18, envMapIntensity:.28}),
     leather: new T.MeshStandardMaterial({color:0x050505, roughness:.9, metalness:0, envMapIntensity:.15, bumpMap:leather, bumpScale:.02}),
     barrel: new T.MeshStandardMaterial({color:0x090908, roughness:.32, metalness:.4, envMapIntensity:.35, side:T.DoubleSide}),
     rubber: new T.MeshStandardMaterial({side:T.DoubleSide, color:0x060606, roughness:.75, metalness:.1, envMapIntensity:.3, bumpMap:knurl, bumpScale:.04}),
@@ -55,56 +55,23 @@ function _initCamera3D(canvas, logoUrl, hooks){
   const rig = new T.Group(); scene.add(rig);
   const model = new T.Group(); rig.add(model);
 
-  /* ---- body ---- */
   function rrect(w,h,r){ const s=new T.Shape(); const x=-w/2,y=-h/2; s.moveTo(x+r,y); s.lineTo(x+w-r,y); s.quadraticCurveTo(x+w,y,x+w,y+r); s.lineTo(x+w,y+h-r); s.quadraticCurveTo(x+w,y+h,x+w-r,y+h); s.lineTo(x+r,y+h); s.quadraticCurveTo(x,y+h,x,y+h-r); s.lineTo(x,y+r); s.quadraticCurveTo(x,y,x+r,y); return s; }
-  const BD = 1.3;
-  const bodyGeo = new T.ExtrudeGeometry(rrect(3.5,2.2,.3), {depth:BD, bevelEnabled:true, bevelThickness:.09, bevelSize:.09, bevelSegments:5, curveSegments:14});
-  bodyGeo.translate(0,0,-BD/2);
-  const body = new T.Mesh(bodyGeo, M.body); model.add(body);
-  const FRONT = BD/2 + .09;
-
-  // leatherette band on the front
-  const band = new T.Mesh(new T.ExtrudeGeometry(rrect(3.46,1.2,.12),{depth:.02,bevelEnabled:false}), M.leather);
-  band.position.set(0,-.25,FRONT-.005); model.add(band);
-
-  // grip (viewer's left when facing front)
-  const gripGeo = new T.ExtrudeGeometry(rrect(.85,2.05,.36),{depth:.55,bevelEnabled:true,bevelThickness:.12,bevelSize:.1,bevelSegments:6,curveSegments:12});
-  const grip = new T.Mesh(gripGeo, M.leather); grip.position.set(-1.28,-.06,FRONT-.2); model.add(grip);
-
-  // viewfinder hump
-  const hs = new T.Shape(); hs.moveTo(-.85,0); hs.lineTo(.85,0); hs.lineTo(.5,.62); hs.lineTo(-.5,.62); hs.closePath();
-  const hump = new T.Mesh(new T.ExtrudeGeometry(hs,{depth:1.05,bevelEnabled:true,bevelThickness:.05,bevelSize:.05,bevelSegments:3}), M.body);
-  hump.position.set(.2,1.08,-.62); model.add(hump);
-  const shoe = new T.Mesh(new T.BoxGeometry(.62,.07,.5), M.gold); shoe.position.set(.2,1.74,-.1); model.add(shoe);
-
-  // dials + shutter
-  const dial = new T.Mesh(new T.CylinderGeometry(.34,.34,.2,48), M.rubber); dial.position.set(1.18,1.25,-.1); model.add(dial);
-  const dialCap = new T.Mesh(new T.CylinderGeometry(.3,.3,.03,48), M.gold); dialCap.position.set(1.18,1.36,-.1); model.add(dialCap);
-  const shutter = new T.Mesh(new T.CylinderGeometry(.17,.19,.1,40), M.gold); shutter.position.set(-1.28,1.22,.18); model.add(shutter);
-  const shutterRing = new T.Mesh(new T.CylinderGeometry(.25,.25,.06,40), M.barrel); shutterRing.position.set(-1.28,1.16,.18); model.add(shutterRing);
-
-  // brand badge with the logo
-  if(logoUrl){
-    new T.TextureLoader().load(logoUrl, tex=>{
-      tex.encoding = T.sRGBEncoding;
-      const badge = new T.Mesh(new T.PlaneGeometry(.95,.35), new T.MeshStandardMaterial({map:tex, transparent:true, color:0xe6cfa6, metalness:.85, roughness:.28, envMapIntensity:1.8}));
-      badge.position.set(1.12,.72,FRONT+.004); model.add(badge); dirty = 3;
-      hooks && hooks.ready && hooks.ready();
-    });
-  }
-
+  const steel = new T.MeshStandardMaterial({color:0xb9b6b0, roughness:.22, metalness:1, envMapIntensity:1.4});
+  const matte = new T.MeshStandardMaterial({color:0x070707, roughness:.5, metalness:.15, envMapIntensity:.35});
+  const glassBlack = new T.MeshPhysicalMaterial({color:0x020203, roughness:.06, metalness:.2, clearcoat:1, clearcoatRoughness:.03, envMapIntensity:1.4});
+  const red = new T.MeshStandardMaterial({color:0xc4221a, roughness:.35, metalness:.3, emissive:0x2a0402});
+  const LX = .2, LY = -.12, FRONT = .45;   // lens axis on the front face
   /* ---- lens ---- */
-  const LX = .2, LY = -.08;           // lens axis position on the front
   const lens = new T.Group(); lens.position.set(LX,LY,FRONT); model.add(lens);
   const cyl = (r1,r2,len,mat,seg=72)=>{ const g=new T.CylinderGeometry(r1,r2,len,seg,1,true); g.rotateX(Math.PI/2); g.translate(0,0,len/2); return new T.Mesh(g,mat); };
 
-  const mount = cyl(1.02,1.02,.12,M.gold); lens.add(mount);
-  const mountFace = new T.Mesh(new T.RingGeometry(.9,1.02,72), M.gold); mountFace.position.z=.121; lens.add(mountFace);
+  const mount = cyl(1.02,1.02,.12,steel); lens.add(mount);
+  const mountFace = new T.Mesh(new T.RingGeometry(.9,1.02,72), steel); mountFace.position.z=.121; lens.add(mountFace);
   const s0cap = new T.Mesh(new T.RingGeometry(.87,.96,72), M.barrel);
   const s0 = new T.Group(); lens.add(s0); s0.position.z=.12;
   s0.add(cyl(.96,.96,1.0,M.barrel));
   const zoomRing = cyl(.99,.99,.55,M.rubber); zoomRing.position.z=.2; s0.add(zoomRing);
-  const goldStripe = new T.Mesh(new T.TorusGeometry(.965,.014,12,96), M.goldLine); goldStripe.position.z=.94; s0.add(goldStripe);
+  const goldStripe = new T.Mesh(new T.TorusGeometry(.966,.02,12,96), red); goldStripe.position.z=.92; s0.add(goldStripe);
   s0cap.position.z=1.0; s0.add(s0cap);
   const s1cap = new T.Mesh(new T.RingGeometry(.79,.87,72), M.barrel);
 
@@ -122,7 +89,7 @@ function _initCamera3D(canvas, logoUrl, hooks){
   const tc = document.createElement('canvas'); tc.width = tc.height = 1024; const tg = tc.getContext('2d');
   tg.fillStyle='#0f0d0c'; tg.fillRect(0,0,1024,1024);
   tg.translate(512,512); tg.fillStyle='#e9dcc4'; tg.font='500 44px Archivo, Helvetica, sans-serif'; tg.textAlign='center';
-  const txt = 'SFX PRODUCTION   LENS   24–200 mm   1:2.8   ⌀ 82 mm   ';
+  const txt = 'SFX PRODUCTION   ZOOM LENS   24–105 mm   1:4   ⌀ 77 mm   ';
   const R = 430, step = (Math.PI*2)/txt.length;
   for(let i=0;i<txt.length;i++){ tg.save(); tg.rotate(i*step); tg.fillText(txt[i],0,-R+20); tg.restore(); }
   const ringTex = new T.CanvasTexture(tc); ringTex.encoding = T.sRGBEncoding; ringTex.anisotropy = 8;
@@ -177,7 +144,7 @@ function _initCamera3D(canvas, logoUrl, hooks){
 
   // printed focal scale band (s0, between zoom ring and gold stripe)
   const zoomScale = tex(2048,96,(g,w,h)=>{ g.fillStyle='#0c0b0a'; g.fillRect(0,0,w,h); g.fillStyle='#ece3d2'; g.font=`600 50px ${FONTS}`; g.textAlign='center'; g.textBaseline='middle';
-    ['24','35','50','70','105','135','200'].forEach((n,i)=>g.fillText(n, 430+i*92, h/2)); g.fillStyle='#d8be92'; g.fillRect(380,8,4,14); });
+    ['24','35','50','70','105'].forEach((n,i)=>g.fillText(n, 440+i*110, h/2)); g.fillStyle='#d8be92'; g.fillRect(380,8,4,14); });
   const zb = cyl(.962,.962,.16,printMat(zoomScale)); zb.position.z=.77; s0.add(zb);
   // focus distance band on s1
   const focusScale = tex(2048,96,(g,w,h)=>{ g.fillStyle='#0c0b0a'; g.fillRect(0,0,w,h); g.fillStyle='#ece3d2'; g.font=`500 44px ${FONTS}`; g.textAlign='center'; g.textBaseline='middle';
@@ -194,42 +161,115 @@ function _initCamera3D(canvas, logoUrl, hooks){
   const retain = new T.Mesh(new T.TorusGeometry(.605,.018,10,96), dark); retain.position.z=.86; s2.add(retain);
   const thread = new T.Mesh(new T.TorusGeometry(.835,.008,8,96), M.barrel); thread.position.z=.96; s2.add(thread);
 
-  // body seam + strap lugs
-  const seam = new T.Mesh(new T.BoxGeometry(3.52,.016,.012), dark); seam.position.set(0,.6,FRONT+.004); model.add(seam);
+  /* ---- body (proportions after a full-frame mirrorless pro body: 138 × 98 × 88 mm, 1 unit ≈ 40 mm) ---- */
+  const add = (geo, mat, x=0, y=0, z=0, rx=0, ry=0, rz=0) => { const m = new T.Mesh(geo, mat); m.position.set(x,y,z); m.rotation.set(rx,ry,rz); model.add(m); return m; };
+  // move front-half vertices back in proportion to height (sloped faces of the viewfinder housing / grip top)
+  function shear(geo, zMid, y0, k){ const p = geo.attributes.position; for(let i=0;i<p.count;i++){ const z=p.getZ(i), y=p.getY(i); if(z>zMid) p.setZ(i, z - Math.max(0,y-y0)*k); } p.needsUpdate = true; geo.computeVertexNormals(); return geo; }
+
+  // main shell: x −1.75…1.75, y −1.15…0.85, z −0.62…0.45
+  const shellGeo = new T.ExtrudeGeometry(rrect(3.3,1.8,.26), {depth:.87, bevelEnabled:true, bevelThickness:.1, bevelSize:.1, bevelSegments:6, curveSegments:16});
+  shellGeo.translate(0,-.15,-.52); add(shellGeo, M.body);
+
+  // rubberised front panel (everything under the top plate)
+  add(new T.ExtrudeGeometry(rrect(3.42,1.48,.16),{depth:.02,bevelEnabled:false,curveSegments:10}), M.leather, 0, -.38, FRONT-.012);
+
+  // viewfinder housing: faceted trapezoid with a raked front, sits over the lens axis and overhangs the back
+  const hs = new T.Shape(); hs.moveTo(-.74,0); hs.lineTo(.74,0); hs.lineTo(.4,.55); hs.lineTo(-.4,.55); hs.closePath();
+  const humpGeo = new T.ExtrudeGeometry(hs, {depth:1.03, bevelEnabled:true, bevelThickness:.05, bevelSize:.05, bevelSegments:4});
+  humpGeo.translate(0,0,-.72); shear(humpGeo, -.2, 0, .62);
+  add(humpGeo, new T.MeshStandardMaterial({color:0x060606, roughness:.58, metalness:.12, envMapIntensity:.18}), LX, .8, 0);
+  // shoulder fillets so the housing grows out of the top plate
+  [-1,1].forEach(s=>{ const f = add(new T.CylinderGeometry(.07,.07,1.0,12,1,false,0,Math.PI), M.body, LX+s*.8, .86, -.18, Math.PI/2, 0, 0); f.scale.set(1,1,.6); });
+  // eyecup + eyepiece
+  add(new T.ExtrudeGeometry(rrect(.9,.66,.2),{depth:.22,bevelEnabled:true,bevelThickness:.04,bevelSize:.04,bevelSegments:4}), M.leather, LX, 1.08, -1.0);
+  add(new T.PlaneGeometry(.62,.4), glassBlack, LX, 1.08, -1.045, 0, Math.PI, 0);
+  // multi-function shoe
+  add(new T.BoxGeometry(.66,.03,.62), steel, LX, 1.43, -.32);
+  [-.27,.27].forEach(dx=>add(new T.BoxGeometry(.08,.07,.6), steel, LX+dx, 1.46, -.32));
+  add(new T.BoxGeometry(.4,.012,.3), matte, LX, 1.452, -.3);
+
+  // grip: side profile extruded across x, deep and rounded, with a finger recess under the shutter
+  const gs = new T.Shape();
+  gs.moveTo(-.36,-1.01); gs.lineTo(.62,-1.01);
+  gs.bezierCurveTo(1.0,-1.01, 1.14,-.72, 1.15,-.35);
+  gs.bezierCurveTo(1.16,-.05, 1.02,.12, 1.0,.3);
+  gs.bezierCurveTo(.99,.44, 1.02,.52, .9,.6);
+  gs.lineTo(.42,.71); gs.lineTo(-.36,.71); gs.closePath();
+  const gripGeo = new T.ExtrudeGeometry(gs, {depth:.66, bevelEnabled:true, bevelThickness:.15, bevelSize:.14, bevelSegments:8, curveSegments:24});
+  gripGeo.rotateY(-Math.PI/2);
+  const grip = add(gripGeo, M.leather, -.86, 0, 0);
+  // smooth top cap of the grip where the shutter sits
+  const capS = new T.Shape(); capS.moveTo(-.3,.62); capS.lineTo(.42,.62); capS.lineTo(.92,.52); capS.bezierCurveTo(1.05,.48,1.06,.62,.98,.7); capS.lineTo(.46,.86); capS.lineTo(-.3,.86); capS.closePath();
+  const capGeo = new T.ExtrudeGeometry(capS, {depth:.66, bevelEnabled:true, bevelThickness:.15, bevelSize:.06, bevelSegments:6, curveSegments:12});
+  capGeo.rotateY(-Math.PI/2); add(capGeo, M.body, -.86, 0, 0);
+
+  // shutter button on the raked front of the grip, main dial right behind it
+  const SX = -1.33;
+  add(new T.CylinderGeometry(.2,.22,.06,40), matte, SX, .86, .86, -.22, 0, 0);
+  add(new T.CylinderGeometry(.15,.16,.07,40), steel, SX, .9, .87, -.22, 0, 0);
+  add(new T.CylinderGeometry(.135,.14,.03,40), M.body, SX, .94, .875, -.22, 0, 0);
+  const mainDial = add(new T.CylinderGeometry(.28,.28,.11,56), M.rubber, SX, .9, .42); mainDial.material = M.rubber;
+  add(new T.CylinderGeometry(.24,.24,.115,40), matte, SX, .9, .42);
+  // M-Fn / ISO / lamp buttons behind the main dial
+  [[-1.58,.12],[-1.34,.06],[-1.1,.02]].forEach(([x,z])=>add(new T.CylinderGeometry(.065,.07,.05,24), matte, x, .97, z));
+  // top LCD panel
+  const lcdTex = tex(512,320,(g,w,h)=>{ g.fillStyle='#0b0d0c'; g.fillRect(0,0,w,h); g.fillStyle='rgba(220,232,224,.85)'; g.font=`700 64px ${FONTS}`; g.textBaseline='middle';
+    g.fillText('1/250',28,80); g.fillText('F4.0',300,80); g.font=`600 46px ${FONTS}`; g.fillText('ISO 400',28,180); g.fillText('[ 999 ]',300,250); g.fillRect(28,236,200,6); });
+  add(new T.PlaneGeometry(.5,.32), new T.MeshPhysicalMaterial({map:lcdTex, roughness:.08, clearcoat:1, envMapIntensity:.8}), -1.02, .956, -.2, -Math.PI/2, 0, 0);
+  add(new T.BoxGeometry(.58,.02,.4), M.body, -1.02, .945, -.2);
+  // rear top dial with MODE button
+  add(new T.CylinderGeometry(.27,.27,.1,56), M.rubber, -1.38, .93, -.42);
+  add(new T.CylinderGeometry(.13,.13,.12,32), matte, -1.38, .935, -.42);
+  // power switch on the top left
+  add(new T.CylinderGeometry(.17,.17,.06,40), matte, 1.36, .97, -.22);
+  add(new T.BoxGeometry(.28,.05,.08), steel, 1.43, 1.0, -.15, 0, -.5, 0);
+  const onoff = tex(256,128,(g,w,h)=>{ g.fillStyle='rgba(236,227,210,.9)'; g.font=`700 40px ${FONTS}`; g.textAlign='center'; g.fillText('ON',60,80); g.fillText('OFF',190,80); });
+  add(new T.PlaneGeometry(.42,.2), new T.MeshBasicMaterial({map:onoff, transparent:true}), 1.36, .942, .08, -Math.PI/2, 0, 0);
+
+  // lens mount: raised boss, polished bayonet ring and red index dot
+  add(new T.CylinderGeometry(1.12,1.14,.06,96), M.body, LX, LY, FRONT+.03, Math.PI/2, 0, 0);
+  const dot = add(new T.CircleGeometry(.035,20), red, LX + Math.cos(1.25)*1.08, LY + Math.sin(1.25)*1.08, FRONT+.062);
+  // lens release button + depth-of-field button
+  add(new T.CylinderGeometry(.13,.13,.08,40), matte, 1.45, -.42, FRONT+.03, Math.PI/2, 0, 0);
+  add(new T.TorusGeometry(.135,.012,8,40), steel, 1.45, -.42, FRONT+.07);
+  add(new T.CylinderGeometry(.07,.07,.06,24), matte, -.8, -.62, FRONT+.03, Math.PI/2, 0, 0);
+  // AF-assist / self-timer lamp near the top of the grip
+  add(new T.CylinderGeometry(.07,.07,.04,32), new T.MeshPhysicalMaterial({color:0x3a0d06, roughness:.08, clearcoat:1, envMapIntensity:2}), -.82, .52, FRONT+.03, Math.PI/2, 0, 0);
+  // stereo microphone holes either side of the viewfinder housing
+  [-1,1].forEach(s=>{ for(let i=0;i<3;i++) for(let j=0;j<2;j++) add(new T.CircleGeometry(.014,8), matte, LX+s*(.66+i*.045), .74-j*.045, FRONT+.002); });
+
+  // brand on the raked front of the viewfinder housing
+  if(logoUrl){
+    new T.TextureLoader().load(logoUrl, t=>{
+      t.encoding = T.sRGBEncoding;
+      add(new T.PlaneGeometry(.66,.24), new T.MeshStandardMaterial({map:t, transparent:true, color:0xe6cfa6, metalness:.85, roughness:.28, envMapIntensity:1.8}), LX, 1.06, .215, -Math.atan(.62), 0, 0);
+      dirty = 3; hooks && hooks.ready && hooks.ready();
+    });
+  }
+  // model badge, front lower right
+  const badge = tex(512,96,(g,w,h)=>{ g.fillStyle='#e9dcc4'; g.font=`700 58px ${FONTS}`; g.textAlign='right'; g.textBaseline='middle'; g.fillText('SFX  R5', w-10, h/2); });
+  add(new T.PlaneGeometry(.62,.115), new T.MeshStandardMaterial({map:badge, transparent:true, metalness:.7, roughness:.3, envMapIntensity:1.4}), 1.32, .6, FRONT+.003);
+
+  // strap lugs
   [-1,1].forEach(sx=>{
-    const blk = new T.Mesh(new T.BoxGeometry(.08,.24,.3), M.body); blk.position.set(sx*1.87,.78,0); model.add(blk);
-    const lug = new T.Mesh(new T.TorusGeometry(.1,.024,10,32), M.gold); lug.rotation.y=Math.PI/2; lug.position.set(sx*1.93,.78,0); model.add(lug);
+    add(new T.BoxGeometry(.1,.26,.34), M.body, sx*1.8, .62, -.12);
+    add(new T.TorusGeometry(.1,.026,10,32), steel, sx*1.88, .62, -.12, 0, Math.PI/2, 0);
   });
-  // port door on the right side (faces the viewer in profile)
-  const door = new T.Mesh(new T.ExtrudeGeometry(rrect(.9,1.0,.12),{depth:.025,bevelEnabled:false}), M.leather);
-  door.rotation.y=Math.PI/2; door.position.set(1.845,-.2,-.05); model.add(door);
-  const portTex = tex(512,256,(g,w,h)=>{ g.clearRect(0,0,w,h); g.fillStyle='rgba(236,227,210,.75)'; g.font=`500 40px ${FONTS}`; g.textAlign='left'; g.textBaseline='middle';
-    [['MIC',50],['HP',110],['HDMI',170],['USB-C',230]].forEach(([n,y])=>{ g.fillText(n,30,y-20); }); });
-  const portLbl = new T.Mesh(new T.PlaneGeometry(.55,.28), new T.MeshBasicMaterial({map:portTex, transparent:true, opacity:.8}));
-  portLbl.rotation.y=Math.PI/2; portLbl.position.set(1.874,-.05,-.12); model.add(portLbl);
+  // left side (faces the viewer in profile): two rubber port doors with labels
+  [[.25,.5,.5],[-.48,.8,.72]].forEach(([y,h,w])=>add(new T.ExtrudeGeometry(rrect(w,h,.1),{depth:.03,bevelEnabled:true,bevelThickness:.01,bevelSize:.01,bevelSegments:2}), M.leather, 1.84, y, -.1, 0, Math.PI/2, 0));
+  const portTex = tex(512,512,(g,w,h)=>{ g.clearRect(0,0,w,h); g.fillStyle='rgba(236,227,210,.75)'; g.font=`600 46px ${FONTS}`; g.textBaseline='middle';
+    [['MIC',60],['HP',150],['HDMI',300],['USB-C',420]].forEach(([n,y])=>g.fillText(n,40,y)); });
+  add(new T.PlaneGeometry(.5,.5), new T.MeshBasicMaterial({map:portTex, transparent:true, opacity:.85}), 1.885, -.1, .05, 0, Math.PI/2, 0);
+  // card door on the grip side
+  add(new T.ExtrudeGeometry(rrect(.7,1.3,.12),{depth:.02,bevelEnabled:false}), M.body, -1.9, -.2, -.25, 0, -Math.PI/2, 0);
 
-  // front: AF-assist lamp, lens release button, front dial
-  const lamp = new T.Mesh(new T.CylinderGeometry(.075,.075,.04,32), new T.MeshPhysicalMaterial({color:0x3a0d06, roughness:.08, clearcoat:1, envMapIntensity:2}));
-  lamp.rotation.x=Math.PI/2; lamp.position.set(-.72,.78,FRONT+.02); model.add(lamp);
-  const rel = new T.Mesh(new T.CylinderGeometry(.12,.12,.07,40), M.barrel); rel.rotation.x=Math.PI/2; rel.position.set(1.42,-.62,FRONT+.03); model.add(rel);
-  const relRing = new T.Mesh(new T.TorusGeometry(.13,.012,8,40), M.gold); relRing.position.set(1.42,-.62,FRONT+.06); model.add(relRing);
-  const fdial = new T.Mesh(new T.CylinderGeometry(.21,.21,.1,48), M.rubber); fdial.position.set(-1.3,1.02,FRONT+.3); model.add(fdial);
-
-  // top: engraved mode dial face, rear dial, shoe rails, power lever
-  const modeTex = tex(512,512,(g,w,h)=>{ g.fillStyle='#0d0c0b'; g.beginPath(); g.arc(256,256,256,0,Math.PI*2); g.fill();
-    g.translate(256,256); g.fillStyle='#ece3d2'; g.font=`600 54px ${FONTS}`; g.textAlign='center'; g.textBaseline='middle';
-    ['M','A','S','P','C1','C2','AUTO'].forEach((n,i)=>{ g.save(); g.rotate(-Math.PI/2+i*Math.PI*2/7); g.translate(170,0); g.rotate(Math.PI/2); g.fillText(n,0,0); g.restore(); });
-    g.fillStyle='#d8be92'; g.beginPath(); g.arc(0,0,40,0,Math.PI*2); g.fill(); });
-  const modeFace = new T.Mesh(new T.CircleGeometry(.31,48), printMat(modeTex)); modeFace.rotation.x=-Math.PI/2; modeFace.position.set(1.18,1.385,-.1); model.add(modeFace);
-  const rdial = new T.Mesh(new T.CylinderGeometry(.2,.2,.09,48), M.rubber); rdial.position.set(1.3,1.2,-.55); model.add(rdial);
-  [-.28,.28].forEach(dz=>{ const r=new T.Mesh(new T.BoxGeometry(.62,.035,.05), M.gold); r.position.set(.2,1.79,-.1+dz*.8); model.add(r); });
-  const lever = new T.Mesh(new T.BoxGeometry(.2,.05,.08), M.gold); lever.position.set(-1.05,1.16,.28); lever.rotation.y=.5; model.add(lever);
-  // "production" on the viewfinder hump
-  const prodTex = tex(1024,128,(g,w,h)=>{ g.clearRect(0,0,w,h); g.fillStyle='#d8be92'; g.font=`400 70px ${FONTS}`; g.textAlign='center'; g.textBaseline='middle';
-    const word='production'; const sp=78; word.split('').forEach((ch,i)=>g.fillText(ch, w/2+(i-(word.length-1)/2)*sp, h/2)); });
-  const prod = new T.Mesh(new T.PlaneGeometry(.95,.12), new T.MeshStandardMaterial({map:prodTex, transparent:true, metalness:.8, roughness:.3, envMapIntensity:1.5}));
-  prod.position.set(.2,1.3,.485); model.add(prod);
-
+  // back: vari-angle screen, joystick, AF-ON, rear wheel
+  add(new T.ExtrudeGeometry(rrect(2.1,1.42,.1),{depth:.1,bevelEnabled:true,bevelThickness:.02,bevelSize:.02,bevelSegments:2}), matte, .22, -.22, -.74);
+  add(new T.PlaneGeometry(1.9,1.25), glassBlack, .22, -.22, -.765, 0, Math.PI, 0);
+  add(new T.CylinderGeometry(.34,.34,.08,56), M.rubber, -1.3, -.3, -.66, Math.PI/2, 0, 0);
+  add(new T.CylinderGeometry(.1,.1,.1,24), matte, -1.3, -.3, -.66, Math.PI/2, 0, 0);
+  add(new T.CylinderGeometry(.08,.09,.1,24), matte, -1.3, .32, -.66, Math.PI/2, 0, 0);
+  add(new T.CylinderGeometry(.12,.12,.06,24), matte, -1.45, .62, -.65, Math.PI/2, 0, 0);
   /* ---- lights ---- */
   scene.add(new T.AmbientLight(0xffffff,.04));
   const key = new T.DirectionalLight(0xfff1dc, .9); key.position.set(-4,5,6); scene.add(key);
@@ -312,7 +352,9 @@ function _initCamera3D(canvas, logoUrl, hooks){
   return {
     setProgress(p){ P = p; },
     setRunning(v){ running = v; if(v) dirty = 3; },
-    snap(p){ P=p; cur = targetFor(p); apply(cur); renderer.render(scene,cam); hooks && hooks.frame && hooks.frame(cur); }
+    snap(p){ P=p; cur = targetFor(p); apply(cur); renderer.render(scene,cam); hooks && hooks.frame && hooks.frame(cur); },
+    /* still image of a pose (used to render the fallback poster) */
+    shot(p, ry, rx){ running=false; const t=targetFor(p); if(ry!=null) t.ry=ry; if(rx!=null) t.rx=rx; apply(t); renderer.render(scene,cam); return canvas.toDataURL('image/png'); }
   };
 }
 

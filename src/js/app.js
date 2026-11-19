@@ -95,10 +95,10 @@ if(isHome){
 function initHero(){
   const hasGsap = !!(window.gsap && window.ScrollTrigger);
   if(hasGsap) gsap.registerPlugin(ScrollTrigger);
-  const FSTOPS = [22,16,11,8,5.6,4,2.8];
+  const FSTOPS = [22,16,11,8,5.6,4];
   let cam = null, heroP = 0, lastK = -1;
   const shutter = $('#shutter');
-  const frame = c => { $('#hudMm').textContent = Math.round(24+176*Math.min(1,c.e1*.5+c.e2*.5))+' mm'; $('#hudF').textContent = 'f/'+FSTOPS[Math.round(c.ap*(FSTOPS.length-1))]; };
+  const frame = c => { $('#hudMm').textContent = Math.round(24+81*Math.min(1,c.e1*.5+c.e2*.5))+' mm'; $('#hudF').textContent = 'f/'+FSTOPS[Math.round(c.ap*(FSTOPS.length-1))]; };
   function drawShutter(k){
     if(Math.abs(k-lastK)<.004) return; lastK=k;
     if(k<=0){ shutter.innerHTML=''; return; }
@@ -131,7 +131,7 @@ function initHero(){
   }).catch(()=>status(false));
   /* phones on data saver or low memory keep the still image */
   const conn = navigator.connection || {};
-  const lite = conn.saveData || /2g|3g/.test(conn.effectiveType||'') || (innerWidth < 820 && ((navigator.deviceMemory||4) <= 4 || (navigator.hardwareConcurrency||4) <= 4));
+  const lite = conn.saveData || /2g/.test(conn.effectiveType||'') || (innerWidth < 820 && (/3g/.test(conn.effectiveType||'') || (navigator.deviceMemory||4) <= 4 || (navigator.hardwareConcurrency||4) <= 4));
   if(!lite) (window.requestIdleCallback ? requestIdleCallback(start, {timeout:1500}) : setTimeout(start, 400));
   else status(false);
 }

@@ -56,7 +56,7 @@ function analyticsTag(){
   const id = esc(String(ANALYTICS.id||'').trim()); if(!id) return '';
   switch(ANALYTICS.provider){
     case 'plausible': return `<script defer data-domain="${id}" src="https://plausible.io/js/script.tagged-events.js"></script><script>window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)}</script>`;
-    case 'umami': return `<script defer src="https://cloud.umami.is/script.js" data-website-id="${id}"></script>`;
+    case 'umami': return `<script defer src="https://cloud.umami.is/script.js" data-website-id="${id}" data-domains="${new URL(SITE).hostname}"></script>`;
     case 'goatcounter': return `<script data-goatcounter="https://${id}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>`;
     case 'cloudflare': return `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"${id}"}'></script>`;
     default: return '';
@@ -219,7 +219,7 @@ export function homePage(lang){
   <span id="top"></span>
   <section class="hero" id="hero" data-sec>
     <div class="hero-stage">
-      <img class="cam-poster" id="camPoster" src="${c.asset('img/camera-poster.webp')}" alt="" width="655" height="515" decoding="async" fetchpriority="high">
+      <img class="cam-poster" id="camPoster" src="${c.asset('img/camera-poster.webp')}" alt="" width="655" height="480" decoding="async" fetchpriority="high">
       <canvas id="cam3d" aria-hidden="true"></canvas>
       <div class="hero-copy" id="heroCopy">
         <p class="kicker">${esc(H.kicker)}</p>
