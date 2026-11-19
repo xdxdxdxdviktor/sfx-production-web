@@ -46,7 +46,7 @@ const regionLangFields = [
   {name:'faq', label:'Časté dotazy', widget:'list', required:false, fields:[{name:'q', label:'Otázka', widget:'string'}, {name:'a', label:'Odpověď', widget:'text'}]}];
 
 const homeLangFields = [
-  {name:'kicker', label:'Řádek nad nadpisem', widget:'string'},
+  {name:'kicker', label:'Řádek nad nadpisem (prázdné = skrytý)', widget:'string', required:false},
   {name:'h1', label:'Hlavní nadpis (nový řádek = zalomení)', widget:'text'},
   {name:'sub', label:'Text pod nadpisem', widget:'text'},
   {name:'reel_h', label:'Nadpis showreelu', widget:'string'},

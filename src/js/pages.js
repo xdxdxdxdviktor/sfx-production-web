@@ -222,7 +222,7 @@ export function homePage(lang){
       <img class="cam-poster" id="camPoster" src="${c.asset('img/camera-poster.webp')}" alt="" width="655" height="480" decoding="async" fetchpriority="high">
       <canvas id="cam3d" aria-hidden="true"></canvas>
       <div class="hero-copy" id="heroCopy">
-        <p class="kicker">${esc(H.kicker)}</p>
+        ${H.kicker ? `<p class="kicker">${esc(H.kicker)}</p>` : ''}
         <h1>${esc(H.h1).replace(/\n/g,'<br>')}</h1>
         <p class="hero-sub">${esc(H.sub)}</p>
         <div class="btns"><a class="btn primary" href="#poptavka">${t('hero.cta1')}</a><a class="btn glass" href="#sluzby">${t('hero.cta2')}</a></div>
