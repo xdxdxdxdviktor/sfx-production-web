@@ -69,3 +69,13 @@ Fotka nahraná v administraci má přednost. Bez ní se použije `brand/jiri-hro
 ## Ochrana před spamem
 
 Formulář má skryté pole proti robotům a odmítne odeslání do 4 sekund od začátku vyplňování. Dál blokuje popis s víc než třemi odkazy a opakované odeslání do minuty a FormSubmit filtruje typická spamová slova. Když spam i tak začne chodit, jde doplnit Cloudflare Turnstile.
+
+## SFX Studio (`/studio/`)
+
+Vlastní administrace týmu v designu SFX: přehled, blog s náhledem a SEO kontrolou, statistiky z Umami a poptávky.
+
+- **Přihlášení:** přístupový klíč GitHub (fine-grained, jen tento repozitář, *Contents: Read and write* + *Actions: Read-only*). Klíč zůstává jen v prohlížeči.
+- **Blog:** uložení = jeden commit (článek + nahrané fotky převedené na WebP), web se sám nasadí a Studio ukáže, kdy je článek venku.
+- **Statistiky:** v Nastavení vložte API klíč z Umami (cloud.umami.is → Settings → API keys). Klíč zůstává jen v prohlížeči.
+- **Poptávky:** po zapnutí Supabase (`SUPABASE` v `src/js/config.js`) se ukládají do databáze a ve Studiu je tabule se stavy, poznámkami a přiřazením.
+- Fotky ke službám, ukázky práce, texty a reference se zatím upravují ve Sveltia CMS (`/admin/`), Studio na ně odkazuje.

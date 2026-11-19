@@ -16,7 +16,7 @@ const OGCACHE = path.join(ROOT, '.og-cache');
 
 /* 1) content → generated JS modules (must run before the site modules are imported) */
 const gen = generate(ROOT);
-const { SITE, COMPANY, INDEXABLE, GITHUB, CUSTOM_DOMAIN } = await import('./src/js/config.js');
+const { SITE, COMPANY, INDEXABLE, GITHUB, CUSTOM_DOMAIN, ANALYTICS, SUPABASE } = await import('./src/js/config.js');
 const { I18N } = await import('./src/js/i18n.js');
 const { SERVICES } = await import('./src/js/services.js');
 const { POSTS } = await import('./src/js/posts.js');
@@ -105,6 +105,31 @@ write('admin/index.html', `<!doctype html>
 write('admin/config.yml', '# Generated from src/admin/cms-config.mjs (YAML is a superset of JSON).\n' +
   JSON.stringify(cmsConfig({repo:GITHUB.repo, branch:GITHUB.branch, site:SITE}), null, 2) + '\n');
 
+/* 5b) SFX Studio – the team's own admin panel (blog, statistics, enquiries) */
+copyDir(path.join(SRC,'studio'), path.join(OUT,'studio'));
+const studioV = hash(fs.readdirSync(path.join(SRC,'studio','js')).map(f=>fs.readFileSync(path.join(SRC,'studio','js',f))).concat(fs.readFileSync(path.join(SRC,'studio','studio.css'))).join(''));
+const studioCfg = {repo:GITHUB.repo, branch:GITHUB.branch, site:SITE, umamiWebsite: ANALYTICS.provider==='umami' ? ANALYTICS.id : '', supabase: SUPABASE};
+write('studio/index.html', `<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#080706">
+<title>SFX Studio</title>
+<link rel="icon" href="../assets/img/favicon.png" type="image/png">
+<link rel="preload" href="../assets/fonts/big-shoulders-900-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="studio.css?v=${studioV}">
+<script>window.STUDIO = ${JSON.stringify(studioCfg)};</script>
+</head>
+<body>
+<div class="atmo"></div>
+<script type="importmap">${JSON.stringify({imports:Object.fromEntries(fs.readdirSync(path.join(SRC,'studio','js')).map(f=>['./js/'+f, './js/'+f+'?v='+studioV]))})}</script>
+<script type="module">import './js/main.js';</script>
+</body>
+</html>
+`);
+
 /* 6) sitemap, robots, manifest, llms.txt */
 const urls = [{loc:PATHS.home, prio:'1.0', freq:'weekly'}, {loc:PATHS.services, prio:'0.9', freq:'monthly'}];
 for(const s of SERVICES) urls.push({loc:{cs:svcPath(s,'cs'), en:svcPath(s,'en')}, prio:'0.9', freq:'monthly'});
@@ -119,7 +144,7 @@ write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 ${urls.flatMap(u=>LANGS.filter(l=>u.loc[l]).map(l=>`<url><loc>${SITE}${u.loc[l]}</loc><lastmod>${u.lastmod||today}</lastmod><changefreq>${u.freq}</changefreq><priority>${u.prio}</priority>${alt(u.loc)}</url>`)).join('\n')}
 </urlset>
 `);
-write('robots.txt', INDEXABLE ? `User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: ${SITE}/sitemap.xml\n` : `User-agent: *\nDisallow: /\n`);
+write('robots.txt', INDEXABLE ? `User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /studio/\n\nSitemap: ${SITE}/sitemap.xml\n` : `User-agent: *\nDisallow: /\n`);
 write('site.webmanifest', JSON.stringify({name:COMPANY.name, short_name:'SFX', lang:'cs', start_url:'/', display:'standalone', background_color:'#000000', theme_color:'#000000',
   icons:[{src:'/assets/img/icon-192.png', sizes:'192x192', type:'image/png'},{src:'/assets/img/icon-512.png', sizes:'512x512', type:'image/png', purpose:'any maskable'}]}, null, 2));
 write('llms.txt', `# ${COMPANY.name}

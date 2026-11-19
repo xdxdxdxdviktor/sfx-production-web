@@ -41,6 +41,10 @@ export const VERIFY = Object.assign({ google: '', bing: '', seznam: '' }, SETTIN
 
 /* Enquiry form delivery: FormSubmit AJAX endpoint. The very first enquiry sends an activation
    email to the address; after one click every enquiry arrives in that inbox. */
+/* Supabase: enquiries database + team login for SFX Studio (/studio/). The anon key is public by design;
+   access is limited by row-level security in the database. Empty = enquiries go by e-mail only. */
+export const SUPABASE = { url: '', anon: '' };
+
 export const RUNTIME = {
   formEndpoint: 'https://formsubmit.co/ajax/' + COMPANY.email,
   turnstileSiteKey: '',
