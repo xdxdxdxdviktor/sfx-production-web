@@ -118,6 +118,12 @@ write('studio/index.html', `<!doctype html>
 <meta name="theme-color" content="#080706">
 <title>SFX Studio</title>
 <link rel="icon" href="../assets/img/favicon.png" type="image/png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SFX Studio">
 <link rel="preload" href="../assets/fonts/big-shoulders-900-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="studio.css?v=${studioV}">
 <script>window.STUDIO = ${JSON.stringify(studioCfg)};</script>

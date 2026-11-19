@@ -14,12 +14,14 @@ export async function render(main){
       <span style="max-width:58ch">Po zapnutí databáze se každá poptávka z webu uloží i sem. Uvidíte je na tabuli podle stavu (nová → řeší se → nabídka → hotovo), přidáte poznámky a určíte, kdo ji má na starosti. E-mailem budou chodit dál.</span></div>`);
     return;
   }
+  main.insertAdjacentHTML('beforeend', `<div class="mseg" id="mseg" role="tablist">${COLS.map(([k,t,c],i)=>`<button data-c="${k}" style="--c:${c}" aria-pressed="${i===0}"><span>${t}</span><b>0</b></button>`).join('')}</div>`);
   main.insertAdjacentHTML('beforeend', `<div class="board fadein" id="board">${COLS.map(([k,t,c])=>`<section class="col" data-col="${k}" style="--c:${c}"><div class="col-h"><span>${t}</span><i>0</i></div></section>`).join('')}</div>`);
-  let leads = [], showArch = false;
+  let leads = [], showArch = false, curCol = 'new';
   const draw = () => {
     for(const [k] of COLS){
       const col = $(`[data-col="${k}"]`), list = leads.filter(l => (l.status||'new') === k && !!l.archived === showArch);
-      $('.col-h i', col).textContent = list.length;
+      $('.col-h i', col).textContent = list.length; const mb = $(`#mseg [data-c="${k}"] b`); if(mb) mb.textContent = list.length;
+      col.classList.toggle('cur', k === curCol);
       $$('.lc, .empty', col).forEach(x => x.remove());
       col.insertAdjacentHTML('beforeend', list.length ? list.map(card).join('') : `<p class="muted empty" style="padding:20px 8px;font-size:13px">${k==='new' ? 'Žádné nové poptávky' : 'Přetáhněte sem kartu'}</p>`);
     }
@@ -29,6 +31,7 @@ export async function render(main){
   const load = async () => { try{ leads = await SB.leads(); draw(); }catch(e){ $('#board').innerHTML = `<div class="card empty" style="grid-column:1/-1">${ic('alert')}<b>Poptávky se nenačetly</b><span>${esc(e.message)}</span></div>`; } };
   await load();
   $('#rl').addEventListener('click', load);
+  $('#mseg').addEventListener('click', e => { const b = e.target.closest('[data-c]'); if(!b) return; curCol = b.dataset.c; $$('#mseg button').forEach(x => x.setAttribute('aria-pressed', x===b)); draw(); });
   $('#arch').addEventListener('change', e => { showArch = e.target.checked; draw(); });
 
   /* drag & drop between columns */

@@ -83,13 +83,21 @@ function shell(){
       </div>
     </aside>
     <div>
-      <div class="mbar"><button class="btn sm icon ghost" id="menuBtn" aria-label="Menu">${ic('menu')}</button><img src="../assets/img/logo.webp" alt="SFX"><span class="muted" style="font:600 12px var(--mono)" data-tc></span></div>
+      <header class="mbar"><a href="#/prehled" class="mlogo"><img src="../assets/img/logo.webp" alt="SFX production"><span>Studio</span></a>
+        <span class="mdeploy" id="mdeploy" title="Stav nasazení"><span class="dot"></span><span data-tc></span></span>
+        <button class="mme" id="moreBtn" aria-label="Další volby" aria-haspopup="dialog">${user.avatar?`<img src="${esc(user.avatar)}" alt="">`:`<span class="av">${esc((user.name||'?')[0])}</span>`}</button></header>
       <main class="main" id="main" tabindex="-1"></main>
     </div>
-  </div>`;
+  </div>
+  <nav class="tabbar" id="tabbar" aria-label="Hlavní navigace">
+    <a href="#/prehled" data-r="prehled">${ic('home')}<span>Přehled</span></a>
+    <a href="#/blog" data-r="blog">${ic('pen')}<span>Blog</span></a>
+    <a href="#/blog/novy" class="fab" aria-label="Nový článek">${ic('plus')}</a>
+    <a href="#/poptavky" data-r="poptavky">${ic('inbox')}<span>Poptávky</span><i class="tb-badge" id="tbBadge" hidden></i></a>
+    <a href="#/statistiky" data-r="statistiky">${ic('chart')}<span>Statistiky</span></a>
+  </nav>`;
   $('#logout').addEventListener('click', async () => { secrets.gh = ''; secrets.umami = SB.enabled() ? '' : secrets.umami; await SB.signOut(); location.hash = ''; loginView(); });
-  $('#menuBtn').addEventListener('click', () => $('#app').classList.toggle('menu'));
-  $('#nav').addEventListener('click', e => { if(e.target.closest('a')) $('#app').classList.remove('menu'); });
+  $('#moreBtn').addEventListener('click', moreSheet);
   deploys.on(runs => {
     const p = $('#dpill'); if(!p) return; const r = runs[0];
     p.classList.remove('busy','fail');
@@ -97,9 +105,28 @@ function shell(){
     if(r.status !== 'completed'){ p.classList.add('busy'); $('b',p).textContent = 'Nasazuje se…'; $(':scope>div>span',p).textContent = 'změna bude na webu do 2 min'; }
     else if(r.conclusion !== 'success'){ p.classList.add('fail'); $('b',p).textContent = 'Nasazení selhalo'; $(':scope>div>span',p).textContent = ago(r.updated_at); }
     else { $('b',p).textContent = 'Web je aktuální'; $(':scope>div>span',p).textContent = 'nasazeno ' + ago(r.updated_at); }
+    const m = $('#mdeploy'); if(m) m.className = 'mdeploy ' + (p.classList.contains('busy') ? 'busy' : p.classList.contains('fail') ? 'fail' : '');
   });
   deploys.refresh();
-  if(SB.enabled()) SB.newCount().then(n => { const b = $('#leadBadge'); if(b && n){ b.hidden = false; b.textContent = n; } });
+  if(SB.enabled()) SB.newCount().then(n => { for(const id of ['#leadBadge','#tbBadge']){ const b = $(id); if(b && n){ b.hidden = false; b.textContent = n; } } });
+}
+
+/* phone: "more" bottom sheet (account, deploy state, links to the content console) */
+function moreSheet(){
+  const p = $('#dpill'), d = document.createElement('div'); d.className = 'sheet';
+  d.innerHTML = `<div role="dialog" aria-modal="true" aria-label="Další volby"><span class="grab"></span>
+    <div class="me" style="padding:0 0 14px">${user.avatar?`<img src="${esc(user.avatar)}" alt="">`:`<span class="av">${esc((user.name||'?')[0])}</span>`}<div><b>${esc(user.name||user.login)}</b><small>@${esc(user.login)}</small></div></div>
+    ${p ? p.outerHTML.replace('id="dpill"','') : ''}
+    <div class="sheet-label">Správa webu</div>
+    <div class="sheet-grid">${CMS.map(([i,t,c])=>`<a href="../admin/#/collections/${c}" target="_blank" rel="noopener">${ic(i)}<span>${t}</span></a>`).join('')}</div>
+    <div class="sheet-list">
+      <a href="#/nastaveni">${ic('gear')}<span>Nastavení</span></a>
+      <a href="${esc(CFG.site)}/" target="_blank" rel="noopener">${ic('globe')}<span>Otevřít web</span>${ic('ext')}</a>
+      <button type="button" id="sOut">${ic('out')}<span>Odhlásit se</span></button></div></div>`;
+  const close = () => { d.classList.add('out'); setTimeout(() => d.remove(), 250); };
+  d.addEventListener('click', e => { if(e.target === d || e.target.closest('a')) close(); });
+  $('#sOut', d).addEventListener('click', () => { close(); $('#logout').click(); });
+  document.body.appendChild(d);
 }
 
 /* header used by every view */
@@ -115,7 +142,8 @@ async function route(){
   guard = null;
   const [, name='prehled', ...rest] = (location.hash || '#/prehled').split('/');
   const r = ROUTES[name] || ROUTES.prehled;
-  $$('#nav a[data-r]').forEach(a => a.classList.toggle('on', a.dataset.r === (ROUTES[name] ? name : 'prehled')));
+  $$('#nav a[data-r], #tabbar a[data-r]').forEach(a => a.classList.toggle('on', a.dataset.r === (ROUTES[name] ? name : 'prehled')));
+  document.body.classList.toggle('editing', name === 'blog' && rest.length > 0);
   document.title = `${r.t} · SFX Studio`;
   if(cleanup){ try{ cleanup(); }catch(e){} cleanup = null; }
   const main = $('#main'); main.innerHTML = '';

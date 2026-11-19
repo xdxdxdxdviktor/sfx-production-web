@@ -67,14 +67,15 @@ async function editor(main, id){
 
   main.innerHTML = header(id ? esc(p.cs.t || id) : 'Nový <em>článek</em>', id ? `blog · ${postState(p).t.toLowerCase()}` : 'blog · nový',
     `<a class="btn ghost" href="#/blog">${ic('back')}<span>Všechny články</span></a>${id && postState(p).k==='live' ? `<a class="btn" href="${esc(postUrl(p))}" target="_blank" rel="noopener">${ic('ext')}<span>Na webu</span></a>` : ''}`) + `
-  <div class="ed">
+  <div class="mtabs" id="mtabs" role="tablist"><button data-p="text" aria-pressed="true">Text</button><button data-p="preview" aria-pressed="false">Náhled</button><button data-p="details" aria-pressed="false">Detaily</button><button data-p="seo" aria-pressed="false">SEO <b id="seoMini"></b></button></div>
+  <div class="ed" id="ed" data-pane="text">
     <div class="ed-main">
       <div class="card">
         <div class="langtabs" role="tablist"><button role="tab" data-l="cs" aria-selected="true">ČEŠTINA</button><button role="tab" data-l="en" aria-selected="false">ANGLIČTINA <span class="muted">(nepovinné)</span></button></div>
         <div style="display:flex;flex-direction:column;gap:16px;margin-top:16px">
-          <label class="field"><span>Nadpis <em id="cT"></em></span><input class="in big" id="fT" placeholder="Např. Jak natočit video, které prodá nemovitost"></label>
-          <label class="field"><span>Perex · zobrazí se i v Googlu <em id="cL"></em></span><textarea class="ta" id="fL" rows="3" placeholder="Jedna až dvě věty o tom, co se čtenář dozví."></textarea></label>
-          <div class="field"><span>Text článku <em id="cB"></em></span>
+          <label class="field fld"><span>Nadpis <em id="cT"></em></span><input class="in big" id="fT" placeholder="Např. Jak natočit video, které prodá nemovitost"></label>
+          <label class="field fld"><span>Perex · zobrazí se i v Googlu <em id="cL"></em></span><textarea class="ta" id="fL" rows="3" placeholder="Jedna až dvě věty o tom, co se čtenář dozví."></textarea></label>
+          <div class="field fld-body"><span>Text článku <em id="cB"></em></span>
             <div class="mdbar" id="mdbar">
               <button type="button" data-md="h2" title="Mezititulek">${ic('h2')}</button><button type="button" data-md="b" title="Tučně">${ic('bold')}</button><button type="button" data-md="i" title="Kurzíva">${ic('italic')}</button>
               <span class="sep"></span><button type="button" data-md="ul" title="Odrážky">${ic('list')}</button><button type="button" data-md="q" title="Citát">${ic('quote')}</button><button type="button" data-md="a" title="Odkaz">${ic('link')}</button>
@@ -86,26 +87,26 @@ async function editor(main, id){
       </div>
     </div>
     <aside class="ed-side">
-      <section class="card"><div class="card-h"><h2>Zveřejnění</h2></div>
+      <section class="card" data-p="details"><div class="card-h"><h2>Zveřejnění</h2></div>
         <div style="display:flex;flex-direction:column;gap:16px">
           <label class="switch"><input type="checkbox" id="fPub"><i></i><span>Zveřejnit na webu</span></label>
           <label class="field"><span>Datum <em id="dHint"></em></span><input class="in" type="date" id="fD"></label>
           <label class="field"><span>Hlavní služba</span><select class="sel" id="fC">${SVCS.map(([v,t])=>`<option value="${v}">${t}</option>`).join('')}</select></label>
           <div class="field"><span>Související služby</span><div class="chips" id="fS">${SVCS.map(([v,t])=>`<button type="button" class="chip" data-s="${v}" aria-pressed="false">${t}</button>`).join('')}</div></div>
         </div></section>
-      <section class="card"><div class="card-h"><h2>Úvodní fotka</h2></div>
+      <section class="card" data-p="details"><div class="card-h"><h2>Úvodní fotka</h2></div>
         <div class="drop" id="cover" tabindex="0" role="button" aria-label="Nahrát úvodní fotku"><div>${ic('upload')}Přetáhněte fotku sem<br>nebo klikněte</div></div>
         <input type="file" id="fileCover" accept="image/*" hidden><input type="file" id="fileBody" accept="image/*" hidden>
         <label class="field" style="margin-top:16px"><span>Video z YouTube (odkaz)</span><input class="in" id="fY" placeholder="https://youtu.be/…"></label></section>
-      <section class="card"><div class="card-h"><h2>Google</h2><span class="muted">SEO kontrola</span></div><div id="seo"></div></section>
-      <section class="card"><div class="card-h"><h2>Adresa</h2></div>
+      <section class="card" data-p="seo"><div class="card-h"><h2>Google</h2><span class="muted">SEO kontrola</span></div><div id="seo"></div></section>
+      <section class="card" data-p="details"><div class="card-h"><h2>Adresa</h2></div>
         <div style="display:flex;flex-direction:column;gap:14px">
           ${id ? '' : `<label class="field"><span>Identifikátor souboru</span><input class="in" id="fId" placeholder="vytvoří se z nadpisu"></label>`}
           <label class="field"><span>Adresa (CZ)</span><input class="in" id="fSc" placeholder="vytvoří se z nadpisu"></label>
           <label class="field"><span>Adresa (EN)</span><input class="in" id="fSe" placeholder="vytvoří se z anglického nadpisu"></label>
           <p class="muted" style="margin:0;font-size:12.5px" id="urlPrev"></p>
         </div></section>
-      ${id ? `<button class="btn danger" id="del">${ic('trash')}<span>Smazat článek</span></button>` : ''}
+      ${id ? `<button class="btn danger" data-p="details" id="del">${ic('trash')}<span>Smazat článek</span></button>` : ''}
     </aside>
   </div>
   <div class="ed-actions"><span class="st" id="st">Uloženo</span><div style="display:flex;gap:10px"><a class="btn ghost" href="#/blog">Zavřít</a><button class="btn gold" id="save">${ic('rocket')}<span>${id ? 'Uložit a nasadit' : 'Vytvořit článek'}</span></button></div></div>`;
@@ -146,6 +147,7 @@ async function editor(main, id){
       [local, local ? 'Zmiňuje lokalitu (lokální SEO)' : 'Zmiňte město nebo kraj (Ústí, Liberec, Praha…)'],
       [!!(p.en.t && p.en.body), p.en.t && p.en.body ? 'Má anglickou verzi' : 'Anglická verze chybí (nepovinné)']];
     const score = Math.round(C.reduce((a,[ok],i) => a + (ok ? [18,16,18,14,14,12,8][i] : 0), 0));
+    const mini = F('#seoMini'); if(mini){ mini.textContent = score; mini.style.color = score >= 80 ? 'var(--ok)' : score >= 55 ? 'var(--warn)' : '#ff8f82'; }
     F('#seo').innerHTML = `<div class="seo">${ring(score)}<div><b style="font:800 20px var(--display);text-transform:uppercase;letter-spacing:.03em">${score >= 80 ? 'Výborné' : score >= 55 ? 'Dobré, jde to líp' : 'Potřebuje doplnit'}</b><p class="muted" style="margin:4px 0 0;font-size:13px">Jak dobře se článek ukáže ve vyhledávání.</p></div></div>
       <ul class="checks">${C.map(([ok,txt]) => `<li class="${ok?'':'bad'}">${esc(txt)}</li>`).join('')}</ul>
       <div class="serp"><small>${esc(CFG.site.replace(/^https?:\/\//,''))} › blog</small><b>${esc((d.t || 'Nadpis článku') + ' | SFX production')}</b><p>${esc(d.lead || 'Perex článku se zobrazí tady.')}</p></div>`;
@@ -167,6 +169,10 @@ async function editor(main, id){
   F('#fS').addEventListener('click', e => { const c = e.target.closest('[data-s]'); if(!c) return; const on = c.getAttribute('aria-pressed') !== 'true'; c.setAttribute('aria-pressed', on);
     p.svcs = on ? [...p.svcs, c.dataset.s] : p.svcs.filter(x => x !== c.dataset.s); touch(); });
   $$('.langtabs button', main).forEach(b => b.addEventListener('click', () => { lang = b.dataset.l; $$('.langtabs button', main).forEach(x => x.setAttribute('aria-selected', x===b)); fillLang(); update(); }));
+
+  /* phone: Text / Náhled / Detaily / SEO tabs */
+  F('#mtabs').addEventListener('click', e => { const b = e.target.closest('[data-p]'); if(!b) return;
+    F('#ed').dataset.pane = b.dataset.p; $$('#mtabs button', main).forEach(x => x.setAttribute('aria-pressed', x===b)); scrollTo({top:0, behavior:'smooth'}); });
 
   /* markdown toolbar */
   const ta = F('#fB');
