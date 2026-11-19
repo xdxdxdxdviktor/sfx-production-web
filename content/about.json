@@ -45,6 +45,26 @@
         "b2": "If anything changes, you hear it from me first. No digging through emails, just a clear plan and one person behind it.",
         "quote": ""
       }
+    },
+    {
+      "name": "Viktor Stránský",
+      "photo": "/assets/uploads/dab9e099-1acf-4078-b3f8-3f60d77e72ee-mwnjzm2l.webp",
+      "email": "viktor.fotbalista@gmail.com",
+      "phone": "704 749 126",
+      "cs": {
+        "role": "Developer",
+        "hi": "",
+        "b1": "",
+        "b2": "",
+        "quote": ""
+      },
+      "en": {
+        "role": "Developer",
+        "hi": "",
+        "b1": "",
+        "b2": "",
+        "quote": ""
+      }
     }
   ]
 }
