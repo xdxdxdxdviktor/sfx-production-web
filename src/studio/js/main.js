@@ -26,6 +26,9 @@ function tc(){ const d = new Date(), p = n => String(n).padStart(2,'0'); return 
 setInterval(() => $$('[data-tc]').forEach(e => e.textContent = tc()), 40);
 
 /* ---------- login ---------- */
+/* short team usernames → the account e-mail (Supabase signs in with e-mail) */
+const USERNAMES = {sfxproduction:'sfx-production@seznam.cz'};
+const loginEmail = v => { v = String(v||'').trim().toLowerCase(); return USERNAMES[v] || v; };
 function loginView(msg=''){
   const sb = SB.enabled();
   document.body.innerHTML = `<div class="atmo"></div>
@@ -38,7 +41,7 @@ function loginView(msg=''){
       <h1>Vítejte<br>ve střižně.</h1>
       <p>Administrace webu SFX production: články, statistiky a poptávky na jednom místě.</p>
       ${sb ? `
-      <label class="field"><span>E-mail</span><input class="in" type="email" name="email" autocomplete="username" required></label>
+      <label class="field"><span>Jméno nebo e-mail</span><input class="in" type="text" name="email" autocomplete="username" autocapitalize="none" spellcheck="false" required></label>
       <label class="field"><span>Heslo</span><input class="in" type="password" name="password" autocomplete="current-password" required></label>`
       : `
       <label class="field"><span>Přístupový klíč GitHub</span><input class="in" type="password" name="token" autocomplete="off" placeholder="github_pat_…" required></label>
@@ -54,13 +57,13 @@ function loginView(msg=''){
     </form>
   </main>`;
   $('#forgot') && $('#forgot').addEventListener('click', async () => {
-    const em = $('#lf').email.value.trim(); if(!em){ $('.err').textContent = 'Nejdřív vyplňte e-mail.'; $('#lf').email.focus(); return; }
+    const em = loginEmail($('#lf').email.value); if(!em){ $('.err').textContent = 'Nejdřív vyplňte e-mail.'; $('#lf').email.focus(); return; }
     try{ await SB.resetPassword(em); $('.err').style.color = 'var(--ok)'; $('.err').textContent = 'Poslali jsme vám e-mail s odkazem pro nové heslo.'; }
     catch(err){ $('.err').textContent = 'Odeslání se nepovedlo: ' + err.message; } });
   $('#lf').addEventListener('submit', async e => {
     e.preventDefault(); const f = e.target, btn = $('button[type=submit]', f); btn.disabled = true; btn.innerHTML = '<span class="spin"></span><span>Ověřuji…</span>';
     try{
-      if(sb){ await SB.signIn(f.email.value.trim(), f.password.value); await SB.loadSecrets(); }
+      if(sb){ await SB.signIn(loginEmail(f.email.value), f.password.value); await SB.loadSecrets(); }
       else secrets.gh = f.token.value.trim();
       await boot();
     }catch(err){ if(!sb) secrets.gh = ''; loginView(sb ? 'E-mail nebo heslo nesedí.' : (err.status===401 ? 'Klíč je neplatný nebo vypršel.' : err.message)); }
