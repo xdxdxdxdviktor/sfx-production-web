@@ -199,7 +199,7 @@ export function homePage(lang){
   const posts = postsIn(lang).slice(0,4);
   const H = HOME[lang] || HOME.cs;
   const reelYt = ytId(HOME.showreel_youtube);
-  const reelVideo = c.asset('video/showreel.mp4');
+  const reelVideo = c.asset('video/showreel-sfx.mp4');
   const reelPoster = HOME.showreel_poster ? media(c, HOME.showreel_poster) : reelYt ? `https://i.ytimg.com/vi/${reelYt}/maxresdefault.jpg` : c.asset('img/showreel-poster.jpg');
   const refs = SHOW_REFS() ? `
   <section class="sec" id="reference" data-sec>
