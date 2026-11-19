@@ -1,14 +1,14 @@
 {
   "showreel_youtube": "",
   "showreel_poster": "",
-  "showreel_note": true,
+  "showreel_note": false,
   "cs": {
     "kicker": "",
     "h1": "Obraz,\nkterý zůstane.",
     "sub": "Video, fotografie, dron, 360° prohlídky, 3D a střih. Od prvního nápadu po hotový výstup.",
     "reel_h": "Showreel",
     "reel_p": "Minuta toho nejlepšího z natáčení, focení a postprodukce.",
-    "reel_note": "Ukázkový sestřih z ilustračních záběrů. Nahradíme skutečným showreelem."
+    "reel_note": ""
   },
   "en": {
     "kicker": "",
@@ -16,6 +16,6 @@
     "sub": "Video, photography, drone, 360° tours, 3D and editing. From the first idea to the finished piece.",
     "reel_h": "Showreel",
     "reel_p": "A minute of the best from our shoots, photography and post-production.",
-    "reel_note": "Sample cut from illustrative footage, to be replaced with the real showreel."
+    "reel_note": ""
   }
 }

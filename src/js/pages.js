@@ -200,7 +200,7 @@ export function homePage(lang){
   const H = HOME[lang] || HOME.cs;
   const reelYt = ytId(HOME.showreel_youtube);
   const reelVideo = c.asset('video/showreel.mp4');
-  const reelPoster = HOME.showreel_poster ? media(c, HOME.showreel_poster) : reelYt ? `https://i.ytimg.com/vi/${reelYt}/maxresdefault.jpg` : c.asset('img/festival.webp');
+  const reelPoster = HOME.showreel_poster ? media(c, HOME.showreel_poster) : reelYt ? `https://i.ytimg.com/vi/${reelYt}/maxresdefault.jpg` : c.asset('img/showreel-poster.jpg');
   const refs = SHOW_REFS() ? `
   <section class="sec" id="reference" data-sec>
     <div class="sec-head"><h2>${t('ref.h')}</h2></div>
@@ -238,7 +238,7 @@ export function homePage(lang){
   <section class="sec reel-sec" id="showreel" data-sec>
     <div class="sec-head"><h2>${esc(H.reel_h)}</h2></div>
     <button class="reel-card" id="reelOpen" type="button" aria-label="${t('reel.play')}">
-      ${reelYt ? `<img class="reel-bg" src="${reelPoster}" alt="" loading="lazy" decoding="async">` : `<video class="reel-bg" id="reelBg" muted loop playsinline preload="none" poster="${reelPoster}" data-src="${reelVideo}"></video>`}
+      ${reelYt ? `<img class="reel-bg" src="${reelPoster}" alt="" loading="lazy" decoding="async">` : `<video class="reel-bg" id="reelBg" muted loop playsinline preload="none" poster="${reelPoster}" data-src="${c.asset('video/showreel-loop.mp4')}"></video>`}
       <span class="reel-play">${ICON.play}</span><span class="reel-label">${t('reel.play')}</span>
     </button>
     ${!reelYt && HOME.showreel_note && H.reel_note ? `<p class="note reel-note">${esc(H.reel_note)}</p>` : ''}
