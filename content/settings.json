@@ -36,7 +36,7 @@
     "Praha"
   ],
   "analytics": {
-    "provider": "",
+    "provider": "umami",
     "id": ""
   }
 }
