@@ -175,8 +175,11 @@ export async function toWebp(file, max = 2400, q = .85){
   const k = Math.min(1, max / Math.max(bmp.width, bmp.height));
   const c = document.createElement('canvas'); c.width = Math.round(bmp.width*k); c.height = Math.round(bmp.height*k);
   c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
-  const blob = await new Promise(r => c.toBlob(r, 'image/webp', q));
-  return {blob, width:c.width, height:c.height};
+  let blob = await new Promise(r => c.toBlob(r, 'image/webp', q));
+  let ext = 'webp';
+  /* Safari (iPhone) can't encode WebP and silently returns PNG: use JPEG there */
+  if(!blob || blob.type !== 'image/webp'){ blob = await new Promise(r => c.toBlob(r, 'image/jpeg', .86)); ext = 'jpg'; }
+  return {blob, width:c.width, height:c.height, ext};
 }
 export const blobToB64 = blob => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1]); r.onerror = rej; r.readAsDataURL(blob); });
 export const textToB64 = s => { const bytes = new TextEncoder().encode(s); let bin = ''; for(let i=0;i<bytes.length;i+=0x8000) bin += String.fromCharCode(...bytes.subarray(i, i+0x8000)); return btoa(bin); };

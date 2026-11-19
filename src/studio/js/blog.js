@@ -193,8 +193,8 @@ async function editor(main, id){
     if(!file || !/^image\//.test(file.type)) { toast('Vyberte prosím obrázek (JPG, PNG, WebP).', 'err'); return null; }
     const t = toast('Připravuji fotku…', 'busy', 0);
     try{
-      const {blob, width} = await toWebp(file);
-      const name = (slugify(file.name.replace(/\.[^.]+$/,'')) || 'foto') + '-' + Date.now().toString(36) + '.webp';
+      const {blob, width, ext} = await toWebp(file);
+      const name = (slugify(file.name.replace(/\.[^.]+$/,'')) || 'foto') + '-' + Date.now().toString(36) + '.' + ext;
       const pub = '/assets/uploads/' + name;
       pending.set('src' + pub, {b64: await blobToB64(blob), url: URL.createObjectURL(blob)});
       t.set(`Fotka připravená (${width} px, ${Math.round(blob.size/1024)} kB). Nahraje se při uložení.`); setTimeout(t.close, 2600);

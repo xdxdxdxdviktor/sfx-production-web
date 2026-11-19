@@ -132,7 +132,7 @@ export function createForm(root, fields, data, {relations = {}, onChange = () =>
         const tt = toast('Připravuji soubor…', 'busy', 0);
         try{
           let blob = file, ext = (file.name.split('.').pop() || 'bin').toLowerCase();
-          if(act === 'up-image'){ blob = (await toWebp(file)).blob; ext = 'webp'; }
+          if(act === 'up-image'){ const w = await toWebp(file); blob = w.blob; ext = w.ext; }
           else if(file.size > 5 * 1024 * 1024){ tt.close(); return toast('Video má víc než 5 MB. Zkraťte ho nebo vložte odkaz na YouTube.', 'err', 7000); }
           const name = (slugify(file.name.replace(/\.[^.]+$/, '')) || 'soubor') + '-' + Date.now().toString(36) + '.' + ext;
           const pub = '/assets/uploads/' + name;
