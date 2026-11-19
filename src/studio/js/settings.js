@@ -1,7 +1,7 @@
 /* SFX Studio — Nastavení: připojení služeb a oslovení. */
 import { $, esc, ic, toast, store, confirmBox } from './lib.js';
 import { CFG, GH, UM, SB, secrets } from './api.js';
-import { header, user, callName } from './main.js';
+import { header, user, ghUser, callName } from './main.js';
 
 export async function render(main){
   const sb = SB.enabled();
@@ -12,7 +12,7 @@ export async function render(main){
       <div style="display:flex;gap:10px;margin-top:14px"><button class="btn gold" id="uSave">${ic('check')}<span>Uložit a ověřit</span></button>${secrets.umami?`<button class="btn ghost" id="uDel">Odebrat</button>`:''}</div>
       <p class="muted" style="font-size:12.5px;margin:14px 0 0">${sb ? 'Klíč se uloží do zabezpečené databáze, uvidí ho jen přihlášení členové týmu.' : 'Klíč zůstane uložený jen v tomto prohlížeči.'}</p></section>
     <section class="card span-6"><div class="card-h"><h2>GitHub · obsah webu</h2><span class="tag live">Připojeno</span></div>
-      <dl class="dl" style="margin:0"><dt>Účet</dt><dd>${esc(user.name)} (@${esc(user.login)})</dd><dt>Repozitář</dt><dd><a href="https://github.com/${esc(CFG.repo)}" target="_blank" rel="noopener" style="color:var(--gold)">${esc(CFG.repo)}</a></dd><dt>Web</dt><dd><a href="${esc(CFG.site)}" target="_blank" rel="noopener" style="color:var(--gold)">${esc(CFG.site.replace(/^https?:\/\//,''))}</a></dd></dl>
+      <dl class="dl" style="margin:0"><dt>Přihlášený</dt><dd>${esc(user.name)} · ${esc(user.login)}</dd><dt>Ukládá přes</dt><dd>${esc(ghUser.name)} (@${esc(ghUser.login)})</dd><dt>Repozitář</dt><dd><a href="https://github.com/${esc(CFG.repo)}" target="_blank" rel="noopener" style="color:var(--gold)">${esc(CFG.repo)}</a></dd><dt>Web</dt><dd><a href="${esc(CFG.site)}" target="_blank" rel="noopener" style="color:var(--gold)">${esc(CFG.site.replace(/^https?:\/\//,''))}</a></dd></dl>
       ${sb ? `<label class="field" style="margin-top:16px"><span>Nový přístupový klíč GitHub (pro celý tým)</span><input class="in" id="gKey" type="password" autocomplete="off" placeholder="github_pat_…"></label><button class="btn" id="gSave" style="margin-top:12px">${ic('key')}<span>Uložit klíč</span></button>` : ''}</section>
     <section class="card span-6"><div class="card-h"><h2>Oslovení</h2></div>
       <label class="field"><span>Jak vás má Studio oslovovat</span><input class="in" id="cName" value="${esc(callName())}"></label>

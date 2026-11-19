@@ -12,7 +12,9 @@ const ROUTES = {
 };
 const CMS = [
   ['film', 'Ukázky práce', 'portfolio'], ['image', 'Služby', 'services'], ['home', 'Úvodní stránka', 'pages/home'], ['users', 'O nás', 'pages/about'], ['quote', 'Reference', 'references'], ['mail', 'Kontakty a fakturace', 'pages/settings']];
-export const user = {name:'', login:'', avatar:''};
+export const user = {name:'', login:'', avatar:''};   // the person signed in to the Studio
+export const ghUser = {name:'', login:''};            // the GitHub account the shared key belongs to
+const handle = () => user.login.includes('@') ? user.login : '@' + user.login;
 
 /* vocative for the greeting (Jiří → Jirko); can be overridden in Settings */
 export function callName(){
@@ -88,7 +90,7 @@ function shell(){
       </nav>
       <div class="side-foot">
         <a class="deploy-pill" id="dpill" href="https://github.com/${esc(CFG.repo)}/actions" target="_blank" rel="noopener"><span class="dot"></span><div><b>Web je aktuální</b><span>…</span></div></a>
-        <div class="me">${user.avatar?`<img src="${esc(user.avatar)}" alt="">`:`<span class="av">${esc((user.name||'?')[0])}</span>`}<div><b>${esc(user.name||user.login)}</b><small>@${esc(user.login)}</small></div><button id="logout" title="Odhlásit" aria-label="Odhlásit">${ic('out')}</button></div>
+        <div class="me">${user.avatar?`<img src="${esc(user.avatar)}" alt="">`:`<span class="av">${esc((user.name||'?')[0])}</span>`}<div><b>${esc(user.name||user.login)}</b><small>${esc(handle())}</small></div><button id="logout" title="Odhlásit" aria-label="Odhlásit">${ic('out')}</button></div>
       </div>
     </aside>
     <div>
@@ -124,7 +126,7 @@ function shell(){
 function moreSheet(){
   const p = $('#dpill'), d = document.createElement('div'); d.className = 'sheet';
   d.innerHTML = `<div role="dialog" aria-modal="true" aria-label="Další volby"><span class="grab"></span>
-    <div class="me" style="padding:0 0 14px">${user.avatar?`<img src="${esc(user.avatar)}" alt="">`:`<span class="av">${esc((user.name||'?')[0])}</span>`}<div><b>${esc(user.name||user.login)}</b><small>@${esc(user.login)}</small></div></div>
+    <div class="me" style="padding:0 0 14px">${user.avatar?`<img src="${esc(user.avatar)}" alt="">`:`<span class="av">${esc((user.name||'?')[0])}</span>`}<div><b>${esc(user.name||user.login)}</b><small>${esc(handle())}</small></div></div>
     ${p ? p.outerHTML.replace('id="dpill"','') : ''}
     <div class="sheet-label">Obsah webu</div>
     <div class="sheet-grid"><a href="#/blog">${ic('pen')}<span>Blog</span></a>${CMS.map(([i,t,c])=>`<a href="#/obsah/${c}">${ic(i)}<span>${t}</span></a>`).join('')}<a href="#/statistiky">${ic('chart')}<span>Statistiky</span></a></div>
@@ -215,7 +217,13 @@ async function boot(){
   try{
     const [me, repo] = await Promise.all([GH.me(), GH.repo()]);
     if(repo.permissions && !repo.permissions.push) throw Object.assign(new Error('Klíč nemá právo zapisovat do repozitáře. Zapněte Contents: Read and write.'), {status:403});
-    Object.assign(user, {name: me.name || me.login, login: me.login, avatar: me.avatar_url});
+    Object.assign(ghUser, {name: me.name || me.login, login: me.login});
+    if(SB.enabled()){
+      /* show the person who signed in (Supabase), not the owner of the shared GitHub key */
+      const u = await SB.user(); const em = (u && u.email || '').toLowerCase();
+      let nm = ''; try{ const c = await SB.client(); const {data} = await c.from('team').select('name').eq('email', em).maybeSingle(); nm = data && data.name || ''; }catch(e){}
+      Object.assign(user, {name: nm || em.split('@')[0], login: em, avatar: ''});
+    } else Object.assign(user, {name: me.name || me.login, login: me.login, avatar: me.avatar_url});
   }catch(e){ secrets.gh = ''; if(SB.enabled()) return githubView(); return loginView(e.status===401 ? 'Klíč je neplatný nebo vypršel. Vložte nový.' : e.message); }
   shell(); route();
 }
