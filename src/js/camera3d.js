@@ -283,6 +283,9 @@ function _initCamera3D(canvas, logoUrl, hooks){
   const ease = t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
   const lerp=(a,b,t)=>a+(b-a)*t;
   let P = 0, cur = null, W=1, H=1, mobile=false;
+  /* framing: camera distance (smaller = bigger model) and horizontal place in the hero, tuned per aspect ratio */
+  const DIST = () => mobile ? 19 : (W/H < 1.45 ? 12 : 9.2);
+  let X0 = .35, X1 = .42, MY = 1.8;
   const ptr = {x:0,y:0,tx:0,ty:0};
 
   function targetFor(p){
@@ -290,13 +293,14 @@ function _initCamera3D(canvas, logoUrl, hooks){
     const r2 = ease(seg(p,.5,.72));   // turn to face viewer
     let ry = lerp(-.62, -1.42, r1); ry = lerp(ry, 0, r2);
     let rx = lerp(.14, .04, r1); rx = lerp(rx, 0, r2);
-    const halfW = Math.tan(15*Math.PI/180)*13*(W/H);
-    let px = mobile ? lerp(0, 1.4, r1) : lerp(halfW*.4, halfW*.34, r1); px = lerp(px, -LX, r2);
-    let py = mobile ? lerp(1.9,-.6,r1) : lerp(-.05,.05,r1); py = lerp(py, -LY, r2);
+    const halfW = Math.tan(15*Math.PI/180)*DIST()*(W/H);
+    let px = mobile ? lerp(0, 1.1, r1) : lerp(halfW*X0, halfW*X1, r1); px = lerp(px, -LX, r2);
+    let py = mobile ? lerp(MY, -.5, r1) : lerp(-.12,0,r1); py = lerp(py, -LY, r2);
     const e1 = ease(seg(p,.16,.34)), e2 = ease(seg(p,.3,.48));
     const ap = ease(seg(p,.56,.76));
     const dolly = ease(seg(p,.76,.98));
-    return {ry,rx,px,py,e1,e2,ap,dolly,p};
+    const out = r1*(1-r2);           // step back a little while the long lens is in profile
+    return {ry,rx,px,py,e1,e2,ap,dolly,out,p};
   }
 
   function apply(t){
@@ -310,7 +314,7 @@ function _initCamera3D(canvas, logoUrl, hooks){
     glowMat.opacity = .08 + t.ap*.9;
     // front of lens (world z) when facing viewer ≈ FRONT + s2.z + .9
     const frontZ = FRONT + s2.position.z + .95;
-    const baseZ = mobile ? 21 : 13;
+    const baseZ = DIST()*(1 + .2*t.out);
     cam.position.z = lerp(baseZ, frontZ + .15, Math.pow(t.dolly,1.6));
     cam.position.y = lerp(.3, 0, t.dolly);
     cam.fov = lerp(30, 42, t.dolly); cam.updateProjectionMatrix();
@@ -320,6 +324,7 @@ function _initCamera3D(canvas, logoUrl, hooks){
   function resize(){
     const r = canvas.getBoundingClientRect(); W = r.width||innerWidth; H = r.height||innerHeight;
     mobile = W < 820;
+    X0 = W/H < 1.45 ? .5 : .35; X1 = W/H < 1.45 ? .46 : .42;
     renderer.setSize(W,H,false); cam.aspect = W/H; cam.updateProjectionMatrix();
   }
   resize(); addEventListener('resize', resize);

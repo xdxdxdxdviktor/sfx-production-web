@@ -1151,10 +1151,10 @@ body.ready .hero-strip{animation:rise .9s var(--ease) .35s backwards}
 }
 
 /* static camera still: shown while 3D loads, stays if the phone can't draw WebGL */
-.cam-poster{position:absolute;z-index:1;pointer-events:none;left:43%;top:21%;width:min(33vw,520px);height:auto;transition:opacity .6s var(--ease);filter:drop-shadow(0 40px 60px rgba(0,0,0,.6))}
+.cam-poster{position:absolute;z-index:1;pointer-events:none;left:auto;right:3.5vw;top:50%;translate:0 -46%;width:min(46vw,84vh,900px);height:auto;transition:opacity .6s var(--ease);filter:drop-shadow(0 40px 60px rgba(0,0,0,.6))}
 #cam3d{z-index:2}
 body.gl-ok .cam-poster{opacity:0!important}
-@media (max-width:820px){ .cam-poster{left:50%;top:calc(58px + 34px);transform:translateX(-50%);width:min(78vw,400px)} }
+@media (max-width:820px){ .cam-poster{left:50%;right:auto;top:calc(58px + 30px);translate:none;transform:translateX(-50%);width:min(90vw,460px)} }
 @media (max-width:820px) and (max-height:700px){ .cam-poster{width:min(62vw,300px)} }
 
 /* admin v2: settings + mobile list/detail */
